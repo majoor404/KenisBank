@@ -16,5 +16,34 @@ namespace KenisBank
         {
             InitializeComponent();
         }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            panelHoofdStuk.Visible = false;
+            panelTextBlok.Visible = false;
+
+            if (radioButton1.Checked )
+            {
+                panelHoofdStuk.Visible = true;
+                panelHoofdStuk.BringToFront();
+            }
+
+            if (radioButton3.Checked)
+            {
+                panelTextBlok.Visible = true;
+                panelTextBlok.BringToFront();
+            }
+
+            
+            
+
+
+        }
+
+        private void ItemToevoegen_Shown(object sender, EventArgs e)
+        {
+            panelHoofdStuk.Location = panelTextBlok.Location = new Point(216, 12);
+            panelHoofdStuk.Size = panelTextBlok.Size = new Size(1030, 722);
+        }
     }
 }

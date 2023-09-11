@@ -72,14 +72,15 @@
             this.voegItemToaAanPaginaToolStripMenuItem});
             this.editPaginaToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editPaginaToolStripMenuItem.Name = "editPaginaToolStripMenuItem";
-            this.editPaginaToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
-            this.editPaginaToolStripMenuItem.Text = "Pas pagina aan";
+            this.editPaginaToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
+            this.editPaginaToolStripMenuItem.Text = "Edit";
+            this.editPaginaToolStripMenuItem.Click += new System.EventHandler(this.editPaginaToolStripMenuItem_Click);
             // 
             // editModeAanToolStripMenuItem
             // 
             this.editModeAanToolStripMenuItem.CheckOnClick = true;
             this.editModeAanToolStripMenuItem.Name = "editModeAanToolStripMenuItem";
-            this.editModeAanToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editModeAanToolStripMenuItem.Size = new System.Drawing.Size(250, 24);
             this.editModeAanToolStripMenuItem.Text = "Edit Mode Aan";
             this.editModeAanToolStripMenuItem.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
@@ -87,7 +88,7 @@
             // 
             this.voegItemToaAanPaginaToolStripMenuItem.Enabled = false;
             this.voegItemToaAanPaginaToolStripMenuItem.Name = "voegItemToaAanPaginaToolStripMenuItem";
-            this.voegItemToaAanPaginaToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.voegItemToaAanPaginaToolStripMenuItem.Size = new System.Drawing.Size(250, 24);
             this.voegItemToaAanPaginaToolStripMenuItem.Text = "Voeg Item toe aan pagina";
             this.voegItemToaAanPaginaToolStripMenuItem.Click += new System.EventHandler(this.buttonVoegToe_Click);
             // 
