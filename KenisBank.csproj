@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ItemToevoegen.cs">
+    <Compile Include="Hoofdstuk.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ItemToevoegen.Designer.cs">
-      <DependentUpon>ItemToevoegen.cs</DependentUpon>
+    <Compile Include="Hoofdstuk.Designer.cs">
+      <DependentUpon>Hoofdstuk.cs</DependentUpon>
     </Compile>
     <Compile Include="KennisMainForm.cs">
       <SubType>Form</SubType>
@@ -58,14 +58,38 @@
     <Compile Include="KennisMainForm.Designer.cs">
       <DependentUpon>KennisMainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="LinkDir.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LinkDir.Designer.cs">
+      <DependentUpon>LinkDir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LinkFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LinkFile.Designer.cs">
+      <DependentUpon>LinkFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regel.cs" />
-    <EmbeddedResource Include="ItemToevoegen.resx">
-      <DependentUpon>ItemToevoegen.cs</DependentUpon>
+    <Compile Include="TekstBlok.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TekstBlok.Designer.cs">
+      <DependentUpon>TekstBlok.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Hoofdstuk.resx">
+      <DependentUpon>Hoofdstuk.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KennisMainForm.resx">
       <DependentUpon>KennisMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LinkDir.resx">
+      <DependentUpon>LinkDir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LinkFile.resx">
+      <DependentUpon>LinkFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -76,6 +100,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TekstBlok.resx">
+      <DependentUpon>TekstBlok.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

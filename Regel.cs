@@ -3,38 +3,48 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace KenisBank
 {
-    internal enum type
+    public enum type
     {
+        Hoofdstuk,
+        LinkFile,
+        LinkDir,
+        TekstBlok,
         PaginaNaam,
-        Link,
-        Hoofdstuk
     }
 
     [Serializable]
     public class Regel
     {
-        public List<Regel> ListRegels = new List<Regel>();
         public Regel() { }
-        public Regel(string tekst, int type)
+        public Regel(string tekst, type T, string url)
         {
             tekst_ = tekst;
-            type_ = type;
+            type_ = T;
+            url_ = url;
         }
         public string tekst_ { set; get; }
-        public int type_ { set; get; }
+        public type type_ { set; get; }
+        public string url_ { set; get; }
 
-        public void Laad(string file)
+        
+        public List<Regel> PaginaMetRegels = new List<Regel>();
+
+        public bool Laad(string file)
         {
             try
             {
                 string xmlTekst = File.ReadAllText(file);
-                ListRegels.Clear();
-                ListRegels = FromXML<List<Regel>>(xmlTekst);
+                PaginaMetRegels.Clear();
+                PaginaMetRegels = FromXML<List<Regel>>(xmlTekst);
+                return true;
             }
-            catch { }
+            catch {
+                return false;
+            }
         }
 
         private string ToXML<T>(T obj)
@@ -55,5 +65,9 @@ namespace KenisBank
                 return (T)serializer.Deserialize(stringReader);
             }
         }
+
+        
+
+
     }
 }
