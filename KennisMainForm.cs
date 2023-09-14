@@ -8,6 +8,7 @@ namespace KenisBank
     public partial class KennisMainForm : Form
     {
         public Regel InfoPagina = new Regel();
+        public Panel panelGeselecteerd = new Panel();
 
         public KennisMainForm()
         {
@@ -22,8 +23,9 @@ namespace KenisBank
             _ = InfoPagina.Laad(@"Data\main.xml");
 
             // voor debug
-            Toevoegen("Hallo", type.LinkDir, "C:\\");
-            Toevoegen("Lege pagina", type.TekstBlok, "");
+            Toevoegen("eerste regel", type.TekstBlok, "");
+            Toevoegen("tweede regel", type.TekstBlok, "");
+            Toevoegen("derde regel", type.TekstBlok, "");
 
             // bouw Pagina
             BouwPaginaOp();
@@ -51,7 +53,7 @@ namespace KenisBank
             }
         }
 
-        private Panel MaakNewPanel()
+        private Panel MaakNewPanel(int eigenaar)
         {
             // maak new panel
             Panel panel = new Panel
@@ -60,16 +62,18 @@ namespace KenisBank
                 BorderStyle = BorderStyle.None,
                 AutoSize = true
             };
+
+            panel.Tag = eigenaar;
+
             panelMain.Controls.Add(panel);
             panelMain.Controls.SetChildIndex(panel, 0);
-
             panel.Click += new EventHandler(panel_Click);
             return panel;
         }
 
-        private void PlaatsHoofdstukOpBeeld(string text)
+        private void PlaatsHoofdstukOpBeeld(string text,int eigenaar)
         {
-            Panel panel = MaakNewPanel();
+            Panel panel = MaakNewPanel(eigenaar);
 
             System.Windows.Forms.Label label = new System.Windows.Forms.Label();
             Point org = new Point(label.Location.X, label.Location.Y);
@@ -83,12 +87,13 @@ namespace KenisBank
             panelMain.Refresh();
         }
 
-        private void PlaatsTextOpBeeld(string tekst)
+        private void PlaatsTextOpBeeld(string tekst, int eigenaar)
         {
-            
-            Panel panel = MaakNewPanel();
+
+            Panel panel = MaakNewPanel(eigenaar);
+
             panel.SuspendLayout();
-            
+
             // split string at new line
             string t = tekst.Replace("\n", "");
             string[] result = t.Split('\r');
@@ -109,9 +114,10 @@ namespace KenisBank
             panel.ResumeLayout();
         }
 
-        private void PlaatsLinkOpBeeld(string link, string locatie)
+        private void PlaatsLinkOpBeeld(string link, string locatie,int eigenaar)
         {
-            Panel panel = MaakNewPanel();
+            Panel panel = MaakNewPanel(eigenaar);
+
 
             System.Windows.Forms.LinkLabel label = new System.Windows.Forms.LinkLabel();
 
@@ -153,21 +159,28 @@ namespace KenisBank
 
             for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
             {
+                string dum = InfoPagina.PaginaMetRegels[i].tekst_ + InfoPagina.PaginaMetRegels[i].type_ + InfoPagina.PaginaMetRegels[i].url_;
+                int eigenaar = dum.GetHashCode();
+
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.Hoofdstuk)
                 {
-                    PlaatsHoofdstukOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_);
+                    PlaatsHoofdstukOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_,eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
                 {
-                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_);
+                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_,eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
                 {
-                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_);
+                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.TekstBlok)
                 {
-                    PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_);
+                    PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
             }
         }
@@ -180,6 +193,8 @@ namespace KenisBank
 
         private void panel_Click(object sender, EventArgs e)
         {
+            panelGeselecteerd = null;
+            deleteItemToolStripMenuItem.Enabled = false;
             if (editModeAanToolStripMenuItem.Checked)
             {
                 foreach (Panel a in panelMain.Controls)
@@ -190,6 +205,8 @@ namespace KenisBank
                     {
                         a.BackColor = Color.Aqua;
                         a.BorderStyle = BorderStyle.FixedSingle;
+                        panelGeselecteerd = a;
+                        deleteItemToolStripMenuItem.Enabled = true;
                     }
                 }
             }
@@ -245,6 +262,31 @@ namespace KenisBank
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // bouw Pagina
+            BouwPaginaOp();
+        }
+
+        private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int eigenaar = (int)panelGeselecteerd.Tag;
+
+            for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+            {
+                if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
+                {
+                    InfoPagina.PaginaMetRegels.RemoveAt(i);
+                }
+            }
+
+            panelGeselecteerd = null;
+            deleteItemToolStripMenuItem.Enabled = false;
+
+            foreach (Panel a in panelMain.Controls)
+            {
+                a.BackColor = panelMain.BackColor;
+                a.BorderStyle = BorderStyle.None;
+            }
+
             // bouw Pagina
             BouwPaginaOp();
         }

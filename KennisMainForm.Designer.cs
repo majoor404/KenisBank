@@ -40,6 +40,7 @@
             this.toevoegenLinkNaarDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toevoegenTekstBlokToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -89,7 +90,8 @@
             // 
             this.editPaginaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editModeAanToolStripMenuItem,
-            this.addItemToolStripMenuItem});
+            this.addItemToolStripMenuItem,
+            this.deleteItemToolStripMenuItem});
             this.editPaginaToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editPaginaToolStripMenuItem.Name = "editPaginaToolStripMenuItem";
             this.editPaginaToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
@@ -151,6 +153,14 @@
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
+            // deleteItemToolStripMenuItem
+            // 
+            this.deleteItemToolStripMenuItem.Enabled = false;
+            this.deleteItemToolStripMenuItem.Name = "deleteItemToolStripMenuItem";
+            this.deleteItemToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.deleteItemToolStripMenuItem.Text = "Delete Item";
+            this.deleteItemToolStripMenuItem.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
+            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,6 +198,7 @@
         private System.Windows.Forms.ToolStripMenuItem toevoegenTekstBlokToolStripMenuItem;
         private System.Windows.Forms.Label labelEditMode;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteItemToolStripMenuItem;
     }
 }
 
