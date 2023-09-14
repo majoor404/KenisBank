@@ -85,23 +85,28 @@ namespace KenisBank
 
         private void PlaatsTextOpBeeld(string tekst)
         {
+            
             Panel panel = MaakNewPanel();
+            panel.SuspendLayout();
             
             // split string at new line
-            string[] result = tekst.Split('\r');
+            string t = tekst.Replace("\n", "");
+            string[] result = t.Split('\r');
+            int regeloffset = 0;
             foreach (string str in result)
             {
                 System.Windows.Forms.Label label = new System.Windows.Forms.Label();
                 Point org = new Point(label.Location.X, label.Location.Y);
                 org.X += 30;
+                org.Y += regeloffset * 20;
+                regeloffset++;
                 label.Location = org;
                 label.AutoSize = true;
                 label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
                 label.Text = str;
                 panel.Controls.Add(label);
-                panel.AutoSize = false;
-                panel.Height = 100;
             }
+            panel.ResumeLayout();
         }
 
         private void PlaatsLinkOpBeeld(string link, string locatie)
@@ -171,9 +176,6 @@ namespace KenisBank
         {
             Regel regel = new Regel(text, type, url);
             InfoPagina.PaginaMetRegels.Add(regel);
-            
-            // bouw Pagina
-            BouwPaginaOp();
         }
 
         private void panel_Click(object sender, EventArgs e)
@@ -201,6 +203,8 @@ namespace KenisBank
             {
                 Toevoegen(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
             }
+            // bouw Pagina
+            BouwPaginaOp();
         }
 
         private void toevoegenHoofdstukTextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -211,6 +215,8 @@ namespace KenisBank
             {
                 Toevoegen(hoofdstuk.textBox1.Text, type.Hoofdstuk, "");
             }
+            // bouw Pagina
+            BouwPaginaOp();
         }
 
         private void toevoegenLinkNaarFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -221,6 +227,8 @@ namespace KenisBank
             {
                 Toevoegen(linkFile.textBox2.Text, type.LinkFile, linkFile.textBox1.Text);
             }
+            // bouw Pagina
+            BouwPaginaOp();
         }
 
         private void toevoegenTekstBlokToolStripMenuItem_Click(object sender, EventArgs e)
@@ -231,6 +239,8 @@ namespace KenisBank
             {
                 Toevoegen(tekstblok.textBoxTextBlok.Text, type.TekstBlok, "");
             }
+            // bouw Pagina
+            BouwPaginaOp();
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
