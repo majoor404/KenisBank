@@ -14,6 +14,7 @@ namespace KenisBank
         LinkDir,
         TekstBlok,
         PaginaNaam,
+        Leeg
     }
 
     [Serializable]
@@ -39,7 +40,7 @@ namespace KenisBank
         {
             try
             {
-                string xmlTekst = File.ReadAllText(file);
+                string xmlTekst = File.ReadAllText($"Data\\{file}.xml");
                 PaginaMetRegels.Clear();
                 PaginaMetRegels = FromXML<List<Regel>>(xmlTekst);
                 return true;
@@ -47,6 +48,16 @@ namespace KenisBank
             catch {
                 return false;
             }
+        }
+
+        public void Save(string file)
+        {
+            try
+            {
+                string xmlTekst = ToXML(PaginaMetRegels);
+                File.WriteAllText($"Data\\{file}.xml", xmlTekst);
+            }
+            catch { }
         }
 
         private string ToXML<T>(T obj)

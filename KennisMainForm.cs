@@ -9,6 +9,8 @@ namespace KenisBank
     {
         public Regel InfoPagina = new Regel();
         public Panel panelGeselecteerd = new Panel();
+        public bool change_pagina = false;
+        public Point screenLoc = new Point();
 
         public KennisMainForm()
         {
@@ -19,13 +21,16 @@ namespace KenisBank
         {
             // zet panelen netjes
             KennisMainForm_Resize(this, null);
-            // laad main.xml
-            _ = InfoPagina.Laad(@"Data\main.xml");
+            // laad Start.xml
+            if (InfoPagina.Laad("Start"))
+            {
+                labelPaginaInBeeld.Text = "Start";
+            }
 
             // voor debug
-            Toevoegen("eerste regel", type.TekstBlok, "");
-            Toevoegen("tweede regel", type.TekstBlok, "");
-            Toevoegen("derde regel", type.TekstBlok, "");
+            //Toevoegen("eerste regel", type.TekstBlok, "");
+            //Toevoegen("tweede regel", type.TekstBlok, "");
+            //Toevoegen("derde regel", type.TekstBlok, "");
 
             // bouw Pagina
             BouwPaginaOp();
@@ -34,14 +39,24 @@ namespace KenisBank
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             addItemToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
+            saveHuidigePaginaToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
 
             if (editModeAanToolStripMenuItem.Checked)
             {
                 editPaginaToolStripMenuItem.BackColor = Color.LightCyan;
                 labelEditMode.Visible = true;
+                change_pagina = false;
             }
             else
             {
+                if (change_pagina)
+                {
+                    DialogResult dialogResult = MessageBox.Show($"Pagina is aangepast, eerst saven ?", "Vraagje", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        saveHuidigePaginaToolStripMenuItem_Click(this, null);
+                    }
+                }
                 editPaginaToolStripMenuItem.BackColor = SystemColors.MenuBar;
                 labelEditMode.Visible = false;
 
@@ -60,18 +75,19 @@ namespace KenisBank
             {
                 Dock = DockStyle.Top,
                 BorderStyle = BorderStyle.None,
-                AutoSize = true
+                AutoSize = true,
+                Tag = eigenaar
             };
-
-            panel.Tag = eigenaar;
 
             panelMain.Controls.Add(panel);
             panelMain.Controls.SetChildIndex(panel, 0);
             panel.Click += new EventHandler(panel_Click);
+            panel.MouseDown += new MouseEventHandler(muisknop_neer);
+            panel.MouseUp += new MouseEventHandler(muisknop_op);
             return panel;
         }
 
-        private void PlaatsHoofdstukOpBeeld(string text,int eigenaar)
+        private void PlaatsHoofdstukOpBeeld(string text, int eigenaar)
         {
             Panel panel = MaakNewPanel(eigenaar);
 
@@ -95,8 +111,8 @@ namespace KenisBank
             panel.SuspendLayout();
 
             // split string at new line
-            string t = tekst.Replace("\n", "");
-            string[] result = t.Split('\r');
+            //string t = tekst.Replace("\n", "");
+            string[] result = tekst.Split('\n');
             int regeloffset = 0;
             foreach (string str in result)
             {
@@ -114,7 +130,7 @@ namespace KenisBank
             panel.ResumeLayout();
         }
 
-        private void PlaatsLinkOpBeeld(string link, string locatie,int eigenaar)
+        private void PlaatsLinkOpBeeld(string link, string locatie, int eigenaar)
         {
             Panel panel = MaakNewPanel(eigenaar);
 
@@ -139,10 +155,39 @@ namespace KenisBank
         private void label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Windows.Forms.LinkLabel label = (System.Windows.Forms.LinkLabel)sender;
-            label.LinkVisited = true;
-            Process process = new Process();
-            process.StartInfo.FileName = (string)label.Tag;
-            _ = process.Start();
+            string link = (string)label.Tag;
+            if (link[0] == '#') // nieuwe pagina
+            {
+                link = link.Substring(1);
+                if (!InfoPagina.Laad(link))
+                {
+                    // dus nieuwe pagina
+                    InfoPagina.PaginaMetRegels.Clear();
+                    labelPaginaInBeeld.Text = link;
+                    Toevoegen(link, type.Hoofdstuk, "");
+                    BouwPaginaOp();
+                    // meteen in edit mode
+                    if (!editModeAanToolStripMenuItem.Checked)
+                    {
+                        editModeAanToolStripMenuItem.Checked = true;
+                        buttonEdit_Click(this, null);
+                    }
+
+                }
+                else
+                {
+                    labelPaginaInBeeld.Text = link;
+                    // bouw Pagina
+                    BouwPaginaOp();
+                }
+            }
+            else
+            {
+                label.LinkVisited = true;
+                Process process = new Process();
+                process.StartInfo.FileName = link;
+                _ = process.Start();
+            }
         }
 
         private void KennisMainForm_Resize(object sender, EventArgs e)
@@ -164,12 +209,12 @@ namespace KenisBank
 
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.Hoofdstuk)
                 {
-                    PlaatsHoofdstukOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_,eigenaar);
+                    PlaatsHoofdstukOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
                     InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
                 {
-                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_,eigenaar);
+                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
                     InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
@@ -182,6 +227,16 @@ namespace KenisBank
                     PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
                     InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
+                if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
+                {
+                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (InfoPagina.PaginaMetRegels[i].type_ == type.Leeg)
+                {
+                    PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
             }
         }
 
@@ -189,6 +244,7 @@ namespace KenisBank
         {
             Regel regel = new Regel(text, type, url);
             InfoPagina.PaginaMetRegels.Add(regel);
+            change_pagina = true;
         }
 
         private void panel_Click(object sender, EventArgs e)
@@ -289,6 +345,92 @@ namespace KenisBank
 
             // bouw Pagina
             BouwPaginaOp();
+        }
+
+        private void toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Pagina pagina = new Pagina();
+            DialogResult save = pagina.ShowDialog();
+            if (save == DialogResult.OK)
+            {
+                string urlnaarpagina = "#" + pagina.textBoxPaginaNaam.Text;
+                Toevoegen(pagina.textBoxPaginaNaam.Text, type.PaginaNaam, urlnaarpagina);
+            }
+            // bouw Pagina
+            BouwPaginaOp();
+        }
+
+        private void homeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editModeAanToolStripMenuItem.Checked = false;
+            buttonEdit_Click(this, null);
+
+            // laad Start.xml
+            if (InfoPagina.Laad("Start"))
+            {
+                labelPaginaInBeeld.Text = "Start";
+            }
+
+            // bouw Pagina
+            BouwPaginaOp();
+        }
+
+        private void saveHuidigePaginaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InfoPagina.Save(labelPaginaInBeeld.Text);
+            change_pagina = false;
+        }
+
+        private void toevoegenLegeRegelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Toevoegen(" ", type.Leeg, "");
+        }
+
+        private void muisknop_neer(object sender, MouseEventArgs e)
+        {
+            screenLoc = PointToScreen(e.Location);
+        }
+
+        private void muisknop_op(object sender, MouseEventArgs e)
+        {
+            if (!editModeAanToolStripMenuItem.Checked)
+            {
+                return;
+            }
+
+            Point screenLoc_nu = PointToScreen(e.Location);
+            int verschil = Math.Abs(screenLoc_nu.Y - screenLoc.Y);
+
+            if (verschil < 30)
+            {
+                return;
+            }
+
+            int richting = screenLoc_nu.Y > screenLoc.Y ? 1 : -1;
+            int eigenaar = (int)panelGeselecteerd.Tag;
+
+            for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+            {
+                if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
+                {
+                    int nieuw_index = i + richting;
+
+                    if (nieuw_index > -1 && nieuw_index + 1 > InfoPagina.PaginaMetRegels.Count)
+                    {
+                        return;
+                    }
+
+                    Regel gekozen = InfoPagina.PaginaMetRegels[i];
+                    InfoPagina.PaginaMetRegels.RemoveAt(i);
+                    InfoPagina.PaginaMetRegels.Insert(nieuw_index, gekozen);
+                    i = 1000;
+                }
+            }
+
+            // bouw Pagina
+            BouwPaginaOp();
+
+            
         }
     }
 }
