@@ -50,6 +50,7 @@
             this.textBoxTextBlok.Location = new System.Drawing.Point(23, 40);
             this.textBoxTextBlok.Multiline = true;
             this.textBoxTextBlok.Name = "textBoxTextBlok";
+            this.textBoxTextBlok.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxTextBlok.Size = new System.Drawing.Size(1174, 568);
             this.textBoxTextBlok.TabIndex = 10;
             // 

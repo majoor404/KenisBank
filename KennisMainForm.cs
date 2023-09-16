@@ -2,8 +2,9 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows.Forms;
-using static System.Windows.Forms.LinkLabel;
+using static System.Net.Mime.MediaTypeNames;
 
 /*
  * in roetine  BouwPaginaOp maak ik een hash van de InfoPagina.Regel
@@ -53,7 +54,7 @@ namespace KenisBank
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             addItemToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
-            saveHuidigePaginaToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
+            saveHuidigePaginaToolStripMenuItem.Enabled = buttonSaveCloseEdit.Enabled = editModeAanToolStripMenuItem.Checked;
 
             if (editModeAanToolStripMenuItem.Checked)
             {
@@ -61,6 +62,11 @@ namespace KenisBank
                 labelEditMode.Visible = true;
                 change_pagina = false;
                 SelecteerEerstePaneel();
+
+                Point newlocatie = new Point();
+                newlocatie.X = panelMain.Width - panelUpDown.Width - 10;
+                newlocatie.Y = panelMain.Location.Y + 10;
+                panelUpDown.Location = newlocatie;
                 panelUpDown.Visible = true;
                 panelUpDown.BringToFront();
             }
@@ -267,7 +273,7 @@ namespace KenisBank
         private void panel_Click(object sender, EventArgs e)
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
+            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
             if (editModeAanToolStripMenuItem.Checked)
             {
                 foreach (Panel a in panelMain.Controls)
@@ -279,7 +285,7 @@ namespace KenisBank
                         a.BackColor = Color.Aqua;
                         a.BorderStyle = BorderStyle.FixedSingle;
                         panelGeselecteerd = a;
-                        deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = true;
+                        deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = true;
                     }
                 }
             }
@@ -345,28 +351,32 @@ namespace KenisBank
 
         private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int eigenaar = (int)panelGeselecteerd.Tag;
-
-            for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+            DialogResult dialogResult = MessageBox.Show($"Zeker weten, verwijderen?", "Vraagje", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
+                int eigenaar = (int)panelGeselecteerd.Tag;
+
+                for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
                 {
-                    InfoPagina.PaginaMetRegels.RemoveAt(i);
+                    if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
+                    {
+                        InfoPagina.PaginaMetRegels.RemoveAt(i);
+                    }
                 }
+
+                panelGeselecteerd = null;
+                deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
+
+
+                foreach (Panel a in panelMain.Controls)
+                {
+                    a.BackColor = panelMain.BackColor;
+                    a.BorderStyle = BorderStyle.None;
+                }
+
+                // bouw Pagina
+                BouwPaginaOp();
             }
-
-            panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
-            
-
-            foreach (Panel a in panelMain.Controls)
-            {
-                a.BackColor = panelMain.BackColor;
-                a.BorderStyle = BorderStyle.None;
-            }
-
-            // bouw Pagina
-            BouwPaginaOp();
         }
 
         private void toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -416,17 +426,17 @@ namespace KenisBank
         private void SelecteerLaatstePaneel()
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
+            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
             foreach (Panel a in panelMain.Controls)
             {
                 a.BackColor = panelMain.BackColor;
                 a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == InfoPagina.PaginaMetRegels[InfoPagina.PaginaMetRegels.Count-1].eigenaar_)
+                if ((int)a.Tag == InfoPagina.PaginaMetRegels[InfoPagina.PaginaMetRegels.Count - 1].eigenaar_)
                 {
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
                     panelGeselecteerd = a;
-                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = true;
+                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = true;
                 }
             }
         }
@@ -434,7 +444,7 @@ namespace KenisBank
         private void SelecteerEerstePaneel()
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
+            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
             foreach (Panel a in panelMain.Controls)
             {
                 a.BackColor = panelMain.BackColor;
@@ -444,7 +454,7 @@ namespace KenisBank
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
                     panelGeselecteerd = a;
-                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = true;
+                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = true;
                 }
             }
         }
@@ -514,7 +524,7 @@ namespace KenisBank
 
         private void terugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(terugPagina.Length > 0)
+            if (terugPagina.Length > 0)
             {
                 editModeAanToolStripMenuItem.Checked = false;
                 buttonEdit_Click(this, null);
@@ -527,6 +537,113 @@ namespace KenisBank
 
                 // bouw Pagina
                 BouwPaginaOp();
+            }
+        }
+
+        private void buttonSaveCloseEdit_Click(object sender, EventArgs e)
+        {
+            saveHuidigePaginaToolStripMenuItem_Click(this, null);
+            editModeAanToolStripMenuItem.Checked = false;
+            buttonEdit_Click(this, null);
+        }
+
+        private void buttonEditSelectie_Click(object sender, EventArgs e)
+        {
+            int eigenaar = (int)panelGeselecteerd.Tag;
+
+            for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+            {
+                if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
+                {
+                    // oke panel en regel nu bekend.
+                    if (InfoPagina.PaginaMetRegels[i].type_ == type.Hoofdstuk)
+                    {
+                        Hoofdstuk hoofdstuk = new Hoofdstuk();
+                        hoofdstuk.textBox1.Text = InfoPagina.PaginaMetRegels[i].tekst_;
+                        DialogResult save = hoofdstuk.ShowDialog();
+                        if (save == DialogResult.OK)
+                        {
+                            Regel regel = new Regel(hoofdstuk.textBox1.Text, type.Hoofdstuk, "");
+                            change_pagina = true;
+                            InfoPagina.PaginaMetRegels.RemoveAt(i);
+                            InfoPagina.PaginaMetRegels.Insert(i, regel);
+
+                        }
+                        // bouw Pagina
+                        BouwPaginaOp();
+                    }
+                    if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
+                    {
+                        LinkDir linkdir = new LinkDir();
+                        linkdir.textBoxLinkText.Text = InfoPagina.PaginaMetRegels[i].tekst_;
+                        linkdir.textBoxDir.Text = InfoPagina.PaginaMetRegels[i].url_;
+                        DialogResult save = linkdir.ShowDialog();
+                        
+                        if (save == DialogResult.OK)
+                        {
+                            Regel regel = new Regel(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
+                            change_pagina = true;
+                            InfoPagina.PaginaMetRegels.RemoveAt(i);
+                            InfoPagina.PaginaMetRegels.Insert(i, regel);
+                        }
+                        // bouw Pagina
+                        BouwPaginaOp();
+                    }
+                    if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
+                    {
+                        LinkFile linkfile = new LinkFile();
+                        linkfile.textBox2.Text = InfoPagina.PaginaMetRegels[i].tekst_;
+                        linkfile.textBox1.Text = InfoPagina.PaginaMetRegels[i].url_;
+                        DialogResult save = linkfile.ShowDialog();
+
+                        if (save == DialogResult.OK)
+                        {
+                            Regel regel = new Regel(linkfile.textBox2.Text, type.LinkFile, linkfile.textBox1.Text);
+                            change_pagina = true;
+                            InfoPagina.PaginaMetRegels.RemoveAt(i);
+                            InfoPagina.PaginaMetRegels.Insert(i, regel);
+                        }
+                        // bouw Pagina
+                        BouwPaginaOp();
+                    }
+                    if (InfoPagina.PaginaMetRegels[i].type_ == type.TekstBlok)
+                    {
+                        TekstBlok tb = new TekstBlok();
+                        tb.textBoxTextBlok.Text = InfoPagina.PaginaMetRegels[i].tekst_;
+                        DialogResult save = tb.ShowDialog();
+
+                        if (save == DialogResult.OK)
+                        {
+                            Regel regel = new Regel(tb.textBoxTextBlok.Text, type.TekstBlok, "");
+                            change_pagina = true;
+                            InfoPagina.PaginaMetRegels.RemoveAt(i);
+                            InfoPagina.PaginaMetRegels.Insert(i, regel);
+                        }
+                        // bouw Pagina
+                        BouwPaginaOp();
+                    }
+                    if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
+                    {
+                        Pagina pa = new Pagina();
+                        pa.textBoxPaginaNaam.Text = InfoPagina.PaginaMetRegels[i].tekst_;
+                        DialogResult save = pa.ShowDialog();
+
+                        if (save == DialogResult.OK)
+                        {
+                            string oudenaam = InfoPagina.PaginaMetRegels[i].tekst_;
+                            string linkregel = "#" + pa.textBoxPaginaNaam.Text;
+                            Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, linkregel);
+                            change_pagina = true;
+                            InfoPagina.PaginaMetRegels.RemoveAt(i);
+                            InfoPagina.PaginaMetRegels.Insert(i, regel);
+                            // zoek nu naam.xml op en zet om in nieuwe naam.
+                            
+                            System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{pa.textBoxPaginaNaam.Text}.xml");
+                        }
+                        // bouw Pagina
+                        BouwPaginaOp();
+                    }
+                }
             }
         }
     }

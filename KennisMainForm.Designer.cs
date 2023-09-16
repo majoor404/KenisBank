@@ -57,6 +57,10 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonEditSelectie = new System.Windows.Forms.Button();
+            this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -109,7 +113,9 @@
             this.terugToolStripMenuItem,
             this.homeToolStripMenuItem,
             this.editPaginaToolStripMenuItem,
-            this.refreshToolStripMenuItem});
+            this.refreshToolStripMenuItem,
+            this.versieToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1884, 28);
@@ -235,6 +241,8 @@
             // panelUpDown
             // 
             this.panelUpDown.BackColor = System.Drawing.Color.LightSalmon;
+            this.panelUpDown.Controls.Add(this.buttonSaveCloseEdit);
+            this.panelUpDown.Controls.Add(this.buttonEditSelectie);
             this.panelUpDown.Controls.Add(this.buttonDelete);
             this.panelUpDown.Controls.Add(this.button6);
             this.panelUpDown.Controls.Add(this.button5);
@@ -246,15 +254,15 @@
             this.panelUpDown.Controls.Add(this.buttonMoveUp);
             this.panelUpDown.Location = new System.Drawing.Point(822, 12);
             this.panelUpDown.Name = "panelUpDown";
-            this.panelUpDown.Size = new System.Drawing.Size(413, 228);
+            this.panelUpDown.Size = new System.Drawing.Size(413, 293);
             this.panelUpDown.TabIndex = 0;
             this.panelUpDown.Visible = false;
             // 
             // buttonMoveDown
             // 
-            this.buttonMoveDown.Location = new System.Drawing.Point(3, 118);
+            this.buttonMoveDown.Location = new System.Drawing.Point(6, 129);
             this.buttonMoveDown.Name = "buttonMoveDown";
-            this.buttonMoveDown.Size = new System.Drawing.Size(128, 100);
+            this.buttonMoveDown.Size = new System.Drawing.Size(130, 120);
             this.buttonMoveDown.TabIndex = 1;
             this.buttonMoveDown.Text = "Down";
             this.buttonMoveDown.UseVisualStyleBackColor = true;
@@ -262,9 +270,9 @@
             // 
             // buttonMoveUp
             // 
-            this.buttonMoveUp.Location = new System.Drawing.Point(3, 6);
+            this.buttonMoveUp.Location = new System.Drawing.Point(6, 6);
             this.buttonMoveUp.Name = "buttonMoveUp";
-            this.buttonMoveUp.Size = new System.Drawing.Size(128, 100);
+            this.buttonMoveUp.Size = new System.Drawing.Size(130, 120);
             this.buttonMoveUp.TabIndex = 0;
             this.buttonMoveUp.Text = "Up";
             this.buttonMoveUp.UseVisualStyleBackColor = true;
@@ -312,6 +320,7 @@
             this.button4.TabIndex = 5;
             this.button4.Text = "Toevoegen Tekst Blok";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.toevoegenTekstBlokToolStripMenuItem_Click);
             // 
             // button5
             // 
@@ -339,13 +348,51 @@
             // 
             this.buttonDelete.Enabled = false;
             this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonDelete.Location = new System.Drawing.Point(139, 189);
+            this.buttonDelete.Location = new System.Drawing.Point(139, 188);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(267, 29);
             this.buttonDelete.TabIndex = 8;
             this.buttonDelete.Text = "Delete Selectie";
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(62, 24);
+            this.aboutToolStripMenuItem.Text = "About";
+            // 
+            // versieToolStripMenuItem
+            // 
+            this.versieToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.versieToolStripMenuItem.Name = "versieToolStripMenuItem";
+            this.versieToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
+            this.versieToolStripMenuItem.Text = "Versie";
+            // 
+            // buttonEditSelectie
+            // 
+            this.buttonEditSelectie.Enabled = false;
+            this.buttonEditSelectie.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEditSelectie.Location = new System.Drawing.Point(139, 220);
+            this.buttonEditSelectie.Name = "buttonEditSelectie";
+            this.buttonEditSelectie.Size = new System.Drawing.Size(267, 29);
+            this.buttonEditSelectie.TabIndex = 9;
+            this.buttonEditSelectie.Text = "Edit Selectie";
+            this.buttonEditSelectie.UseVisualStyleBackColor = true;
+            this.buttonEditSelectie.Click += new System.EventHandler(this.buttonEditSelectie_Click);
+            // 
+            // buttonSaveCloseEdit
+            // 
+            this.buttonSaveCloseEdit.Enabled = false;
+            this.buttonSaveCloseEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(6, 255);
+            this.buttonSaveCloseEdit.Name = "buttonSaveCloseEdit";
+            this.buttonSaveCloseEdit.Size = new System.Drawing.Size(400, 29);
+            this.buttonSaveCloseEdit.TabIndex = 10;
+            this.buttonSaveCloseEdit.Text = "Save En Close Edit";
+            this.buttonSaveCloseEdit.UseVisualStyleBackColor = true;
+            this.buttonSaveCloseEdit.Click += new System.EventHandler(this.buttonSaveCloseEdit_Click);
             // 
             // KennisMainForm
             // 
@@ -403,6 +450,10 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.ToolStripMenuItem versieToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.Button buttonEditSelectie;
+        private System.Windows.Forms.Button buttonSaveCloseEdit;
     }
 }
 
