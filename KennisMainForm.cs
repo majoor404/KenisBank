@@ -1,7 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+
+/*
+ * in roetine  BouwPaginaOp maak ik een hash van de InfoPagina.Regel
+ * Deze hash plaats ik in panel.tag die dan gemaakt word voor die InfoPagina.Regel
+ * hierna plaats ik de zelfde hash dan in de betrevende InfoPagina.Regel
+ * 
+ * Hierdoor is tijdens runtime NA opbouwen pagina panel en regel gekoppeld.
+ */
+
+
 
 namespace KenisBank
 {
@@ -10,7 +21,8 @@ namespace KenisBank
         public Regel InfoPagina = new Regel();
         public Panel panelGeselecteerd = new Panel();
         public bool change_pagina = false;
-        public Point screenLoc = new Point();
+        private static readonly Random random = new Random();
+
 
         public KennisMainForm()
         {
@@ -46,6 +58,8 @@ namespace KenisBank
                 editPaginaToolStripMenuItem.BackColor = Color.LightCyan;
                 labelEditMode.Visible = true;
                 change_pagina = false;
+                panelUpDown.Visible = true;
+                panelUpDown.BringToFront();
             }
             else
             {
@@ -59,6 +73,7 @@ namespace KenisBank
                 }
                 editPaginaToolStripMenuItem.BackColor = SystemColors.MenuBar;
                 labelEditMode.Visible = false;
+                panelUpDown.Visible = false;
 
                 foreach (Panel a in panelMain.Controls)
                 {
@@ -82,8 +97,6 @@ namespace KenisBank
             panelMain.Controls.Add(panel);
             panelMain.Controls.SetChildIndex(panel, 0);
             panel.Click += new EventHandler(panel_Click);
-            panel.MouseDown += new MouseEventHandler(muisknop_neer);
-            panel.MouseUp += new MouseEventHandler(muisknop_op);
             return panel;
         }
 
@@ -204,7 +217,7 @@ namespace KenisBank
 
             for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
             {
-                string dum = InfoPagina.PaginaMetRegels[i].tekst_ + InfoPagina.PaginaMetRegels[i].type_ + InfoPagina.PaginaMetRegels[i].url_;
+                string dum = RandomString(10);
                 int eigenaar = dum.GetHashCode();
 
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.Hoofdstuk)
@@ -386,34 +399,26 @@ namespace KenisBank
             Toevoegen(" ", type.Leeg, "");
         }
 
-        private void muisknop_neer(object sender, MouseEventArgs e)
+        private void PanelKey(Object sender, KeyPressEventArgs e)
         {
-            screenLoc = PointToScreen(e.Location);
+            
         }
 
-        private void muisknop_op(object sender, MouseEventArgs e)
+        private void MovePanel(int richting)
         {
             if (!editModeAanToolStripMenuItem.Checked)
             {
                 return;
             }
 
-            Point screenLoc_nu = PointToScreen(e.Location);
-            int verschil = Math.Abs(screenLoc_nu.Y - screenLoc.Y);
-
-            if (verschil < 30)
-            {
-                return;
-            }
-
-            int richting = screenLoc_nu.Y > screenLoc.Y ? 1 : -1;
             int eigenaar = (int)panelGeselecteerd.Tag;
+            int nieuw_index = -1;
 
             for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
             {
                 if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
                 {
-                    int nieuw_index = i + richting;
+                    nieuw_index = i + richting;
 
                     if (nieuw_index > -1 && nieuw_index + 1 > InfoPagina.PaginaMetRegels.Count)
                     {
@@ -430,7 +435,35 @@ namespace KenisBank
             // bouw Pagina
             BouwPaginaOp();
 
-            
+            // nu weer regel op nieuw_index kleuren
+            // get eigenaar nummer
+            int eig = InfoPagina.PaginaMetRegels[nieuw_index].eigenaar_;
+            foreach (Panel panel in panelMain.Controls)
+            {
+                if ((int)panel.Tag == eig)
+                {
+                    panel.BackColor = Color.Aqua;
+                    panel.BorderStyle = BorderStyle.FixedSingle;
+                }
+            }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MovePanel(-1);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            MovePanel(1);
+        }
+
+        private static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
     }
 }
