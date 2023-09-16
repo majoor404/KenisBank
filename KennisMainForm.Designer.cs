@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KennisMainForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelPaginaInBeeld = new System.Windows.Forms.Label();
             this.labelEditMode = new System.Windows.Forms.Label();
@@ -47,20 +48,19 @@
             this.deleteItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveHuidigePaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
+            this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
+            this.buttonEditSelectie = new System.Windows.Forms.Button();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.buttonMoveDown = new System.Windows.Forms.Button();
             this.buttonMoveUp = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonEditSelectie = new System.Windows.Forms.Button();
-            this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -114,8 +114,7 @@
             this.homeToolStripMenuItem,
             this.editPaginaToolStripMenuItem,
             this.refreshToolStripMenuItem,
-            this.versieToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.versieToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1884, 28);
@@ -238,6 +237,14 @@
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
+            // versieToolStripMenuItem
+            // 
+            this.versieToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.versieToolStripMenuItem.Name = "versieToolStripMenuItem";
+            this.versieToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
+            this.versieToolStripMenuItem.Text = "Versie";
+            this.versieToolStripMenuItem.Click += new System.EventHandler(this.versieToolStripMenuItem_Click);
+            // 
             // panelUpDown
             // 
             this.panelUpDown.BackColor = System.Drawing.Color.LightSalmon;
@@ -257,6 +264,108 @@
             this.panelUpDown.Size = new System.Drawing.Size(413, 293);
             this.panelUpDown.TabIndex = 0;
             this.panelUpDown.Visible = false;
+            // 
+            // buttonSaveCloseEdit
+            // 
+            this.buttonSaveCloseEdit.Enabled = false;
+            this.buttonSaveCloseEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(6, 255);
+            this.buttonSaveCloseEdit.Name = "buttonSaveCloseEdit";
+            this.buttonSaveCloseEdit.Size = new System.Drawing.Size(400, 29);
+            this.buttonSaveCloseEdit.TabIndex = 10;
+            this.buttonSaveCloseEdit.Text = "Save En Close Edit";
+            this.buttonSaveCloseEdit.UseVisualStyleBackColor = true;
+            this.buttonSaveCloseEdit.Click += new System.EventHandler(this.buttonSaveCloseEdit_Click);
+            // 
+            // buttonEditSelectie
+            // 
+            this.buttonEditSelectie.Enabled = false;
+            this.buttonEditSelectie.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEditSelectie.Location = new System.Drawing.Point(139, 220);
+            this.buttonEditSelectie.Name = "buttonEditSelectie";
+            this.buttonEditSelectie.Size = new System.Drawing.Size(267, 29);
+            this.buttonEditSelectie.TabIndex = 9;
+            this.buttonEditSelectie.Text = "Edit Selectie";
+            this.buttonEditSelectie.UseVisualStyleBackColor = true;
+            this.buttonEditSelectie.Click += new System.EventHandler(this.buttonEditSelectie_Click);
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Enabled = false;
+            this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonDelete.Location = new System.Drawing.Point(139, 188);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(267, 29);
+            this.buttonDelete.TabIndex = 8;
+            this.buttonDelete.Text = "Delete Selectie";
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
+            // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Location = new System.Drawing.Point(139, 156);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(267, 29);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "Toevoegen Lege Regel";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.toevoegenLegeRegelToolStripMenuItem_Click);
+            // 
+            // button5
+            // 
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.Location = new System.Drawing.Point(139, 126);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(267, 29);
+            this.button5.TabIndex = 6;
+            this.button5.Text = "Toevoegen Link naar nieuwe Pagina";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click);
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(139, 95);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(267, 29);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "Toevoegen Tekst Blok";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.toevoegenTekstBlokToolStripMenuItem_Click);
+            // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(139, 65);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(267, 29);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "Toevoegen Link naar Dir";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.toevoegenLinkNaarDirToolStripMenuItem_Click);
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(139, 34);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(267, 29);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Toevoegen Link naar File";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.toevoegenLinkNaarFileToolStripMenuItem_Click);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(139, 4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(267, 29);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Toevoegen Hoofdstuk Tekst";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.toevoegenHoofdstukTextToolStripMenuItem_Click);
             // 
             // buttonMoveDown
             // 
@@ -278,122 +387,6 @@
             this.buttonMoveUp.UseVisualStyleBackColor = true;
             this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
             // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(139, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(267, 29);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Toevoegen Hoofdstuk Tekst";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.toevoegenHoofdstukTextToolStripMenuItem_Click);
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(139, 34);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(267, 29);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Toevoegen Link naar File";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.toevoegenLinkNaarFileToolStripMenuItem_Click);
-            // 
-            // button3
-            // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(139, 65);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(267, 29);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "Toevoegen Link naar Dir";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.toevoegenLinkNaarDirToolStripMenuItem_Click);
-            // 
-            // button4
-            // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(139, 95);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(267, 29);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "Toevoegen Tekst Blok";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.toevoegenTekstBlokToolStripMenuItem_Click);
-            // 
-            // button5
-            // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(139, 126);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(267, 29);
-            this.button5.TabIndex = 6;
-            this.button5.Text = "Toevoegen Link naar nieuwe Pagina";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click);
-            // 
-            // button6
-            // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(139, 156);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(267, 29);
-            this.button6.TabIndex = 7;
-            this.button6.Text = "Toevoegen Lege Regel";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.toevoegenLegeRegelToolStripMenuItem_Click);
-            // 
-            // buttonDelete
-            // 
-            this.buttonDelete.Enabled = false;
-            this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonDelete.Location = new System.Drawing.Point(139, 188);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(267, 29);
-            this.buttonDelete.TabIndex = 8;
-            this.buttonDelete.Text = "Delete Selectie";
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            this.buttonDelete.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(62, 24);
-            this.aboutToolStripMenuItem.Text = "About";
-            // 
-            // versieToolStripMenuItem
-            // 
-            this.versieToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.versieToolStripMenuItem.Name = "versieToolStripMenuItem";
-            this.versieToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
-            this.versieToolStripMenuItem.Text = "Versie";
-            // 
-            // buttonEditSelectie
-            // 
-            this.buttonEditSelectie.Enabled = false;
-            this.buttonEditSelectie.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEditSelectie.Location = new System.Drawing.Point(139, 220);
-            this.buttonEditSelectie.Name = "buttonEditSelectie";
-            this.buttonEditSelectie.Size = new System.Drawing.Size(267, 29);
-            this.buttonEditSelectie.TabIndex = 9;
-            this.buttonEditSelectie.Text = "Edit Selectie";
-            this.buttonEditSelectie.UseVisualStyleBackColor = true;
-            this.buttonEditSelectie.Click += new System.EventHandler(this.buttonEditSelectie_Click);
-            // 
-            // buttonSaveCloseEdit
-            // 
-            this.buttonSaveCloseEdit.Enabled = false;
-            this.buttonSaveCloseEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(6, 255);
-            this.buttonSaveCloseEdit.Name = "buttonSaveCloseEdit";
-            this.buttonSaveCloseEdit.Size = new System.Drawing.Size(400, 29);
-            this.buttonSaveCloseEdit.TabIndex = 10;
-            this.buttonSaveCloseEdit.Text = "Save En Close Edit";
-            this.buttonSaveCloseEdit.UseVisualStyleBackColor = true;
-            this.buttonSaveCloseEdit.Click += new System.EventHandler(this.buttonSaveCloseEdit_Click);
-            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -403,6 +396,7 @@
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "KennisMainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -451,7 +445,6 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.ToolStripMenuItem versieToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Button buttonEditSelectie;
         private System.Windows.Forms.Button buttonSaveCloseEdit;
     }

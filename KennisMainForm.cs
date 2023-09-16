@@ -209,7 +209,11 @@ namespace KenisBank
                 label.LinkVisited = true;
                 Process process = new Process();
                 process.StartInfo.FileName = link;
-                _ = process.Start();
+                try
+                {
+                    _ = process.Start();
+                }
+                catch { }
             }
         }
 
@@ -645,6 +649,12 @@ namespace KenisBank
                     }
                 }
             }
+        }
+
+        private void versieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            About ab = new About();
+            ab.ShowDialog();
         }
     }
 }
