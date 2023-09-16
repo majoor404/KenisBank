@@ -267,7 +267,7 @@ namespace KenisBank
         private void panel_Click(object sender, EventArgs e)
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = false;
+            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
             if (editModeAanToolStripMenuItem.Checked)
             {
                 foreach (Panel a in panelMain.Controls)
@@ -279,7 +279,7 @@ namespace KenisBank
                         a.BackColor = Color.Aqua;
                         a.BorderStyle = BorderStyle.FixedSingle;
                         panelGeselecteerd = a;
-                        deleteItemToolStripMenuItem.Enabled = true;
+                        deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = true;
                     }
                 }
             }
@@ -356,7 +356,8 @@ namespace KenisBank
             }
 
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = false;
+            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
+            
 
             foreach (Panel a in panelMain.Controls)
             {
@@ -415,7 +416,7 @@ namespace KenisBank
         private void SelecteerLaatstePaneel()
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = false;
+            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
             foreach (Panel a in panelMain.Controls)
             {
                 a.BackColor = panelMain.BackColor;
@@ -425,7 +426,7 @@ namespace KenisBank
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
                     panelGeselecteerd = a;
-                    deleteItemToolStripMenuItem.Enabled = true;
+                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = true;
                 }
             }
         }
@@ -433,7 +434,7 @@ namespace KenisBank
         private void SelecteerEerstePaneel()
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = false;
+            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
             foreach (Panel a in panelMain.Controls)
             {
                 a.BackColor = panelMain.BackColor;
@@ -443,7 +444,7 @@ namespace KenisBank
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
                     panelGeselecteerd = a;
-                    deleteItemToolStripMenuItem.Enabled = true;
+                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = true;
                 }
             }
         }

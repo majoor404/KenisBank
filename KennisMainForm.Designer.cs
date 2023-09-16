@@ -50,6 +50,13 @@
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.buttonMoveDown = new System.Windows.Forms.Button();
             this.buttonMoveUp = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.buttonDelete = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -228,19 +235,26 @@
             // panelUpDown
             // 
             this.panelUpDown.BackColor = System.Drawing.Color.LightSalmon;
+            this.panelUpDown.Controls.Add(this.buttonDelete);
+            this.panelUpDown.Controls.Add(this.button6);
+            this.panelUpDown.Controls.Add(this.button5);
+            this.panelUpDown.Controls.Add(this.button4);
+            this.panelUpDown.Controls.Add(this.button3);
+            this.panelUpDown.Controls.Add(this.button2);
+            this.panelUpDown.Controls.Add(this.button1);
             this.panelUpDown.Controls.Add(this.buttonMoveDown);
             this.panelUpDown.Controls.Add(this.buttonMoveUp);
             this.panelUpDown.Location = new System.Drawing.Point(822, 12);
             this.panelUpDown.Name = "panelUpDown";
-            this.panelUpDown.Size = new System.Drawing.Size(135, 158);
+            this.panelUpDown.Size = new System.Drawing.Size(413, 228);
             this.panelUpDown.TabIndex = 0;
             this.panelUpDown.Visible = false;
             // 
             // buttonMoveDown
             // 
-            this.buttonMoveDown.Location = new System.Drawing.Point(4, 81);
+            this.buttonMoveDown.Location = new System.Drawing.Point(3, 118);
             this.buttonMoveDown.Name = "buttonMoveDown";
-            this.buttonMoveDown.Size = new System.Drawing.Size(128, 71);
+            this.buttonMoveDown.Size = new System.Drawing.Size(128, 100);
             this.buttonMoveDown.TabIndex = 1;
             this.buttonMoveDown.Text = "Down";
             this.buttonMoveDown.UseVisualStyleBackColor = true;
@@ -248,13 +262,90 @@
             // 
             // buttonMoveUp
             // 
-            this.buttonMoveUp.Location = new System.Drawing.Point(4, 4);
+            this.buttonMoveUp.Location = new System.Drawing.Point(3, 6);
             this.buttonMoveUp.Name = "buttonMoveUp";
-            this.buttonMoveUp.Size = new System.Drawing.Size(128, 71);
+            this.buttonMoveUp.Size = new System.Drawing.Size(128, 100);
             this.buttonMoveUp.TabIndex = 0;
             this.buttonMoveUp.Text = "Up";
             this.buttonMoveUp.UseVisualStyleBackColor = true;
             this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(139, 4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(267, 29);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Toevoegen Hoofdstuk Tekst";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.toevoegenHoofdstukTextToolStripMenuItem_Click);
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(139, 34);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(267, 29);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Toevoegen Link naar File";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.toevoegenLinkNaarFileToolStripMenuItem_Click);
+            // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(139, 65);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(267, 29);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "Toevoegen Link naar Dir";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.toevoegenLinkNaarDirToolStripMenuItem_Click);
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(139, 95);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(267, 29);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "Toevoegen Tekst Blok";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.Location = new System.Drawing.Point(139, 126);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(267, 29);
+            this.button5.TabIndex = 6;
+            this.button5.Text = "Toevoegen Link naar nieuwe Pagina";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click);
+            // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Location = new System.Drawing.Point(139, 156);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(267, 29);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "Toevoegen Lege Regel";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.toevoegenLegeRegelToolStripMenuItem_Click);
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Enabled = false;
+            this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonDelete.Location = new System.Drawing.Point(139, 189);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(267, 29);
+            this.buttonDelete.TabIndex = 8;
+            this.buttonDelete.Text = "Delete Selectie";
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
             // 
             // KennisMainForm
             // 
@@ -305,6 +396,13 @@
         private System.Windows.Forms.Panel panelUpDown;
         private System.Windows.Forms.Button buttonMoveDown;
         private System.Windows.Forms.Button buttonMoveUp;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonDelete;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button5;
     }
 }
 
