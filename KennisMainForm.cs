@@ -58,6 +58,7 @@ namespace KenisBank
                 editPaginaToolStripMenuItem.BackColor = Color.LightCyan;
                 labelEditMode.Visible = true;
                 change_pagina = false;
+                SelecteerEerstePaneel();
                 panelUpDown.Visible = true;
                 panelUpDown.BringToFront();
             }
@@ -291,6 +292,7 @@ namespace KenisBank
             }
             // bouw Pagina
             BouwPaginaOp();
+            SelecteerLaatstePaneel();
         }
 
         private void toevoegenHoofdstukTextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -303,6 +305,7 @@ namespace KenisBank
             }
             // bouw Pagina
             BouwPaginaOp();
+            SelecteerLaatstePaneel();
         }
 
         private void toevoegenLinkNaarFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -315,6 +318,7 @@ namespace KenisBank
             }
             // bouw Pagina
             BouwPaginaOp();
+            SelecteerLaatstePaneel();
         }
 
         private void toevoegenTekstBlokToolStripMenuItem_Click(object sender, EventArgs e)
@@ -327,6 +331,7 @@ namespace KenisBank
             }
             // bouw Pagina
             BouwPaginaOp();
+            SelecteerLaatstePaneel();
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -371,6 +376,7 @@ namespace KenisBank
             }
             // bouw Pagina
             BouwPaginaOp();
+            SelecteerLaatstePaneel();
         }
 
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -397,11 +403,46 @@ namespace KenisBank
         private void toevoegenLegeRegelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Toevoegen(" ", type.Leeg, "");
+            // bouw Pagina
+            BouwPaginaOp();
+            // meteen selecteren
+            SelecteerLaatstePaneel();
         }
 
-        private void PanelKey(Object sender, KeyPressEventArgs e)
+        private void SelecteerLaatstePaneel()
         {
-            
+            panelGeselecteerd = null;
+            deleteItemToolStripMenuItem.Enabled = false;
+            foreach (Panel a in panelMain.Controls)
+            {
+                a.BackColor = panelMain.BackColor;
+                a.BorderStyle = BorderStyle.None;
+                if ((int)a.Tag == InfoPagina.PaginaMetRegels[InfoPagina.PaginaMetRegels.Count-1].eigenaar_)
+                {
+                    a.BackColor = Color.Aqua;
+                    a.BorderStyle = BorderStyle.FixedSingle;
+                    panelGeselecteerd = a;
+                    deleteItemToolStripMenuItem.Enabled = true;
+                }
+            }
+        }
+
+        private void SelecteerEerstePaneel()
+        {
+            panelGeselecteerd = null;
+            deleteItemToolStripMenuItem.Enabled = false;
+            foreach (Panel a in panelMain.Controls)
+            {
+                a.BackColor = panelMain.BackColor;
+                a.BorderStyle = BorderStyle.None;
+                if ((int)a.Tag == InfoPagina.PaginaMetRegels[0].eigenaar_)
+                {
+                    a.BackColor = Color.Aqua;
+                    a.BorderStyle = BorderStyle.FixedSingle;
+                    panelGeselecteerd = a;
+                    deleteItemToolStripMenuItem.Enabled = true;
+                }
+            }
         }
 
         private void MovePanel(int richting)
@@ -420,7 +461,7 @@ namespace KenisBank
                 {
                     nieuw_index = i + richting;
 
-                    if (nieuw_index > -1 && nieuw_index + 1 > InfoPagina.PaginaMetRegels.Count)
+                    if (nieuw_index < 0 || nieuw_index + 1 > InfoPagina.PaginaMetRegels.Count)
                     {
                         return;
                     }
@@ -429,6 +470,7 @@ namespace KenisBank
                     InfoPagina.PaginaMetRegels.RemoveAt(i);
                     InfoPagina.PaginaMetRegels.Insert(nieuw_index, gekozen);
                     i = 1000;
+                    change_pagina = true;
                 }
             }
 
@@ -444,18 +486,9 @@ namespace KenisBank
                 {
                     panel.BackColor = Color.Aqua;
                     panel.BorderStyle = BorderStyle.FixedSingle;
+                    panelGeselecteerd = panel;
                 }
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            MovePanel(-1);
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            MovePanel(1);
         }
 
         private static string RandomString(int length)
@@ -465,5 +498,14 @@ namespace KenisBank
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        private void buttonMoveUp_Click(object sender, EventArgs e)
+        {
+            MovePanel(-1);
+        }
+
+        private void buttonMoveDown_Click(object sender, EventArgs e)
+        {
+            MovePanel(1);
+        }
     }
 }

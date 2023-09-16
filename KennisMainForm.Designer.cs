@@ -48,8 +48,8 @@
             this.saveHuidigePaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonMoveDown = new System.Windows.Forms.Button();
+            this.buttonMoveUp = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -227,33 +227,33 @@
             // panelUpDown
             // 
             this.panelUpDown.BackColor = System.Drawing.Color.LightSalmon;
-            this.panelUpDown.Controls.Add(this.button2);
-            this.panelUpDown.Controls.Add(this.button1);
+            this.panelUpDown.Controls.Add(this.buttonMoveDown);
+            this.panelUpDown.Controls.Add(this.buttonMoveUp);
             this.panelUpDown.Location = new System.Drawing.Point(822, 12);
             this.panelUpDown.Name = "panelUpDown";
             this.panelUpDown.Size = new System.Drawing.Size(135, 158);
             this.panelUpDown.TabIndex = 0;
             this.panelUpDown.Visible = false;
             // 
-            // button1
+            // buttonMoveDown
             // 
-            this.button1.Location = new System.Drawing.Point(4, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(128, 71);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Up";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonMoveDown.Location = new System.Drawing.Point(4, 81);
+            this.buttonMoveDown.Name = "buttonMoveDown";
+            this.buttonMoveDown.Size = new System.Drawing.Size(128, 71);
+            this.buttonMoveDown.TabIndex = 1;
+            this.buttonMoveDown.Text = "Down";
+            this.buttonMoveDown.UseVisualStyleBackColor = true;
+            this.buttonMoveDown.Click += new System.EventHandler(this.buttonMoveDown_Click);
             // 
-            // button2
+            // buttonMoveUp
             // 
-            this.button2.Location = new System.Drawing.Point(4, 81);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(128, 71);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Down";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonMoveUp.Location = new System.Drawing.Point(4, 4);
+            this.buttonMoveUp.Name = "buttonMoveUp";
+            this.buttonMoveUp.Size = new System.Drawing.Size(128, 71);
+            this.buttonMoveUp.TabIndex = 0;
+            this.buttonMoveUp.Text = "Up";
+            this.buttonMoveUp.UseVisualStyleBackColor = true;
+            this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
             // 
             // KennisMainForm
             // 
@@ -302,8 +302,8 @@
         private System.Windows.Forms.ToolStripMenuItem saveHuidigePaginaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenLegeRegelToolStripMenuItem;
         private System.Windows.Forms.Panel panelUpDown;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonMoveDown;
+        private System.Windows.Forms.Button buttonMoveUp;
     }
 }
 
