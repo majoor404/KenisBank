@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.LinkLabel;
 
 /*
  * in roetine  BouwPaginaOp maak ik een hash van de InfoPagina.Regel
@@ -22,6 +23,7 @@ namespace KenisBank
         public Panel panelGeselecteerd = new Panel();
         public bool change_pagina = false;
         private static readonly Random random = new Random();
+        private string terugPagina = string.Empty;
 
 
         public KennisMainForm()
@@ -173,6 +175,7 @@ namespace KenisBank
             if (link[0] == '#') // nieuwe pagina
             {
                 link = link.Substring(1);
+                terugPagina = labelPaginaInBeeld.Text;
                 if (!InfoPagina.Laad(link))
                 {
                     // dus nieuwe pagina
@@ -506,6 +509,24 @@ namespace KenisBank
         private void buttonMoveDown_Click(object sender, EventArgs e)
         {
             MovePanel(1);
+        }
+
+        private void terugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(terugPagina.Length > 0)
+            {
+                editModeAanToolStripMenuItem.Checked = false;
+                buttonEdit_Click(this, null);
+
+                // laad Start.xml
+                if (InfoPagina.Laad(terugPagina))
+                {
+                    labelPaginaInBeeld.Text = terugPagina;
+                }
+
+                // bouw Pagina
+                BouwPaginaOp();
+            }
         }
     }
 }

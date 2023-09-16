@@ -115,6 +115,7 @@
             this.terugToolStripMenuItem.Name = "terugToolStripMenuItem";
             this.terugToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
             this.terugToolStripMenuItem.Text = "Terug";
+            this.terugToolStripMenuItem.Click += new System.EventHandler(this.terugToolStripMenuItem_Click);
             // 
             // homeToolStripMenuItem
             // 
