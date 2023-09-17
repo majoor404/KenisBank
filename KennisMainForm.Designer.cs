@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KennisMainForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelPaginaInBeeld = new System.Windows.Forms.Label();
-            this.labelEditMode = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.terugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +48,7 @@
             this.saveHuidigePaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
             this.buttonEditSelectie = new System.Windows.Forms.Button();
@@ -61,16 +61,20 @@
             this.button1 = new System.Windows.Forms.Button();
             this.buttonMoveDown = new System.Windows.Forms.Button();
             this.buttonMoveUp = new System.Windows.Forms.Button();
+            this.panelInfo = new System.Windows.Forms.Panel();
+            this.labelInfo = new System.Windows.Forms.Label();
+            this.allePaginasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
+            this.panelInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.labelPaginaInBeeld);
-            this.panel1.Controls.Add(this.labelEditMode);
             this.panel1.Location = new System.Drawing.Point(12, 31);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1570, 44);
@@ -79,23 +83,12 @@
             // labelPaginaInBeeld
             // 
             this.labelPaginaInBeeld.AutoSize = true;
-            this.labelPaginaInBeeld.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPaginaInBeeld.Location = new System.Drawing.Point(15, 13);
+            this.labelPaginaInBeeld.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPaginaInBeeld.Location = new System.Drawing.Point(7, 5);
             this.labelPaginaInBeeld.Name = "labelPaginaInBeeld";
-            this.labelPaginaInBeeld.Size = new System.Drawing.Size(46, 18);
+            this.labelPaginaInBeeld.Size = new System.Drawing.Size(86, 31);
             this.labelPaginaInBeeld.TabIndex = 1;
             this.labelPaginaInBeeld.Text = "label1";
-            // 
-            // labelEditMode
-            // 
-            this.labelEditMode.AutoSize = true;
-            this.labelEditMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelEditMode.Location = new System.Drawing.Point(669, 8);
-            this.labelEditMode.Name = "labelEditMode";
-            this.labelEditMode.Size = new System.Drawing.Size(134, 25);
-            this.labelEditMode.TabIndex = 0;
-            this.labelEditMode.Text = "Edit MODE!";
-            this.labelEditMode.Visible = false;
             // 
             // panelMain
             // 
@@ -114,7 +107,10 @@
             this.homeToolStripMenuItem,
             this.editPaginaToolStripMenuItem,
             this.refreshToolStripMenuItem,
-            this.versieToolStripMenuItem});
+            this.versieToolStripMenuItem,
+            this.importToolStripMenuItem,
+            this.allePaginasToolStripMenuItem,
+            this.zoekToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1884, 28);
@@ -133,8 +129,8 @@
             // 
             this.homeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.homeToolStripMenuItem.Name = "homeToolStripMenuItem";
-            this.homeToolStripMenuItem.Size = new System.Drawing.Size(62, 24);
-            this.homeToolStripMenuItem.Text = "Home";
+            this.homeToolStripMenuItem.Size = new System.Drawing.Size(100, 24);
+            this.homeToolStripMenuItem.Text = "Start Pagina";
             this.homeToolStripMenuItem.Click += new System.EventHandler(this.homeToolStripMenuItem_Click);
             // 
             // editPaginaToolStripMenuItem
@@ -244,6 +240,14 @@
             this.versieToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
             this.versieToolStripMenuItem.Text = "Versie";
             this.versieToolStripMenuItem.Click += new System.EventHandler(this.versieToolStripMenuItem_Click);
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
+            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // panelUpDown
             // 
@@ -387,11 +391,46 @@
             this.buttonMoveUp.UseVisualStyleBackColor = true;
             this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
             // 
+            // panelInfo
+            // 
+            this.panelInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelInfo.Controls.Add(this.labelInfo);
+            this.panelInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelInfo.Location = new System.Drawing.Point(0, 928);
+            this.panelInfo.Name = "panelInfo";
+            this.panelInfo.Size = new System.Drawing.Size(1884, 33);
+            this.panelInfo.TabIndex = 4;
+            // 
+            // labelInfo
+            // 
+            this.labelInfo.AutoSize = true;
+            this.labelInfo.Location = new System.Drawing.Point(12, 8);
+            this.labelInfo.Name = "labelInfo";
+            this.labelInfo.Size = new System.Drawing.Size(11, 13);
+            this.labelInfo.TabIndex = 0;
+            this.labelInfo.Text = "*";
+            // 
+            // allePaginasToolStripMenuItem
+            // 
+            this.allePaginasToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.allePaginasToolStripMenuItem.Name = "allePaginasToolStripMenuItem";
+            this.allePaginasToolStripMenuItem.Size = new System.Drawing.Size(104, 24);
+            this.allePaginasToolStripMenuItem.Text = "Alle Pagina\'s";
+            this.allePaginasToolStripMenuItem.Click += new System.EventHandler(this.allePaginasToolStripMenuItem_Click);
+            // 
+            // zoekToolStripMenuItem
+            // 
+            this.zoekToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.zoekToolStripMenuItem.Name = "zoekToolStripMenuItem";
+            this.zoekToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
+            this.zoekToolStripMenuItem.Text = "Zoek";
+            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1884, 961);
+            this.Controls.Add(this.panelInfo);
             this.Controls.Add(this.panelUpDown);
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panel1);
@@ -408,6 +447,8 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panelUpDown.ResumeLayout(false);
+            this.panelInfo.ResumeLayout(false);
+            this.panelInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -425,7 +466,6 @@
         private System.Windows.Forms.ToolStripMenuItem toevoegenLinkNaarFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenLinkNaarDirToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenTekstBlokToolStripMenuItem;
-        private System.Windows.Forms.Label labelEditMode;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteItemToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenLinkNaarNieuwePaginaToolStripMenuItem;
@@ -447,6 +487,11 @@
         private System.Windows.Forms.ToolStripMenuItem versieToolStripMenuItem;
         private System.Windows.Forms.Button buttonEditSelectie;
         private System.Windows.Forms.Button buttonSaveCloseEdit;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.Panel panelInfo;
+        private System.Windows.Forms.Label labelInfo;
+        private System.Windows.Forms.ToolStripMenuItem allePaginasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zoekToolStripMenuItem;
     }
 }
 

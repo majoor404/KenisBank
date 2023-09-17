@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 /*
  * in roetine  BouwPaginaOp maak ik een hash van de InfoPagina.Regel
@@ -42,11 +42,6 @@ namespace KenisBank
                 labelPaginaInBeeld.Text = "Start";
             }
 
-            // voor debug
-            //Toevoegen("eerste regel", type.TekstBlok, "");
-            //Toevoegen("tweede regel", type.TekstBlok, "");
-            //Toevoegen("derde regel", type.TekstBlok, "");
-
             // bouw Pagina
             BouwPaginaOp();
         }
@@ -59,13 +54,14 @@ namespace KenisBank
             if (editModeAanToolStripMenuItem.Checked)
             {
                 editPaginaToolStripMenuItem.BackColor = Color.LightCyan;
-                labelEditMode.Visible = true;
                 change_pagina = false;
                 SelecteerEerstePaneel();
 
-                Point newlocatie = new Point();
-                newlocatie.X = panelMain.Width - panelUpDown.Width - 10;
-                newlocatie.Y = panelMain.Location.Y + 10;
+                Point newlocatie = new Point
+                {
+                    X = panelMain.Width - panelUpDown.Width - 10,
+                    Y = panelMain.Location.Y + 10
+                };
                 panelUpDown.Location = newlocatie;
                 panelUpDown.Visible = true;
                 panelUpDown.BringToFront();
@@ -81,7 +77,6 @@ namespace KenisBank
                     }
                 }
                 editPaginaToolStripMenuItem.BackColor = SystemColors.MenuBar;
-                labelEditMode.Visible = false;
                 panelUpDown.Visible = false;
 
                 foreach (Panel a in panelMain.Controls)
@@ -169,8 +164,29 @@ namespace KenisBank
             label.Tag = locatie;
             label.BorderStyle = BorderStyle.None;
             label.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(label_LinkClicked);
+            label.MouseHover += new EventHandler(LinkHover);
 
             panel.Controls.Add(label);
+            panelMain.Refresh();
+        }
+
+        private void PlaatsPaginaOpBeeld(string link, string locatie, int eigenaar)
+        {
+            Panel panel = MaakNewPanel(eigenaar);
+            System.Windows.Forms.Button but = new Button();
+
+            Point org = new Point(but.Location.X, but.Location.Y);
+            org.X += 30;
+            but.Location = org;
+
+            but.Width = 300;
+            but.Height = 30;
+            but.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
+            but.Text = link;
+            //but.Tag = locatie;
+            //but.BorderStyle = BorderStyle.None;
+            but.Click += new EventHandler(PaginaButtonClick);
+            panel.Controls.Add(but);
             panelMain.Refresh();
         }
 
@@ -178,42 +194,42 @@ namespace KenisBank
         {
             System.Windows.Forms.LinkLabel label = (System.Windows.Forms.LinkLabel)sender;
             string link = (string)label.Tag;
-            if (link[0] == '#') // nieuwe pagina
+            label.LinkVisited = true;
+            Process process = new Process();
+            process.StartInfo.FileName = link;
+            try
             {
-                link = link.Substring(1);
-                terugPagina = labelPaginaInBeeld.Text;
-                if (!InfoPagina.Laad(link))
-                {
-                    // dus nieuwe pagina
-                    InfoPagina.PaginaMetRegels.Clear();
-                    labelPaginaInBeeld.Text = link;
-                    Toevoegen(link, type.Hoofdstuk, "");
-                    BouwPaginaOp();
-                    // meteen in edit mode
-                    if (!editModeAanToolStripMenuItem.Checked)
-                    {
-                        editModeAanToolStripMenuItem.Checked = true;
-                        buttonEdit_Click(this, null);
-                    }
+                _ = process.Start();
+            }
+            catch { }
+        }
 
-                }
-                else
+        private void PaginaButtonClick(object sender, EventArgs e)
+        {
+            Button but = (Button)sender;
+            string pagina = but.Text;
+
+            terugPagina = labelPaginaInBeeld.Text;
+            if (!InfoPagina.Laad(pagina))
+            {
+                // dus nieuwe pagina
+                InfoPagina.PaginaMetRegels.Clear();
+                labelPaginaInBeeld.Text = pagina;
+                Toevoegen(pagina, type.Hoofdstuk, "");
+                BouwPaginaOp();
+                // meteen in edit mode
+                if (!editModeAanToolStripMenuItem.Checked)
                 {
-                    labelPaginaInBeeld.Text = link;
-                    // bouw Pagina
-                    BouwPaginaOp();
+                    editModeAanToolStripMenuItem.Checked = true;
+                    buttonEdit_Click(this, null);
                 }
+
             }
             else
             {
-                label.LinkVisited = true;
-                Process process = new Process();
-                process.StartInfo.FileName = link;
-                try
-                {
-                    _ = process.Start();
-                }
-                catch { }
+                labelPaginaInBeeld.Text = pagina;
+                // bouw Pagina
+                BouwPaginaOp();
             }
         }
 
@@ -221,7 +237,7 @@ namespace KenisBank
         {
             panel1.Width = Width - 45;
             panelMain.Width = Width - 45;
-            panelMain.Height = Height - 150;
+            panelMain.Height = Height - 180;
         }
 
         private void BouwPaginaOp()
@@ -256,7 +272,8 @@ namespace KenisBank
                 }
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
                 {
-                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
+                    //PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
+                    PlaatsPaginaOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
                     InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (InfoPagina.PaginaMetRegels[i].type_ == type.Leeg)
@@ -389,8 +406,7 @@ namespace KenisBank
             DialogResult save = pagina.ShowDialog();
             if (save == DialogResult.OK)
             {
-                string urlnaarpagina = "#" + pagina.textBoxPaginaNaam.Text;
-                Toevoegen(pagina.textBoxPaginaNaam.Text, type.PaginaNaam, urlnaarpagina);
+                Toevoegen(pagina.textBoxPaginaNaam.Text, type.PaginaNaam, "");
             }
             // bouw Pagina
             BouwPaginaOp();
@@ -582,7 +598,7 @@ namespace KenisBank
                         linkdir.textBoxLinkText.Text = InfoPagina.PaginaMetRegels[i].tekst_;
                         linkdir.textBoxDir.Text = InfoPagina.PaginaMetRegels[i].url_;
                         DialogResult save = linkdir.ShowDialog();
-                        
+
                         if (save == DialogResult.OK)
                         {
                             Regel regel = new Regel(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
@@ -635,13 +651,13 @@ namespace KenisBank
                         if (save == DialogResult.OK)
                         {
                             string oudenaam = InfoPagina.PaginaMetRegels[i].tekst_;
-                            string linkregel = "#" + pa.textBoxPaginaNaam.Text;
-                            Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, linkregel);
+                            //string linkregel = "#" + pa.textBoxPaginaNaam.Text;
+                            Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, "");
                             change_pagina = true;
                             InfoPagina.PaginaMetRegels.RemoveAt(i);
                             InfoPagina.PaginaMetRegels.Insert(i, regel);
                             // zoek nu naam.xml op en zet om in nieuwe naam.
-                            
+
                             System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{pa.textBoxPaginaNaam.Text}.xml");
                         }
                         // bouw Pagina
@@ -654,7 +670,123 @@ namespace KenisBank
         private void versieToolStripMenuItem_Click(object sender, EventArgs e)
         {
             About ab = new About();
-            ab.ShowDialog();
+            _ = ab.ShowDialog();
+        }
+
+        private void importToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // importeer oude wiki data
+            TekstBlok tekstblok = new TekstBlok();
+            DialogResult save = tekstblok.ShowDialog();
+            if (save == DialogResult.OK)
+            {
+                int aantal_regels = tekstblok.textBoxTextBlok.Lines.Length;
+                for (int i = 0; i < aantal_regels; i++)
+                {
+                    bool gevonden = false;
+                    string regel = tekstblok.textBoxTextBlok.Lines[i];
+
+                    regel = regel.Trim();
+
+                    // inspringen verwijderen
+                    if (regel.Length > 0 && regel[0] == '*')
+                    {
+                        regel = regel.Substring(1);
+                    }
+
+                    regel = regel.Trim();
+
+                    // lege regel
+                    if (regel.Length == 0)
+                    {
+                        Toevoegen(" ", type.Leeg, "");
+                        gevonden = true;
+                    }
+
+                    // hoofdstuk
+                    if (!gevonden && regel.Length > 5 && regel.Substring(0, 4) == "====")
+                    {
+                        regel = regel.Substring(5);
+                        int pos = regel.IndexOf('=');
+                        regel = regel.Substring(0, pos);
+                        Toevoegen(regel, type.Hoofdstuk, "");
+                        gevonden = true;
+                    }
+                    // tekst
+                    if (!gevonden && regel.Length > 5 && regel.Substring(0, 4) == "''''")
+                    {
+                        regel = regel.Substring(5);
+                        int pos = regel.IndexOf('\'');
+                        regel = regel.Substring(0, pos);
+                        Toevoegen(regel, type.TekstBlok, "");
+                        gevonden = true;
+                    }
+                    // link bv
+                    // [[file://Q:\Productie\OSF2\09_Ondersteuning\05_TechnischTeam\06_Documentatie\99_Overigen\Passwoorden.txt|Passwoorden]]
+                    if (!gevonden && regel.Length > 9 && regel.Substring(0, 9) == "[[file://")
+                    {
+                        regel = regel.Substring(9);
+                        int pos = regel.IndexOf('|');
+                        string url = regel.Substring(0, pos);
+                        regel = regel.Substring(pos + 1);
+                        pos = regel.IndexOf(']');
+                        regel = regel.Substring(0, pos);
+                        Toevoegen(regel, type.LinkFile, url);
+                        gevonden = true;
+                    }
+                    if (!gevonden && regel.Length > 9 && regel.Substring(0, 9) == "[[http://")
+                    {
+                        regel = regel.Substring(9);
+                        int pos = regel.IndexOf('|');
+                        string url = regel.Substring(0, pos);
+                        regel = regel.Substring(pos + 1);
+                        pos = regel.IndexOf(']');
+                        regel = regel.Substring(0, pos);
+                        Toevoegen(regel, type.LinkFile, url);
+                        gevonden = true;
+                    }
+                    // pagina
+                    // [[Inlog gegevens PC's Roza's]]
+                    if (!gevonden && regel.Length > 5 && regel.Substring(0, 2) == "[[")
+                    {
+                        regel = regel.Substring(2);
+                        int pos = regel.IndexOf(']');
+                        regel = regel.Substring(0, pos);
+                        Toevoegen(regel, type.PaginaNaam, "");
+                        gevonden = true;
+                    }
+
+                    if (!gevonden)
+                    {
+                        Toevoegen(regel, type.TekstBlok, "");
+                    }
+                }
+            }
+            BouwPaginaOp();
+        }
+
+        private void LinkHover(object sender, EventArgs e)
+        {
+            _ = new LinkLabel();
+            LinkLabel a = sender as LinkLabel;
+            labelInfo.Text = a.Tag.ToString();
+        }
+
+        private void allePaginasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+                            .OrderByDescending(f => f.Name)
+                            .ToList();
+
+            InfoPagina.PaginaMetRegels.Clear();
+
+            foreach (FileInfo file in files)
+            {
+                Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
+                InfoPagina.PaginaMetRegels.Add(regel);
+            }
+            BouwPaginaOp();
+
         }
     }
 }
