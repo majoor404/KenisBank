@@ -25,6 +25,7 @@ namespace KenisBank
         public bool change_pagina = false;
         private static readonly Random random = new Random();
         private string terugPagina = string.Empty;
+        private readonly List<Regel> PaginaMetRegelsGevonden = new List<Regel>();
 
 
         public KennisMainForm()
@@ -683,86 +684,104 @@ namespace KenisBank
                 int aantal_regels = tekstblok.textBoxTextBlok.Lines.Length;
                 for (int i = 0; i < aantal_regels; i++)
                 {
-                    bool gevonden = false;
                     string regel = tekstblok.textBoxTextBlok.Lines[i];
 
-                    regel = regel.Trim();
+                    // als tabel '|' maak er losse regels van
+                    //int pos = regel.IndexOf("|");
+                    //if (pos > -1)
+                    //{
+                    //    string[] opgedeeld = regel.Split('|');
+                    //    for (int j = 0; j < opgedeeld.Length;j++)
+                    //        ImporteerRegel(opgedeeld[j]);
+                    //}
+                    //else
+                    //{
+                        ImporteerRegel(regel);
+                    //}
 
-                    // inspringen verwijderen
-                    if (regel.Length > 0 && regel[0] == '*')
-                    {
-                        regel = regel.Substring(1);
-                    }
-
-                    regel = regel.Trim();
-
-                    // lege regel
-                    if (regel.Length == 0)
-                    {
-                        Toevoegen(" ", type.Leeg, "");
-                        gevonden = true;
-                    }
-
-                    // hoofdstuk
-                    if (!gevonden && regel.Length > 5 && regel.Substring(0, 4) == "====")
-                    {
-                        regel = regel.Substring(5);
-                        int pos = regel.IndexOf('=');
-                        regel = regel.Substring(0, pos);
-                        Toevoegen(regel, type.Hoofdstuk, "");
-                        gevonden = true;
-                    }
-                    // tekst
-                    if (!gevonden && regel.Length > 5 && regel.Substring(0, 4) == "''''")
-                    {
-                        regel = regel.Substring(5);
-                        int pos = regel.IndexOf('\'');
-                        regel = regel.Substring(0, pos);
-                        Toevoegen(regel, type.TekstBlok, "");
-                        gevonden = true;
-                    }
-                    // link bv
-                    // [[file://Q:\Productie\OSF2\09_Ondersteuning\05_TechnischTeam\06_Documentatie\99_Overigen\Passwoorden.txt|Passwoorden]]
-                    if (!gevonden && regel.Length > 9 && regel.Substring(0, 9) == "[[file://")
-                    {
-                        regel = regel.Substring(9);
-                        int pos = regel.IndexOf('|');
-                        string url = regel.Substring(0, pos);
-                        regel = regel.Substring(pos + 1);
-                        pos = regel.IndexOf(']');
-                        regel = regel.Substring(0, pos);
-                        Toevoegen(regel, type.LinkFile, url);
-                        gevonden = true;
-                    }
-                    if (!gevonden && regel.Length > 9 && regel.Substring(0, 9) == "[[http://")
-                    {
-                        regel = regel.Substring(9);
-                        int pos = regel.IndexOf('|');
-                        string url = regel.Substring(0, pos);
-                        regel = regel.Substring(pos + 1);
-                        pos = regel.IndexOf(']');
-                        regel = regel.Substring(0, pos);
-                        Toevoegen(regel, type.LinkFile, url);
-                        gevonden = true;
-                    }
-                    // pagina
-                    // [[Inlog gegevens PC's Roza's]]
-                    if (!gevonden && regel.Length > 5 && regel.Substring(0, 2) == "[[")
-                    {
-                        regel = regel.Substring(2);
-                        int pos = regel.IndexOf(']');
-                        regel = regel.Substring(0, pos);
-                        Toevoegen(regel, type.PaginaNaam, "");
-                        gevonden = true;
-                    }
-
-                    if (!gevonden)
-                    {
-                        Toevoegen(regel, type.TekstBlok, "");
-                    }
                 }
             }
             BouwPaginaOp();
+        }
+
+        private void ImporteerRegel(string regel)
+        {
+            bool gevonden = false;
+            regel = regel.Trim();
+
+            // inspringen verwijderen
+            if (regel.Length > 0 && regel[0] == '*')
+            {
+                regel = regel.Substring(1);
+            }
+
+            regel = regel.Trim();
+
+            // lege regel
+            if (regel.Length == 0)
+            {
+                Toevoegen(" ", type.Leeg, "");
+                gevonden = true;
+            }
+
+            // hoofdstuk
+            if (!gevonden && regel.Length > 5 && regel.Substring(0, 4) == "====")
+            {
+                regel = regel.Substring(5);
+                int pos = regel.IndexOf('=');
+                regel = regel.Substring(0, pos);
+                Toevoegen(regel, type.Hoofdstuk, "");
+                gevonden = true;
+            }
+            // tekst
+            if (!gevonden && regel.Length > 5 && regel.Substring(0, 4) == "''''")
+            {
+                regel = regel.Substring(5);
+                int pos = regel.IndexOf('\'');
+                regel = regel.Substring(0, pos);
+                Toevoegen(regel, type.TekstBlok, "");
+                gevonden = true;
+            }
+            // link bv
+            // [[file://Q:\Productie\OSF2\09_Ondersteuning\05_TechnischTeam\06_Documentatie\99_Overigen\Passwoorden.txt|Passwoorden]]
+            if (!gevonden && regel.Length > 9 && regel.Substring(0, 9) == "[[file://")
+            {
+                regel = regel.Substring(9);
+                int pos = regel.IndexOf('|');
+                string url = regel.Substring(0, pos);
+                regel = regel.Substring(pos + 1);
+                pos = regel.IndexOf(']');
+                regel = regel.Substring(0, pos);
+                Toevoegen(regel, type.LinkFile, url);
+                gevonden = true;
+            }
+            if (!gevonden && regel.Length > 9 && regel.Substring(0, 9) == "[[http://")
+            {
+                regel = regel.Substring(9);
+                int pos = regel.IndexOf('|');
+                string url = regel.Substring(0, pos);
+                regel = regel.Substring(pos + 1);
+                pos = regel.IndexOf(']');
+                regel = regel.Substring(0, pos);
+                Toevoegen(regel, type.LinkFile, url);
+                gevonden = true;
+            }
+            // pagina
+            // [[Inlog gegevens PC's Roza's]]
+            if (!gevonden && regel.Length > 5 && regel.Substring(0, 2) == "[[")
+            {
+                regel = regel.Substring(2);
+                int pos = regel.IndexOf(']');
+                regel = regel.Substring(0, pos);
+                Toevoegen(regel, type.PaginaNaam, "");
+                gevonden = true;
+            }
+
+            if (!gevonden)
+            {
+                Toevoegen(regel, type.TekstBlok, "");
+            }
+
         }
 
         private void LinkHover(object sender, EventArgs e)
@@ -787,6 +806,48 @@ namespace KenisBank
             }
             BouwPaginaOp();
 
+        }
+
+        private void zoekToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ZoekForm ZF = new ZoekForm();
+            DialogResult save = ZF.ShowDialog();
+            PaginaMetRegelsGevonden.Clear();
+
+            if (save == DialogResult.OK)
+            {
+                List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+                            .OrderByDescending(f => f.Name)
+                            .ToList();
+
+
+
+
+                foreach (FileInfo file in files)
+                {
+                    _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                    if (ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
+                    {
+                        Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
+                        PaginaMetRegelsGevonden.Add(regel);
+                    }
+                    for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+                    {
+                        if (ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text)/* || ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].url_, ZF.textBoxZoek.Text)*/)
+                        {
+                            Regel regel = new Regel(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].type_, InfoPagina.PaginaMetRegels[i].url_);
+                            PaginaMetRegelsGevonden.Add(regel);
+                        }
+                    }
+                }
+                // bouw Pagina
+                InfoPagina.PaginaMetRegels = PaginaMetRegelsGevonden;
+                BouwPaginaOp();
+            }
+        }
+        public bool ContainsCaseInsensitive(string source, string substring)
+        {
+            return source?.IndexOf(substring, StringComparison.OrdinalIgnoreCase) > -1;
         }
     }
 }

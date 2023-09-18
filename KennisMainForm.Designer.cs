@@ -424,6 +424,7 @@
             this.zoekToolStripMenuItem.Name = "zoekToolStripMenuItem";
             this.zoekToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.zoekToolStripMenuItem.Text = "Zoek";
+            this.zoekToolStripMenuItem.Click += new System.EventHandler(this.zoekToolStripMenuItem_Click);
             // 
             // KennisMainForm
             // 
