@@ -163,12 +163,12 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.homeToolStripMenuItem,
-            this.editPaginaToolStripMenuItem,
             this.refreshToolStripMenuItem,
-            this.versieToolStripMenuItem,
             this.importToolStripMenuItem,
             this.allePaginasToolStripMenuItem,
-            this.zoekToolStripMenuItem});
+            this.versieToolStripMenuItem,
+            this.zoekToolStripMenuItem,
+            this.editPaginaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1884, 28);
@@ -295,8 +295,8 @@
             // 
             this.importToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
-            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
+            this.importToolStripMenuItem.Text = "Import All";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // allePaginasToolStripMenuItem
@@ -389,7 +389,7 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(267, 29);
             this.button5.TabIndex = 6;
-            this.button5.Text = "Toevoegen Link naar nieuwe Pagina";
+            this.button5.Text = "Toevoegen Link naar Pagina";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click);
             // 
@@ -470,9 +470,10 @@
             // labelInfo
             // 
             this.labelInfo.AutoSize = true;
+            this.labelInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelInfo.Location = new System.Drawing.Point(12, 8);
             this.labelInfo.Name = "labelInfo";
-            this.labelInfo.Size = new System.Drawing.Size(11, 13);
+            this.labelInfo.Size = new System.Drawing.Size(12, 16);
             this.labelInfo.TabIndex = 0;
             this.labelInfo.Text = "*";
             // 

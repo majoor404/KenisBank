@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace KenisBank
 {
@@ -33,7 +32,7 @@ namespace KenisBank
         public string url_ { set; get; }
         public int eigenaar_ { set; get; }
 
-        
+
         public List<Regel> PaginaMetRegels = new List<Regel>();
 
         public bool Laad(string file)
@@ -45,7 +44,8 @@ namespace KenisBank
                 PaginaMetRegels = FromXML<List<Regel>>(xmlTekst);
                 return true;
             }
-            catch {
+            catch
+            {
                 return false;
             }
         }
@@ -54,8 +54,13 @@ namespace KenisBank
         {
             try
             {
+                string f = file;
+                f = f.Trim();
+                f = f.Replace(" ", "_");
+                f = f.Replace("'", "_");
+
                 string xmlTekst = ToXML(PaginaMetRegels);
-                File.WriteAllText($"Data\\{file}.xml", xmlTekst);
+                File.WriteAllText($"Data\\{f}.xml", xmlTekst);
             }
             catch { }
         }
@@ -79,7 +84,7 @@ namespace KenisBank
             }
         }
 
-        
+
 
 
     }

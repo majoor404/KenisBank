@@ -53,6 +53,7 @@
             this.textBoxTextBlok.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxTextBlok.Size = new System.Drawing.Size(1174, 568);
             this.textBoxTextBlok.TabIndex = 10;
+            this.textBoxTextBlok.WordWrap = false;
             // 
             // buttonTextBlok
             // 
