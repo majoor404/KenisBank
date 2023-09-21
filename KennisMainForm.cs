@@ -43,6 +43,13 @@ namespace KenisBank
                 labelPaginaInBeeld.Text = "Start";
                 HistoryBalkUpdate(labelPaginaInBeeld.Text);
             }
+            else
+            {
+                // start bestaan niet, maak lege
+                labelPaginaInBeeld.Text = "Start";
+                HistoryBalkUpdate(labelPaginaInBeeld.Text);
+                saveHuidigePaginaToolStripMenuItem_Click(this, null);
+            }
 
             // bouw Pagina
             BouwPaginaOp();
