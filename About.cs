@@ -16,12 +16,15 @@ namespace KenisBank
         {
             DateTime buildDate = new FileInfo(Assembly.GetExecutingAssembly().Location).LastWriteTime;
             label1.Text = buildDate.ToString();
-
-            textBox2.Clear();
-            string[] lines = File.ReadAllLines("Data\\versie.ini");
-            textBox2.Text = string.Join(Environment.NewLine, lines);
-            textBox2.SelectionStart = textBox2.TextLength;
-            textBox2.ScrollToCaret();
+            try
+            {
+                textBox2.Clear();
+                string[] lines = File.ReadAllLines("Data\\versie.ini");
+                textBox2.Text = string.Join(Environment.NewLine, lines);
+                textBox2.SelectionStart = textBox2.TextLength;
+                textBox2.ScrollToCaret();
+            }
+            catch { };
         }
 
         

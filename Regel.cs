@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -13,7 +14,8 @@ namespace KenisBank
         LinkDir,
         TekstBlok,
         PaginaNaam,
-        Leeg
+        Leeg,
+        EditInfo
     }
 
     [Serializable]
@@ -52,17 +54,58 @@ namespace KenisBank
 
         public void Save(string file)
         {
+            string edit = $"Laatste edit door : {Environment.UserName} op {DateTime.Now.ToString()}";
+            bool al_edit_veld_aanwezig = false;
+            // toevoegen EditInfo
+            foreach(Regel regel in PaginaMetRegels)
+            {
+                if(regel.type_ == type.EditInfo)
+                {
+                    regel.tekst_ = edit;
+                    regel.type_ = type.EditInfo;
+                    al_edit_veld_aanwezig = true;
+                }
+            }
+            
+            // eerste keer lege pagina dan aanmaken
+            if(!al_edit_veld_aanwezig)
+            {
+                Regel r = new Regel();
+                r.type_ = type.EditInfo;
+                r.tekst_ = edit;
+                r.url_ = "";
+                PaginaMetRegels.Add(r);
+            }
+            
             try
             {
-                string f = file;
-                f = f.Trim();
-                f = f.Replace(" ", "_");
-                f = f.Replace("'", "_");
+                string fi = file;
+                fi = fi.Trim();
+                fi = fi.Replace(" ", "_");
+                fi = fi.Replace("'", "_");
+                string opslagnaam = $"Data\\{fi}.xml";
+                // backup
+                MaakBackUpFile(fi);
 
+                // save
                 string xmlTekst = ToXML(PaginaMetRegels);
-                File.WriteAllText($"Data\\{f}.xml", xmlTekst);
+                File.WriteAllText(opslagnaam, xmlTekst);
             }
             catch { }
+        }
+
+        private static void MaakBackUpFile(string fi)
+        {
+            string opslagnaam = $"Data\\{fi}.xml";
+            string backup1 = $"Data\\{fi}.xm1";
+            string backup2 = $"Data\\{fi}.xm2";
+                        
+            // van 1 naar 2
+            if(File.Exists(backup1))
+                File.Copy(backup1, backup2,true);    
+            //van org naar 1
+            if(File.Exists(opslagnaam))
+                File.Copy(opslagnaam, backup1,true);
         }
 
         private string ToXML<T>(T obj)
