@@ -40,11 +40,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allePaginasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoekNaarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editPaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editModeAanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,8 +52,6 @@
             this.toevoegenLegeRegelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveHuidigePaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoekLinksDieNietMeerBestaanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.vorigeVersiePaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
             this.buttonEditSelectie = new System.Windows.Forms.Button();
@@ -72,6 +66,14 @@
             this.buttonMoveUp = new System.Windows.Forms.Button();
             this.panelInfo = new System.Windows.Forms.Panel();
             this.labelInfo = new System.Windows.Forms.Label();
+            this.beheerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importAllePaginasOudeWikiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.paginaBackupTerugZettenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.versieToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.allePaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoekNaarWeesPaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.terugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -165,13 +167,12 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.terugToolStripMenuItem,
             this.homeToolStripMenuItem,
             this.refreshToolStripMenuItem,
-            this.importToolStripMenuItem,
-            this.allePaginasToolStripMenuItem,
-            this.versieToolStripMenuItem,
             this.zoekToolStripMenuItem,
-            this.editPaginaToolStripMenuItem});
+            this.editPaginaToolStripMenuItem,
+            this.beheerToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1884, 28);
@@ -194,46 +195,13 @@
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
-            // importToolStripMenuItem
-            // 
-            this.importToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
-            this.importToolStripMenuItem.Text = "Import All";
-            this.importToolStripMenuItem.Visible = false;
-            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
-            // 
-            // allePaginasToolStripMenuItem
-            // 
-            this.allePaginasToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.allePaginasToolStripMenuItem.Name = "allePaginasToolStripMenuItem";
-            this.allePaginasToolStripMenuItem.Size = new System.Drawing.Size(104, 24);
-            this.allePaginasToolStripMenuItem.Text = "Alle Pagina\'s";
-            this.allePaginasToolStripMenuItem.Click += new System.EventHandler(this.allePaginasToolStripMenuItem_Click);
-            // 
-            // versieToolStripMenuItem
-            // 
-            this.versieToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.versieToolStripMenuItem.Name = "versieToolStripMenuItem";
-            this.versieToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
-            this.versieToolStripMenuItem.Text = "Versie";
-            this.versieToolStripMenuItem.Click += new System.EventHandler(this.versieToolStripMenuItem_Click);
-            // 
             // zoekToolStripMenuItem
             // 
-            this.zoekToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.zoekNaarToolStripMenuItem});
             this.zoekToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.zoekToolStripMenuItem.Name = "zoekToolStripMenuItem";
             this.zoekToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.zoekToolStripMenuItem.Text = "Zoek";
-            // 
-            // zoekNaarToolStripMenuItem
-            // 
-            this.zoekNaarToolStripMenuItem.Name = "zoekNaarToolStripMenuItem";
-            this.zoekNaarToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
-            this.zoekNaarToolStripMenuItem.Text = "Zoek naar ...";
-            this.zoekNaarToolStripMenuItem.Click += new System.EventHandler(this.zoekNaarToolStripMenuItem_Click);
+            this.zoekToolStripMenuItem.Click += new System.EventHandler(this.zoekNaarToolStripMenuItem_Click);
             // 
             // editPaginaToolStripMenuItem
             // 
@@ -241,9 +209,7 @@
             this.editModeAanToolStripMenuItem,
             this.addItemToolStripMenuItem,
             this.deleteItemToolStripMenuItem,
-            this.saveHuidigePaginaToolStripMenuItem,
-            this.zoekLinksDieNietMeerBestaanToolStripMenuItem,
-            this.vorigeVersiePaginaToolStripMenuItem});
+            this.saveHuidigePaginaToolStripMenuItem});
             this.editPaginaToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editPaginaToolStripMenuItem.Name = "editPaginaToolStripMenuItem";
             this.editPaginaToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
@@ -253,7 +219,7 @@
             // 
             this.editModeAanToolStripMenuItem.CheckOnClick = true;
             this.editModeAanToolStripMenuItem.Name = "editModeAanToolStripMenuItem";
-            this.editModeAanToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
+            this.editModeAanToolStripMenuItem.Size = new System.Drawing.Size(214, 24);
             this.editModeAanToolStripMenuItem.Text = "Edit Mode Aan";
             this.editModeAanToolStripMenuItem.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
@@ -268,7 +234,7 @@
             this.toevoegenLegeRegelToolStripMenuItem});
             this.addItemToolStripMenuItem.Enabled = false;
             this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
-            this.addItemToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
+            this.addItemToolStripMenuItem.Size = new System.Drawing.Size(214, 24);
             this.addItemToolStripMenuItem.Text = "Add Item";
             // 
             // toevoegenHoofdstukTextToolStripMenuItem
@@ -317,7 +283,7 @@
             // 
             this.deleteItemToolStripMenuItem.Enabled = false;
             this.deleteItemToolStripMenuItem.Name = "deleteItemToolStripMenuItem";
-            this.deleteItemToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
+            this.deleteItemToolStripMenuItem.Size = new System.Drawing.Size(214, 24);
             this.deleteItemToolStripMenuItem.Text = "Delete Item";
             this.deleteItemToolStripMenuItem.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
             // 
@@ -325,23 +291,9 @@
             // 
             this.saveHuidigePaginaToolStripMenuItem.Enabled = false;
             this.saveHuidigePaginaToolStripMenuItem.Name = "saveHuidigePaginaToolStripMenuItem";
-            this.saveHuidigePaginaToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
+            this.saveHuidigePaginaToolStripMenuItem.Size = new System.Drawing.Size(214, 24);
             this.saveHuidigePaginaToolStripMenuItem.Text = "Save Huidige Pagina";
             this.saveHuidigePaginaToolStripMenuItem.Click += new System.EventHandler(this.saveHuidigePaginaToolStripMenuItem_Click);
-            // 
-            // zoekLinksDieNietMeerBestaanToolStripMenuItem
-            // 
-            this.zoekLinksDieNietMeerBestaanToolStripMenuItem.Name = "zoekLinksDieNietMeerBestaanToolStripMenuItem";
-            this.zoekLinksDieNietMeerBestaanToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
-            this.zoekLinksDieNietMeerBestaanToolStripMenuItem.Text = "Zoek Links die niet meer bestaan";
-            this.zoekLinksDieNietMeerBestaanToolStripMenuItem.Click += new System.EventHandler(this.zoekLinksDieNietMeerBestaanToolStripMenuItem_Click);
-            // 
-            // vorigeVersiePaginaToolStripMenuItem
-            // 
-            this.vorigeVersiePaginaToolStripMenuItem.Name = "vorigeVersiePaginaToolStripMenuItem";
-            this.vorigeVersiePaginaToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
-            this.vorigeVersiePaginaToolStripMenuItem.Text = "Vorige Versie Pagina";
-            this.vorigeVersiePaginaToolStripMenuItem.Click += new System.EventHandler(this.vorigeVersiePaginaToolStripMenuItem_Click);
             // 
             // panelUpDown
             // 
@@ -505,6 +457,69 @@
             this.labelInfo.TabIndex = 0;
             this.labelInfo.Text = "*";
             // 
+            // beheerToolStripMenuItem
+            // 
+            this.beheerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importAllePaginasOudeWikiToolStripMenuItem,
+            this.paginaBackupTerugZettenToolStripMenuItem,
+            this.versieToolStripMenuItem1,
+            this.allePaginasToolStripMenuItem1,
+            this.zoekNaarWeesPaginasToolStripMenuItem1,
+            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem});
+            this.beheerToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.beheerToolStripMenuItem.Name = "beheerToolStripMenuItem";
+            this.beheerToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
+            this.beheerToolStripMenuItem.Text = "Beheer";
+            // 
+            // importAllePaginasOudeWikiToolStripMenuItem
+            // 
+            this.importAllePaginasOudeWikiToolStripMenuItem.Name = "importAllePaginasOudeWikiToolStripMenuItem";
+            this.importAllePaginasOudeWikiToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
+            this.importAllePaginasOudeWikiToolStripMenuItem.Text = "Import Alle Paginas Oude Wiki";
+            this.importAllePaginasOudeWikiToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
+            // 
+            // paginaBackupTerugZettenToolStripMenuItem
+            // 
+            this.paginaBackupTerugZettenToolStripMenuItem.Name = "paginaBackupTerugZettenToolStripMenuItem";
+            this.paginaBackupTerugZettenToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
+            this.paginaBackupTerugZettenToolStripMenuItem.Text = "Pagina backup terug zetten";
+            this.paginaBackupTerugZettenToolStripMenuItem.Click += new System.EventHandler(this.vorigeVersiePaginaToolStripMenuItem_Click);
+            // 
+            // versieToolStripMenuItem1
+            // 
+            this.versieToolStripMenuItem1.Name = "versieToolStripMenuItem1";
+            this.versieToolStripMenuItem1.Size = new System.Drawing.Size(325, 24);
+            this.versieToolStripMenuItem1.Text = "Versie";
+            this.versieToolStripMenuItem1.Click += new System.EventHandler(this.versieToolStripMenuItem_Click);
+            // 
+            // allePaginasToolStripMenuItem1
+            // 
+            this.allePaginasToolStripMenuItem1.Name = "allePaginasToolStripMenuItem1";
+            this.allePaginasToolStripMenuItem1.Size = new System.Drawing.Size(325, 24);
+            this.allePaginasToolStripMenuItem1.Text = "Alle Pagina\'s";
+            this.allePaginasToolStripMenuItem1.Click += new System.EventHandler(this.allePaginasToolStripMenuItem_Click);
+            // 
+            // zoekNaarWeesPaginasToolStripMenuItem1
+            // 
+            this.zoekNaarWeesPaginasToolStripMenuItem1.Name = "zoekNaarWeesPaginasToolStripMenuItem1";
+            this.zoekNaarWeesPaginasToolStripMenuItem1.Size = new System.Drawing.Size(325, 24);
+            this.zoekNaarWeesPaginasToolStripMenuItem1.Text = "Zoek naar Wees Pagina\'s";
+            this.zoekNaarWeesPaginasToolStripMenuItem1.Click += new System.EventHandler(this.zoekNaarWeesPaginasToolStripMenuItem_Click);
+            // 
+            // zoekNaarLinksDieNietMeerBestaanToolStripMenuItem
+            // 
+            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Name = "zoekNaarLinksDieNietMeerBestaanToolStripMenuItem";
+            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
+            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Text = "Zoek naar links die niet meer bestaan";
+            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Click += new System.EventHandler(this.zoekLinksDieNietMeerBestaanToolStripMenuItem_Click);
+            // 
+            // terugToolStripMenuItem
+            // 
+            this.terugToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.terugToolStripMenuItem.Name = "terugToolStripMenuItem";
+            this.terugToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
+            this.terugToolStripMenuItem.Text = "Terug";
+            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -563,22 +578,24 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.ToolStripMenuItem versieToolStripMenuItem;
         private System.Windows.Forms.Button buttonEditSelectie;
         private System.Windows.Forms.Button buttonSaveCloseEdit;
-        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.Panel panelInfo;
         private System.Windows.Forms.Label labelInfo;
-        private System.Windows.Forms.ToolStripMenuItem allePaginasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zoekToolStripMenuItem;
         private System.Windows.Forms.LinkLabel linkLabelHis1;
         private System.Windows.Forms.LinkLabel linkLabelHis0;
         private System.Windows.Forms.LinkLabel linkLabelHis4;
         private System.Windows.Forms.LinkLabel linkLabelHis3;
         private System.Windows.Forms.LinkLabel linkLabelHis2;
-        private System.Windows.Forms.ToolStripMenuItem zoekLinksDieNietMeerBestaanToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vorigeVersiePaginaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem zoekNaarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem beheerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importAllePaginasOudeWikiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem paginaBackupTerugZettenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem versieToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem allePaginasToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem zoekNaarWeesPaginasToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem zoekNaarLinksDieNietMeerBestaanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem terugToolStripMenuItem;
     }
 }
 

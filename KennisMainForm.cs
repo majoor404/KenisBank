@@ -30,7 +30,6 @@ namespace KenisBank
         {
             InitializeComponent();
         }
-
         private void KennisMainForm_Shown(object sender, EventArgs e)
         {
             // zet panelen netjes
@@ -52,7 +51,6 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
         }
-
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             if (labelPaginaInBeeld.Text == "Zoek resultaat" || labelPaginaInBeeld.Text == "Alle paginas")
@@ -100,7 +98,6 @@ namespace KenisBank
                 }
             }
         }
-
         private Panel MaakNewPanel(int eigenaar)
         {
             // maak new panel
@@ -117,7 +114,6 @@ namespace KenisBank
             panel.Click += new EventHandler(panel_Click);
             return panel;
         }
-
         private void PlaatsHoofdstukOpBeeld(string text, int eigenaar)
         {
             Panel panel = MaakNewPanel(eigenaar);
@@ -133,7 +129,6 @@ namespace KenisBank
             panel.Controls.Add(label);
             panelMain.Refresh();
         }
-
         private void PlaatsTextOpBeeld(string tekst, int eigenaar)
         {
 
@@ -160,7 +155,6 @@ namespace KenisBank
             }
             panel.ResumeLayout();
         }
-
         private void PlaatsLinkOpBeeld(string link, string locatie, int eigenaar)
         {
             Panel panel = MaakNewPanel(eigenaar);
@@ -183,7 +177,6 @@ namespace KenisBank
             panel.Controls.Add(label);
             panelMain.Refresh();
         }
-
         private void PlaatsPaginaOpBeeld(string link, string locatie, int eigenaar)
         {
             Panel panel = MaakNewPanel(eigenaar);
@@ -203,7 +196,6 @@ namespace KenisBank
             panel.Controls.Add(but);
             panelMain.Refresh();
         }
-
         private void label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Windows.Forms.LinkLabel label = (System.Windows.Forms.LinkLabel)sender;
@@ -217,7 +209,6 @@ namespace KenisBank
             }
             catch { }
         }
-
         private void PaginaButtonClick(object sender, EventArgs e)
         {
             Button but = (Button)sender;
@@ -248,14 +239,12 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-
         private void KennisMainForm_Resize(object sender, EventArgs e)
         {
             panel1.Width = Width - 45;
             panelMain.Width = Width - 45;
             panelMain.Height = Height - 180;
         }
-
         private void SchermUpdate()
         {
             // delete oude
@@ -319,14 +308,12 @@ namespace KenisBank
                 InfoPagina.PaginaMetRegels[MakerInfoIndex].eigenaar_ = eigenaar;
             }
         }
-
         public void Toevoegen(string text, type type, string url)
         {
             Regel regel = new Regel(text, type, url);
             InfoPagina.PaginaMetRegels.Add(regel);
             change_pagina = true;
         }
-
         private void panel_Click(object sender, EventArgs e)
         {
             panelGeselecteerd = null;
@@ -347,7 +334,6 @@ namespace KenisBank
                 }
             }
         }
-
         private void toevoegenLinkNaarDirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LinkDir linkdir = new LinkDir();
@@ -360,7 +346,6 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-
         private void toevoegenHoofdstukTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Hoofdstuk hoofdstuk = new Hoofdstuk();
@@ -373,7 +358,6 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-
         private void toevoegenLinkNaarFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LinkFile linkFile = new LinkFile();
@@ -386,7 +370,6 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-
         private void toevoegenTekstBlokToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TekstBlok tekstblok = new TekstBlok();
@@ -399,13 +382,11 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // bouw Pagina
             SchermUpdate();
         }
-
         private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show($"Zeker weten, verwijderen?", "Vraagje", MessageBoxButtons.YesNo);
@@ -435,7 +416,6 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-
         private void toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Pagina pagina = new Pagina();
@@ -448,7 +428,6 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             editModeAanToolStripMenuItem.Checked = false;
@@ -464,13 +443,11 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
         }
-
         private void saveHuidigePaginaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InfoPagina.Save(labelPaginaInBeeld.Text);
             change_pagina = false;
         }
-
         private void toevoegenLegeRegelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Toevoegen(" ", type.Leeg, "");
@@ -479,7 +456,6 @@ namespace KenisBank
             // meteen selecteren
             SelecteerLaatstePaneel();
         }
-
         private void SelecteerLaatstePaneel()
         {
             panelGeselecteerd = null;
@@ -497,7 +473,6 @@ namespace KenisBank
                 }
             }
         }
-
         private void SelecteerEerstePaneel()
         {
             panelGeselecteerd = null;
@@ -515,7 +490,6 @@ namespace KenisBank
                 }
             }
         }
-
         private void MovePanel(int richting)
         {
             if (!editModeAanToolStripMenuItem.Checked)
@@ -561,24 +535,20 @@ namespace KenisBank
                 }
             }
         }
-
         private static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {
             MovePanel(-1);
         }
-
         private void buttonMoveDown_Click(object sender, EventArgs e)
         {
             MovePanel(1);
         }
-
         private void buttonSaveCloseEdit_Click(object sender, EventArgs e)
         {
             saveHuidigePaginaToolStripMenuItem_Click(this, null);
@@ -586,7 +556,6 @@ namespace KenisBank
             buttonEdit_Click(this, null);
             SchermUpdate();
         }
-
         private void buttonEditSelectie_Click(object sender, EventArgs e)
         {
             int eigenaar = (int)panelGeselecteerd.Tag;
@@ -686,13 +655,11 @@ namespace KenisBank
                 }
             }
         }
-
         private void versieToolStripMenuItem_Click(object sender, EventArgs e)
         {
             About ab = new About();
             _ = ab.ShowDialog();
         }
-
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // importeer oude wiki data
@@ -875,7 +842,6 @@ namespace KenisBank
             labelPaginaInBeeld.Text = "Alle paginas";
 
         }
-        
         public bool ContainsCaseInsensitive(string source, string substring)
         {
             return source?.IndexOf(substring, StringComparison.OrdinalIgnoreCase) > -1;
@@ -1018,7 +984,6 @@ namespace KenisBank
         {
             _ = MessageBox.Show("Nog te doen");
         }
-
         private void zoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ZoekForm ZF = new ZoekForm();
@@ -1030,8 +995,6 @@ namespace KenisBank
                 List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
                             .OrderByDescending(f => f.Name)
                             .ToList();
-
-
 
 
                 foreach (FileInfo file in files)
@@ -1056,6 +1019,21 @@ namespace KenisBank
                 SchermUpdate();
                 MessageBox.Show("Klaar met zoeken");
             }
+        }
+        private void zoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+            //                .OrderByDescending(f => f.Name)
+            //                .ToList();
+
+            //List<FileInfo> links = new List<FileInfo>(files);
+
+
+            //foreach (FileInfo file in files)
+            //{
+
+            //}
+            _ = MessageBox.Show("Nog te doen");
         }
     }
 }
