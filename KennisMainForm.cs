@@ -52,6 +52,15 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
         }
+        private void KennisMainForm_Resize(object sender, EventArgs e)
+        {
+            panel1.Width = Width - 45;
+            panelMain.Width = Width - 45;
+            panelMain.Height = Height - 180;
+        }
+        
+        
+        // interact met gebruiker
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             if (labelPaginaInBeeld.Text == "Zoek resultaat" || labelPaginaInBeeld.Text == "Alle paginas")
@@ -99,104 +108,6 @@ namespace KenisBank
                 }
             }
         }
-        private Panel MaakNewPanel(int eigenaar)
-        {
-            // maak new panel
-            Panel panel = new Panel
-            {
-                Dock = DockStyle.Top,
-                BorderStyle = BorderStyle.None,
-                AutoSize = true,
-                Tag = eigenaar
-            };
-
-            panelMain.Controls.Add(panel);
-            panelMain.Controls.SetChildIndex(panel, 0);
-            panel.Click += new EventHandler(panel_Click);
-            return panel;
-        }
-        private void PlaatsHoofdstukOpBeeld(string text, int eigenaar)
-        {
-            Panel panel = MaakNewPanel(eigenaar);
-
-            System.Windows.Forms.Label label = new System.Windows.Forms.Label();
-            Point org = new Point(label.Location.X, label.Location.Y);
-            org.X += 30;
-            label.Location = org;
-            label.AutoSize = true;
-            label.Font = new Font("Microsoft Sans Serif", 18, FontStyle.Bold);
-            label.Text = text;
-
-            panel.Controls.Add(label);
-            panelMain.Refresh();
-        }
-        private void PlaatsTextOpBeeld(string tekst, int eigenaar)
-        {
-
-            Panel panel = MaakNewPanel(eigenaar);
-
-            panel.SuspendLayout();
-
-            // split string at new line
-            //string t = tekst.Replace("\n", "");
-            string[] result = tekst.Split('\n');
-            int regeloffset = 0;
-            foreach (string str in result)
-            {
-                System.Windows.Forms.Label label = new System.Windows.Forms.Label();
-                Point org = new Point(label.Location.X, label.Location.Y);
-                org.X += 30;
-                org.Y += regeloffset * 20;
-                regeloffset++;
-                label.Location = org;
-                label.AutoSize = true;
-                label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
-                label.Text = str;
-                panel.Controls.Add(label);
-            }
-            panel.ResumeLayout();
-        }
-        private void PlaatsLinkOpBeeld(string link, string locatie, int eigenaar)
-        {
-            Panel panel = MaakNewPanel(eigenaar);
-
-
-            System.Windows.Forms.LinkLabel label = new System.Windows.Forms.LinkLabel();
-
-            Point org = new Point(label.Location.X, label.Location.Y);
-            org.X += 30;
-            label.Location = org;
-
-            label.Width = panelMain.Width - 100;
-            label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
-            label.Text = link;
-            label.Tag = locatie;
-            label.BorderStyle = BorderStyle.None;
-            label.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(label_LinkClicked);
-            label.MouseHover += new EventHandler(LinkHover);
-
-            panel.Controls.Add(label);
-            panelMain.Refresh();
-        }
-        private void PlaatsPaginaOpBeeld(string link, string locatie, int eigenaar)
-        {
-            Panel panel = MaakNewPanel(eigenaar);
-            System.Windows.Forms.Button but = new Button();
-
-            Point org = new Point(but.Location.X, but.Location.Y);
-            org.X += 30;
-            but.Location = org;
-
-            but.Width = 500;
-            but.Height = 30;
-            but.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
-            but.Text = link;
-            //but.Tag = locatie;
-            //but.BorderStyle = BorderStyle.None;
-            but.Click += new EventHandler(PaginaButtonClick);
-            panel.Controls.Add(but);
-            panelMain.Refresh();
-        }
         private void label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Windows.Forms.LinkLabel label = (System.Windows.Forms.LinkLabel)sender;
@@ -217,7 +128,7 @@ namespace KenisBank
             string pagina = but.Text;
 
             //pagina worden opgeslagen in lower case Enabled elke spatie vervangen door _
-            pagina = MaakPaginaStandaard(pagina);
+            pagina = RemoveOudeWikiTekens(pagina);
 
             if (!InfoPagina.Laad(pagina))
             {
@@ -241,81 +152,6 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-        private void KennisMainForm_Resize(object sender, EventArgs e)
-        {
-            panel1.Width = Width - 45;
-            panelMain.Width = Width - 45;
-            panelMain.Height = Height - 180;
-        }
-        private void SchermUpdate()
-        {
-            // delete oude
-            panelMain.Controls.Clear();
-            labelInfo.Text = "";
-            int MakerInfoIndex = -1;
-            int zoekinfo = InfoPagina.PaginaMetRegels.Count;
-
-            for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
-            {
-                labelInfo.Text = zoekinfo.ToString();
-                labelInfo.Refresh();
-                zoekinfo--;
-
-                string dum = RandomString(10);
-                int eigenaar = dum.GetHashCode();
-
-                if (InfoPagina.PaginaMetRegels[i].type_ == type.Hoofdstuk)
-                {
-                    PlaatsHoofdstukOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
-                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
-                }
-                if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
-                {
-                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
-                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
-                }
-                if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
-                {
-                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
-                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
-                }
-                if (InfoPagina.PaginaMetRegels[i].type_ == type.TekstBlok)
-                {
-                    PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
-                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
-                }
-                if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
-                {
-                    //PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
-                    PlaatsPaginaOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
-                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
-                }
-                if (InfoPagina.PaginaMetRegels[i].type_ == type.Leeg)
-                {
-                    PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
-                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
-                }
-                if(InfoPagina.PaginaMetRegels[i].type_ == type.EditInfo)
-                {
-                    // bewaar locatie van info, wordt als laatse geplaatst op scherm.
-                    MakerInfoIndex = i;
-                }
-            }
-            labelInfo.Text = "";
-            if(MakerInfoIndex > -1)
-            {
-                string dum = RandomString(10);
-                int eigenaar = dum.GetHashCode();
-                PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[MakerInfoIndex].tekst_, eigenaar);
-                InfoPagina.PaginaMetRegels[MakerInfoIndex].eigenaar_ = eigenaar;
-            }
-        }
-        public void Toevoegen(string text, type type, string url)
-        {
-            Regel regel = new Regel(text, type, url);
-            InfoPagina.PaginaMetRegels.Add(regel);
-            change_pagina = true;
-        }
         private void panel_Click(object sender, EventArgs e)
         {
             panelGeselecteerd = null;
@@ -335,100 +171,6 @@ namespace KenisBank
                     }
                 }
             }
-        }
-        private void toevoegenLinkNaarDirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LinkDir linkdir = new LinkDir();
-            DialogResult save = linkdir.ShowDialog();
-            if (save == DialogResult.OK)
-            {
-                Toevoegen(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
-            }
-            // bouw Pagina
-            SchermUpdate();
-            SelecteerLaatstePaneel();
-        }
-        private void toevoegenHoofdstukTextToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Hoofdstuk hoofdstuk = new Hoofdstuk();
-            DialogResult save = hoofdstuk.ShowDialog();
-            if (save == DialogResult.OK)
-            {
-                Toevoegen(hoofdstuk.textBox1.Text, type.Hoofdstuk, "");
-            }
-            // bouw Pagina
-            SchermUpdate();
-            SelecteerLaatstePaneel();
-        }
-        private void toevoegenLinkNaarFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LinkFile linkFile = new LinkFile();
-            DialogResult save = linkFile.ShowDialog();
-            if (save == DialogResult.OK)
-            {
-                Toevoegen(linkFile.textBox2.Text, type.LinkFile, linkFile.textBox1.Text);
-            }
-            // bouw Pagina
-            SchermUpdate();
-            SelecteerLaatstePaneel();
-        }
-        private void toevoegenTekstBlokToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TekstBlok tekstblok = new TekstBlok();
-            DialogResult save = tekstblok.ShowDialog();
-            if (save == DialogResult.OK)
-            {
-                Toevoegen(tekstblok.textBoxTextBlok.Text, type.TekstBlok, "");
-            }
-            // bouw Pagina
-            SchermUpdate();
-            SelecteerLaatstePaneel();
-        }
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // bouw Pagina
-            SchermUpdate();
-        }
-        private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult dialogResult = MessageBox.Show($"Zeker weten, verwijderen?", "Vraagje", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                int eigenaar = (int)panelGeselecteerd.Tag;
-
-                for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
-                {
-                    if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
-                    {
-                        InfoPagina.PaginaMetRegels.RemoveAt(i);
-                    }
-                }
-
-                panelGeselecteerd = null;
-                deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
-
-
-                foreach (Panel a in panelMain.Controls)
-                {
-                    a.BackColor = panelMain.BackColor;
-                    a.BorderStyle = BorderStyle.None;
-                }
-
-                // bouw Pagina
-                SchermUpdate();
-            }
-        }
-        private void toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Pagina pagina = new Pagina();
-            DialogResult save = pagina.ShowDialog();
-            if (save == DialogResult.OK)
-            {
-                Toevoegen(pagina.textBoxPaginaNaam.Text, type.PaginaNaam, "");
-            }
-            // bouw Pagina
-            SchermUpdate();
-            SelecteerLaatstePaneel();
         }
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -457,91 +199,6 @@ namespace KenisBank
             SchermUpdate();
             // meteen selecteren
             SelecteerLaatstePaneel();
-        }
-        private void SelecteerLaatstePaneel()
-        {
-            panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
-            foreach (Panel a in panelMain.Controls)
-            {
-                a.BackColor = panelMain.BackColor;
-                a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == InfoPagina.PaginaMetRegels[InfoPagina.PaginaMetRegels.Count - 1].eigenaar_)
-                {
-                    a.BackColor = Color.Aqua;
-                    a.BorderStyle = BorderStyle.FixedSingle;
-                    panelGeselecteerd = a;
-                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = true;
-                }
-            }
-        }
-        private void SelecteerEerstePaneel()
-        {
-            panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
-            foreach (Panel a in panelMain.Controls)
-            {
-                a.BackColor = panelMain.BackColor;
-                a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == InfoPagina.PaginaMetRegels[0].eigenaar_)
-                {
-                    a.BackColor = Color.Aqua;
-                    a.BorderStyle = BorderStyle.FixedSingle;
-                    panelGeselecteerd = a;
-                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = true;
-                }
-            }
-        }
-        private void MovePanel(int richting)
-        {
-            if (!editModeAanToolStripMenuItem.Checked)
-            {
-                return;
-            }
-
-            int eigenaar = (int)panelGeselecteerd.Tag;
-            int nieuw_index = -1;
-
-            for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
-            {
-                if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
-                {
-                    nieuw_index = i + richting;
-
-                    if (nieuw_index < 0 || nieuw_index + 1 > InfoPagina.PaginaMetRegels.Count)
-                    {
-                        return;
-                    }
-
-                    Regel gekozen = InfoPagina.PaginaMetRegels[i];
-                    InfoPagina.PaginaMetRegels.RemoveAt(i);
-                    InfoPagina.PaginaMetRegels.Insert(nieuw_index, gekozen);
-                    i = 1000;
-                    change_pagina = true;
-                }
-            }
-
-            // bouw Pagina
-            SchermUpdate();
-
-            // nu weer regel op nieuw_index kleuren
-            // get eigenaar nummer
-            int eig = InfoPagina.PaginaMetRegels[nieuw_index].eigenaar_;
-            foreach (Panel panel in panelMain.Controls)
-            {
-                if ((int)panel.Tag == eig)
-                {
-                    panel.BackColor = Color.Aqua;
-                    panel.BorderStyle = BorderStyle.FixedSingle;
-                    panelGeselecteerd = panel;
-                }
-            }
-        }
-        private static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {
@@ -699,6 +356,240 @@ namespace KenisBank
                 InfoPagina.Save(Path.GetFileNameWithoutExtension(file.Name));
             }
         }
+        private void allePaginasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+                            .OrderByDescending(f => f.Name)
+                            .ToList();
+
+            InfoPagina.PaginaMetRegels.Clear();
+            int zoekinfo = files.Count;
+
+            foreach (FileInfo file in files)
+            {
+                labelInfo.Text = zoekinfo.ToString();
+                labelInfo.Refresh();
+                zoekinfo--;
+
+                Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
+                InfoPagina.PaginaMetRegels.Add(regel);
+            }
+            SchermUpdate();
+
+            labelPaginaInBeeld.Text = "Alle paginas";
+
+        }
+        private void vorigeVersiePaginaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _ = MessageBox.Show("Nog te doen");
+        }
+        private void zoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ZoekForm ZF = new ZoekForm();
+            DialogResult save = ZF.ShowDialog();
+            PaginaMetRegelsGevonden.Clear();
+
+            if (save == DialogResult.OK)
+            {
+                List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+                            .OrderByDescending(f => f.Name)
+                            .ToList();
+
+
+                foreach (FileInfo file in files)
+                {
+                    _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                    if (ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
+                    {
+                        Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
+                        PaginaMetRegelsGevonden.Add(regel);
+                    }
+                    for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+                    {
+                        if (ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text)/* || ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].url_, ZF.textBoxZoek.Text)*/)
+                        {
+                            Regel regel = new Regel(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].type_, InfoPagina.PaginaMetRegels[i].url_);
+                            PaginaMetRegelsGevonden.Add(regel);
+                        }
+                    }
+                }
+                // bouw Pagina
+                InfoPagina.PaginaMetRegels = PaginaMetRegelsGevonden;
+                SchermUpdate();
+                MessageBox.Show("Klaar met zoeken");
+            }
+        }
+        private void zoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+            //                .OrderByDescending(f => f.Name)
+            //                .ToList();
+
+            //List<FileInfo> links = new List<FileInfo>(files);
+
+
+            //foreach (FileInfo file in files)
+            //{
+
+            //}
+            _ = MessageBox.Show("Nog te doen");
+        }
+        private void terugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InfoPagina.Laad(PrevPagina);
+            labelPaginaInBeeld.Text = PrevPagina;
+            SchermUpdate();
+        }
+        private void linkLabelHis1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LinkLabel a = (LinkLabel)sender;
+            editModeAanToolStripMenuItem.Checked = false;
+            buttonEdit_Click(this, null);
+
+            // laad Start.xml
+            if (InfoPagina.Laad(a.Text))
+            {
+                labelPaginaInBeeld.Text = a.Text;
+                HistoryBalkUpdate(labelPaginaInBeeld.Text);
+            }
+
+            // bouw Pagina
+            SchermUpdate();
+
+        }
+        private void zoekLinksDieNietMeerBestaanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show($"Doorzoek alle paginas en verwijder links die niet meer bestaan?", "Vraagje", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+                            .OrderByDescending(f => f.Name)
+                            .ToList();
+
+                foreach (FileInfo file in files)
+                {
+                    labelInfo.Text = $"Lees {file.Name}";
+                    labelInfo.Refresh();
+                    // laad file
+                    _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                    // verander
+                    int change = InfoPagina.PaginaMetRegels.Count;
+                    // door file heenstappen
+                    for (int i = InfoPagina.PaginaMetRegels.Count - 1; i > 0; i--)
+                    {
+                        //bij import vanuit oude wiki is link naar dir gelijk aan link naar file.
+                        // dus check of het geen file en geen dir is voordat ik verwijder
+
+                        if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
+                        {
+                            if (!File.Exists(InfoPagina.PaginaMetRegels[i].url_))
+                            {
+                                if (!Directory.Exists((InfoPagina.PaginaMetRegels[i].url_)))
+                                {
+                                    _ = MessageBox.Show($"Remove link naar file \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}\n{InfoPagina.PaginaMetRegels[i].url_}");
+                                    InfoPagina.PaginaMetRegels.RemoveAt(i);
+                                }
+                            }
+                        }
+                        else if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
+                        {
+                            if (!Directory.Exists(InfoPagina.PaginaMetRegels[i].url_))
+                            {
+                                _ = MessageBox.Show($"Remove link naar dir \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                InfoPagina.PaginaMetRegels.RemoveAt(i);
+                            }
+                        }
+                        else if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
+                        {
+                            if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
+                            {
+                                _ = MessageBox.Show($"Remove link naar Pagina \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                InfoPagina.PaginaMetRegels.RemoveAt(i);
+                            }
+                        }
+                    }
+                    if (change != InfoPagina.PaginaMetRegels.Count)
+                    {
+                        InfoPagina.Save(Path.GetFileNameWithoutExtension(file.Name));
+                    }
+                }
+                _ = MessageBox.Show("Klaar met clean kennisbank");
+            }
+        }
+
+        // main scherm update roetine
+        private void SchermUpdate()
+        {
+            // delete oude
+            panelMain.Controls.Clear();
+            labelInfo.Text = "";
+            int MakerInfoIndex = -1;
+            int zoekinfo = InfoPagina.PaginaMetRegels.Count;
+
+            for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+            {
+                labelInfo.Text = zoekinfo.ToString();
+                labelInfo.Refresh();
+                zoekinfo--;
+
+                string dum = RandomString(10);
+                int eigenaar = dum.GetHashCode();
+
+                if (InfoPagina.PaginaMetRegels[i].type_ == type.Hoofdstuk)
+                {
+                    PlaatsHoofdstukOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
+                {
+                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
+                {
+                    PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (InfoPagina.PaginaMetRegels[i].type_ == type.TekstBlok)
+                {
+                    PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
+                {
+                    //PlaatsLinkOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
+                    PlaatsPaginaOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].url_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (InfoPagina.PaginaMetRegels[i].type_ == type.Leeg)
+                {
+                    PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[i].tekst_, eigenaar);
+                    InfoPagina.PaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if(InfoPagina.PaginaMetRegels[i].type_ == type.EditInfo)
+                {
+                    // bewaar locatie van info, wordt als laatse geplaatst op scherm.
+                    MakerInfoIndex = i;
+                }
+            }
+            labelInfo.Text = "";
+            if(MakerInfoIndex > -1)
+            {
+                string dum = RandomString(10);
+                int eigenaar = dum.GetHashCode();
+                PlaatsTextOpBeeld(InfoPagina.PaginaMetRegels[MakerInfoIndex].tekst_, eigenaar);
+                InfoPagina.PaginaMetRegels[MakerInfoIndex].eigenaar_ = eigenaar;
+            }
+        }
+ 
+ 
+        // hulp roetines
+        private static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
         private void ImporteerRegel(string regel, string file_naam)
         {
             string error_string = regel;
@@ -821,29 +712,6 @@ namespace KenisBank
             LinkLabel a = sender as LinkLabel;
             labelInfo.Text = a.Tag.ToString();
         }
-        private void allePaginasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-                            .OrderByDescending(f => f.Name)
-                            .ToList();
-
-            InfoPagina.PaginaMetRegels.Clear();
-            int zoekinfo = files.Count;
-
-            foreach (FileInfo file in files)
-            {
-                labelInfo.Text = zoekinfo.ToString();
-                labelInfo.Refresh();
-                zoekinfo--;
-
-                Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
-                InfoPagina.PaginaMetRegels.Add(regel);
-            }
-            SchermUpdate();
-
-            labelPaginaInBeeld.Text = "Alle paginas";
-
-        }
         public bool ContainsCaseInsensitive(string source, string substring)
         {
             return source?.IndexOf(substring, StringComparison.OrdinalIgnoreCase) > -1;
@@ -898,151 +766,16 @@ namespace KenisBank
             }
 
         }
-        private void linkLabelHis1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            LinkLabel a = (LinkLabel)sender;
-            editModeAanToolStripMenuItem.Checked = false;
-            buttonEdit_Click(this, null);
-
-            // laad Start.xml
-            if (InfoPagina.Laad(a.Text))
-            {
-                labelPaginaInBeeld.Text = a.Text;
-                HistoryBalkUpdate(labelPaginaInBeeld.Text);
-            }
-
-            // bouw Pagina
-            SchermUpdate();
-
-        }
-        public string MaakPaginaStandaard(string pagina)
+        public string RemoveOudeWikiTekens(string pagina)
         {
             string ret = pagina;
+            ret = ret.Replace(" & ", "_");
             ret = ret.Trim();
             ret = ret.Replace(" ", "_");
             ret = ret.Replace("'", "_");
             return ret;
         }
-        private void zoekLinksDieNietMeerBestaanToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult dialogResult = MessageBox.Show($"Doorzoek alle paginas en verwijder links die niet meer bestaan?", "Vraagje", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-                            .OrderByDescending(f => f.Name)
-                            .ToList();
-
-                foreach (FileInfo file in files)
-                {
-                    labelInfo.Text = $"Lees {file.Name}";
-                    labelInfo.Refresh();
-                    // laad file
-                    _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
-                    // verander
-                    int change = InfoPagina.PaginaMetRegels.Count;
-                    // door file heenstappen
-                    for (int i = InfoPagina.PaginaMetRegels.Count - 1; i > 0; i--)
-                    {
-                        //bij import vanuit oude wiki is link naar dir gelijk aan link naar file.
-                        // dus check of het geen file en geen dir is voordat ik verwijder
-                        
-                        if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
-                        {
-                            if (!File.Exists(InfoPagina.PaginaMetRegels[i].url_))
-                            {
-                                if (!Directory.Exists((InfoPagina.PaginaMetRegels[i].url_)))
-                                {
-                                    _ = MessageBox.Show($"Remove link naar file \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}\n{InfoPagina.PaginaMetRegels[i].url_}");
-                                    InfoPagina.PaginaMetRegels.RemoveAt(i);
-                                }
-                            }
-                        }
-                        else if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
-                        {
-                            if (!Directory.Exists(InfoPagina.PaginaMetRegels[i].url_))
-                            {
-                                _ = MessageBox.Show($"Remove link naar dir \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                InfoPagina.PaginaMetRegels.RemoveAt(i);
-                            }
-                        }
-                        else if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
-                        {
-                            if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
-                            {
-                                _ = MessageBox.Show($"Remove link naar Pagina \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                InfoPagina.PaginaMetRegels.RemoveAt(i);
-                            }
-                        }
-                    }
-                    if (change != InfoPagina.PaginaMetRegels.Count)
-                    {
-                        InfoPagina.Save(Path.GetFileNameWithoutExtension(file.Name));
-                    }
-                }
-                _ = MessageBox.Show("Klaar met clean kennisbank");
-            }
-        }
-        private void vorigeVersiePaginaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _ = MessageBox.Show("Nog te doen");
-        }
-        private void zoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ZoekForm ZF = new ZoekForm();
-            DialogResult save = ZF.ShowDialog();
-            PaginaMetRegelsGevonden.Clear();
-
-            if (save == DialogResult.OK)
-            {
-                List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-                            .OrderByDescending(f => f.Name)
-                            .ToList();
-
-
-                foreach (FileInfo file in files)
-                {
-                    _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
-                    if (ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
-                    {
-                        Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
-                        PaginaMetRegelsGevonden.Add(regel);
-                    }
-                    for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
-                    {
-                        if (ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text)/* || ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].url_, ZF.textBoxZoek.Text)*/)
-                        {
-                            Regel regel = new Regel(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].type_, InfoPagina.PaginaMetRegels[i].url_);
-                            PaginaMetRegelsGevonden.Add(regel);
-                        }
-                    }
-                }
-                // bouw Pagina
-                InfoPagina.PaginaMetRegels = PaginaMetRegelsGevonden;
-                SchermUpdate();
-                MessageBox.Show("Klaar met zoeken");
-            }
-        }
-        private void zoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-            //                .OrderByDescending(f => f.Name)
-            //                .ToList();
-
-            //List<FileInfo> links = new List<FileInfo>(files);
-
-
-            //foreach (FileInfo file in files)
-            //{
-
-            //}
-            _ = MessageBox.Show("Nog te doen");
-        }
-
-        private void terugToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            InfoPagina.Laad(PrevPagina);
-            labelPaginaInBeeld.Text = PrevPagina;
-            SchermUpdate();
-        }
+        
+        
     }
 }
