@@ -25,6 +25,7 @@ namespace KenisBank
         private static readonly Random random = new Random();
         private readonly List<Regel> PaginaMetRegelsGevonden = new List<Regel>();
         private readonly List<string> history = new List<string>();
+        public string PrevPagina = string.Empty;
 
         public KennisMainForm()
         {
@@ -211,6 +212,7 @@ namespace KenisBank
         }
         private void PaginaButtonClick(object sender, EventArgs e)
         {
+            PrevPagina = labelPaginaInBeeld.Text;
             Button but = (Button)sender;
             string pagina = but.Text;
 
@@ -1034,6 +1036,13 @@ namespace KenisBank
 
             //}
             _ = MessageBox.Show("Nog te doen");
+        }
+
+        private void terugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InfoPagina.Laad(PrevPagina);
+            labelPaginaInBeeld.Text = PrevPagina;
+            SchermUpdate();
         }
     }
 }

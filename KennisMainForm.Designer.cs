@@ -148,11 +148,11 @@
             // 
             this.labelPaginaInBeeld.AutoSize = true;
             this.labelPaginaInBeeld.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPaginaInBeeld.Location = new System.Drawing.Point(7, 5);
+            this.labelPaginaInBeeld.Location = new System.Drawing.Point(9, 6);
             this.labelPaginaInBeeld.Name = "labelPaginaInBeeld";
-            this.labelPaginaInBeeld.Size = new System.Drawing.Size(86, 31);
+            this.labelPaginaInBeeld.Size = new System.Drawing.Size(247, 31);
             this.labelPaginaInBeeld.TabIndex = 1;
-            this.labelPaginaInBeeld.Text = "label1";
+            this.labelPaginaInBeeld.Text = "labelPaginaInBeeld";
             // 
             // panelMain
             // 
@@ -519,6 +519,7 @@
             this.terugToolStripMenuItem.Name = "terugToolStripMenuItem";
             this.terugToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
             this.terugToolStripMenuItem.Text = "Terug";
+            this.terugToolStripMenuItem.Click += new System.EventHandler(this.terugToolStripMenuItem_Click);
             // 
             // KennisMainForm
             // 
