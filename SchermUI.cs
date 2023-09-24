@@ -105,6 +105,45 @@ namespace KenisBank
             panel.Controls.Add(but);
             panelMain.Refresh();
         }
+        
+        // regel history regel
+        private void PlaatsHistoryOpScherm()
+        {
+            linkLabelHis0.Text = linkLabelHis1.Text = linkLabelHis2.Text = linkLabelHis3.Text = linkLabelHis4.Text = "";
+            Point pos = new Point();
+            if (history.Count > 0 && history[0] != null)
+            {
+                linkLabelHis0.Text = history[0].ToString();
+            }
+            if (history.Count > 1 && history[1] != null)
+            {
+                pos.X = linkLabelHis0.Location.X + linkLabelHis0.Width + 10;
+                pos.Y = linkLabelHis0.Location.Y;
+                linkLabelHis1.Location = pos;
+                linkLabelHis1.Text = history[1].ToString();
+            }
+            if (history.Count > 2 && history[2] != null)
+            {
+                pos.X = linkLabelHis1.Location.X + linkLabelHis1.Width + 10;
+                pos.Y = linkLabelHis1.Location.Y;
+                linkLabelHis2.Location = pos;
+                linkLabelHis2.Text = history[2].ToString();
+            }
+            if (history.Count > 3 && history[3] != null)
+            {
+                pos.X = linkLabelHis2.Location.X + linkLabelHis2.Width + 10;
+                pos.Y = linkLabelHis2.Location.Y;
+                linkLabelHis3.Location = pos;
+                linkLabelHis3.Text = history[3].ToString();
+            }
+            if (history.Count > 4 && history[4] != null)
+            {
+                pos.X = linkLabelHis3.Location.X + linkLabelHis3.Width + 10;
+                pos.Y = linkLabelHis3.Location.Y;
+                linkLabelHis4.Location = pos;
+                linkLabelHis4.Text = history[4].ToString();
+            }
+        }
 
         // toevoegen regel 
         public void Toevoegen(string text, type type, string url)

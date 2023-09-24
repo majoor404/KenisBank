@@ -39,13 +39,13 @@ namespace KenisBank
             if (InfoPagina.Laad("Start"))
             {
                 labelPaginaInBeeld.Text = "Start";
-                HistoryBalkUpdate(labelPaginaInBeeld.Text);
+                HistoryBalkAdd(labelPaginaInBeeld.Text);
             }
             else
             {
                 // start bestaan niet, maak lege
                 labelPaginaInBeeld.Text = "Start";
-                HistoryBalkUpdate(labelPaginaInBeeld.Text);
+                HistoryBalkAdd(labelPaginaInBeeld.Text);
                 saveHuidigePaginaToolStripMenuItem_Click(this, null);
             }
 
@@ -128,14 +128,14 @@ namespace KenisBank
             string pagina = but.Text;
 
             //pagina worden opgeslagen in lower case Enabled elke spatie vervangen door _
-            pagina = RemoveOudeWikiTekens(pagina);
+            pagina = InfoPagina.RemoveOudeWikiTekens(pagina);
 
             if (!InfoPagina.Laad(pagina))
             {
                 // dus nieuwe pagina
                 InfoPagina.PaginaMetRegels.Clear();
                 labelPaginaInBeeld.Text = pagina;
-                HistoryBalkUpdate(labelPaginaInBeeld.Text);
+                HistoryBalkAdd(labelPaginaInBeeld.Text);
                 SchermUpdate();
                 // meteen in edit mode
                 if (!editModeAanToolStripMenuItem.Checked)
@@ -147,7 +147,7 @@ namespace KenisBank
             else
             {
                 labelPaginaInBeeld.Text = pagina;
-                HistoryBalkUpdate(labelPaginaInBeeld.Text);
+                HistoryBalkAdd(labelPaginaInBeeld.Text);
                 // bouw Pagina
                 SchermUpdate();
             }
@@ -181,7 +181,7 @@ namespace KenisBank
             if (InfoPagina.Laad("Start"))
             {
                 labelPaginaInBeeld.Text = "Start";
-                HistoryBalkUpdate(labelPaginaInBeeld.Text);
+                HistoryBalkAdd(labelPaginaInBeeld.Text);
             }
 
             // bouw Pagina
@@ -436,21 +436,27 @@ namespace KenisBank
         }
         private void terugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InfoPagina.Laad(PrevPagina);
-            labelPaginaInBeeld.Text = PrevPagina;
-            SchermUpdate();
+            if (history.Count > 1)
+            {
+                string vorige_pagina = history[history.Count - 2];
+                InfoPagina.Laad(vorige_pagina);
+                labelPaginaInBeeld.Text = vorige_pagina;
+                history.RemoveAt(history.Count - 1);
+                PlaatsHistoryOpScherm();
+                SchermUpdate();
+            }
         }
         private void linkLabelHis1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             LinkLabel a = (LinkLabel)sender;
             editModeAanToolStripMenuItem.Checked = false;
             buttonEdit_Click(this, null);
-
-            // laad Start.xml
+            
             if (InfoPagina.Laad(a.Text))
             {
                 labelPaginaInBeeld.Text = a.Text;
-                HistoryBalkUpdate(labelPaginaInBeeld.Text);
+                HistoryBalkChange(labelPaginaInBeeld.Text);
+                PlaatsHistoryOpScherm();
             }
 
             // bouw Pagina
@@ -581,7 +587,6 @@ namespace KenisBank
                 InfoPagina.PaginaMetRegels[MakerInfoIndex].eigenaar_ = eigenaar;
             }
         }
- 
  
         // hulp roetines
         private static string RandomString(int length)
@@ -716,66 +721,34 @@ namespace KenisBank
         {
             return source?.IndexOf(substring, StringComparison.OrdinalIgnoreCase) > -1;
         }
-        private void HistoryBalkUpdate(string pagina)
+        private void HistoryBalkAdd(string pagina)
         {
-            for (int i = 0; i < history.Count; i++)
-            {
-                if (pagina == history[i])
-                {
-                    return;
-                }
-            }
-
             history.Add(pagina);
-            Point pos = new Point();
+
             if (history.Count > 5)
             {
                 history.RemoveAt(0);
             }
-            if (history.Count > 0 && history[0] != null)
-            {
-                linkLabelHis0.Text = history[0].ToString();
-            }
-            if (history.Count > 1 && history[1] != null)
-            {
-                pos.X = linkLabelHis0.Location.X + linkLabelHis0.Width + 10;
-                pos.Y = linkLabelHis0.Location.Y;
-                linkLabelHis1.Location = pos;
-                linkLabelHis1.Text = history[1].ToString();
-            }
-            if (history.Count > 2 && history[2] != null)
-            {
-                pos.X = linkLabelHis1.Location.X + linkLabelHis1.Width + 10;
-                pos.Y = linkLabelHis1.Location.Y;
-                linkLabelHis2.Location = pos;
-                linkLabelHis2.Text = history[2].ToString();
-            }
-            if (history.Count > 3 && history[3] != null)
-            {
-                pos.X = linkLabelHis2.Location.X + linkLabelHis2.Width + 10;
-                pos.Y = linkLabelHis2.Location.Y;
-                linkLabelHis3.Location = pos;
-                linkLabelHis3.Text = history[3].ToString();
-            }
-            if (history.Count > 4 && history[4] != null)
-            {
-                pos.X = linkLabelHis3.Location.X + linkLabelHis3.Width + 10;
-                pos.Y = linkLabelHis3.Location.Y;
-                linkLabelHis4.Location = pos;
-                linkLabelHis4.Text = history[4].ToString();
-            }
+
+            PlaatsHistoryOpScherm();
 
         }
-        public string RemoveOudeWikiTekens(string pagina)
+
+        private void HistoryBalkChange(string pagina)
         {
-            string ret = pagina;
-            ret = ret.Replace(" & ", "_");
-            ret = ret.Trim();
-            ret = ret.Replace(" ", "_");
-            ret = ret.Replace("'", "_");
-            return ret;
+            int gevonden_pos = history.Count;
+            for (int i = 0; i < 4; i++)
+            {
+                if (history[i] == pagina)
+                {
+                    gevonden_pos = i;
+                    break;
+                }
+            }
+            for (int i = gevonden_pos+1 ; i<4 ; i++)
+            {
+                history[i] = "";
+            }
         }
-        
-        
     }
 }

@@ -79,10 +79,7 @@ namespace KenisBank
             
             try
             {
-                string fi = file;
-                fi = fi.Trim();
-                fi = fi.Replace(" ", "_");
-                fi = fi.Replace("'", "_");
+                string fi = RemoveOudeWikiTekens(file);
                 string opslagnaam = $"Data\\{fi}.xml";
                 // backup
                 MaakBackUpFile(fi);
@@ -92,6 +89,16 @@ namespace KenisBank
                 File.WriteAllText(opslagnaam, xmlTekst);
             }
             catch { }
+        }
+
+        public string RemoveOudeWikiTekens(string pagina)
+        {
+            string ret = pagina;
+            ret = ret.Replace(" & ", "_");
+            ret = ret.Trim();
+            ret = ret.Replace(" ", "_");
+            ret = ret.Replace("'", "_");
+            return ret;
         }
 
         private static void MaakBackUpFile(string fi)
