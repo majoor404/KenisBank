@@ -94,11 +94,25 @@ namespace KenisBank
         public string RemoveOudeWikiTekens(string pagina)
         {
             string ret = pagina;
-            ret = ret.Replace(" & ", "_");
             ret = ret.Trim();
-            ret = ret.Replace(" ", "_");
-            ret = ret.Replace("'", "_");
-            return ret;
+            ret = ret.Replace(@"&", "");
+            ret = ret.Replace(@"\", "");
+            ret = ret.Replace(@"/", "");
+            ret = ret.Replace(@"(", "");
+            ret = ret.Replace(@")", "");
+            ret = ret.Replace(@" ", "_");
+            ret = ret.Replace(@"'", "_");
+            ret = ret.Replace(@"__", "_");
+
+            int pos = ret.IndexOf('"');
+            if (pos > -1)
+                ret = ret.Substring(0, pos) + ret.Substring(pos+1);
+            pos = ret.IndexOf('"');
+            if (pos > -1)
+                ret = ret.Substring(0, pos) + ret.Substring(pos + 1);
+
+
+            return ret.ToLower();
         }
 
         private static void MaakBackUpFile(string fi)

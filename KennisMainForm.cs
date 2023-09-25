@@ -355,6 +355,7 @@ namespace KenisBank
                 // save als 
                 InfoPagina.Save(Path.GetFileNameWithoutExtension(file.Name));
             }
+            MessageBox.Show("Klaar import");
         }
         private void allePaginasToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -414,6 +415,8 @@ namespace KenisBank
                     }
                 }
                 // bouw Pagina
+                labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
+
                 InfoPagina.PaginaMetRegels = PaginaMetRegelsGevonden;
                 SchermUpdate();
                 MessageBox.Show("Klaar met zoeken");
@@ -421,18 +424,38 @@ namespace KenisBank
         }
         private void zoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-            //                .OrderByDescending(f => f.Name)
-            //                .ToList();
+            // lijst met all pagina's opgeslagen.
+            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+                            .OrderByDescending(f => f.Name)
+                            .ToList();
 
-            //List<FileInfo> links = new List<FileInfo>(files);
+            // maak lijst met de linken naar pagina's
+            List<string> filenaam = new List<string>();
+            foreach (FileInfo file in files)
+            {
+                _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+                {
+                    if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
+                    {
+                        string linkNaarFile = InfoPagina.RemoveOudeWikiTekens(InfoPagina.PaginaMetRegels[i].tekst_);
+                        if (!filenaam.Contains(linkNaarFile))
+                        {
+                            filenaam.Add(linkNaarFile);
+                        }
+                    }
+                }
+            }
+
+            foreach (FileInfo file in files)
+            {
+                // check of filenaam een item bevat wat geen file is
+                string FileNaam = Path.GetFileNameWithoutExtension(file.Name);
+                if (!filenaam.Contains(FileNaam))
+                    MessageBox.Show($"Wees : \n{FileNaam}");
+            }
 
 
-            //foreach (FileInfo file in files)
-            //{
-
-            //}
-            _ = MessageBox.Show("Nog te doen");
         }
         private void terugToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -733,7 +756,6 @@ namespace KenisBank
             PlaatsHistoryOpScherm();
 
         }
-
         private void HistoryBalkChange(string pagina)
         {
             int gevonden_pos = history.Count;
@@ -747,6 +769,7 @@ namespace KenisBank
             }
             for (int i = gevonden_pos+1 ; i<4 ; i++)
             {
+                if(history.Count > i)
                 history[i] = "";
             }
         }
