@@ -746,6 +746,11 @@ namespace KenisBank
         }
         private void HistoryBalkAdd(string pagina)
         {
+            if(pagina == "Start")
+            {
+                history.Clear();
+            }
+            
             history.Add(pagina);
 
             if (history.Count > 5)
@@ -767,10 +772,9 @@ namespace KenisBank
                     break;
                 }
             }
-            for (int i = gevonden_pos+1 ; i<4 ; i++)
+            for (int i = history.Count - 1;  i > gevonden_pos; i--)
             {
-                if(history.Count > i)
-                history[i] = "";
+                history.RemoveAt(i);
             }
         }
     }
