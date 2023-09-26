@@ -63,7 +63,7 @@ namespace KenisBank
         // interact met gebruiker
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            if (labelPaginaInBeeld.Text == "Zoek resultaat" || labelPaginaInBeeld.Text == "Alle paginas")
+            if (labelPaginaInBeeld.Text.Substring(0,4) == "Zoek" || labelPaginaInBeeld.Text == "Alle paginas" || labelPaginaInBeeld.Text.Substring(0,4) == "Wees")
             {
                 editModeAanToolStripMenuItem.Checked = false;
                 return;
@@ -423,13 +423,13 @@ namespace KenisBank
         private void zoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // lijst met all pagina's opgeslagen.
-            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+            List<FileInfo> XMLFilesInDataDir = new DirectoryInfo("Data").EnumerateFiles("*.xml")
                             .OrderByDescending(f => f.Name)
                             .ToList();
 
             // maak lijst met de linken naar pagina's
-            List<string> filenaam = new List<string>();
-            foreach (FileInfo file in files)
+            List<string> LinkNaarPaginaLijst = new List<string>();
+            foreach (FileInfo file in XMLFilesInDataDir)
             {
                 _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
                 for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
@@ -437,31 +437,28 @@ namespace KenisBank
                     if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
                     {
                         string linkNaarFile = InfoPagina.RemoveOudeWikiTekens(InfoPagina.PaginaMetRegels[i].tekst_);
-                        if (!filenaam.Contains(linkNaarFile))
+                        if (!LinkNaarPaginaLijst.Contains(linkNaarFile))
                         {
-                            filenaam.Add(linkNaarFile);
+                            LinkNaarPaginaLijst.Add(linkNaarFile);
                         }
                     }
                 }
             }
 
-            foreach (FileInfo file in files)
+            InfoPagina.PaginaMetRegels.Clear();
+
+            foreach (FileInfo file in XMLFilesInDataDir)
             {
                 // check of filenaam een item bevat wat geen file is
                 string FileNaam = Path.GetFileNameWithoutExtension(file.Name);
-                if (!filenaam.Contains(FileNaam) && FileNaam != "Start")
+                if (!LinkNaarPaginaLijst.Contains(FileNaam) && FileNaam != "Start")
                 {
-                    DialogResult dialogResult = MessageBox.Show($"Delete deze wees file ? \n{FileNaam}", "Vraagje", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        File.Delete(file.FullName);
-                        //MessageBox.Show($"Wees : \n{FileNaam}");
-                    }
-
+                    Regel regel = new Regel(FileNaam, type.PaginaNaam, "");
+                    InfoPagina.PaginaMetRegels.Add(regel);
                 }
             }
-
-
+            labelPaginaInBeeld.Text = $"Wees Pagina's";
+            SchermUpdate();
         }
         private void terugToolStripMenuItem_Click(object sender, EventArgs e)
         {
