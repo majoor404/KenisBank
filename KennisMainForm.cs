@@ -137,12 +137,6 @@ namespace KenisBank
                 labelPaginaInBeeld.Text = pagina;
                 HistoryBalkAdd(labelPaginaInBeeld.Text);
                 SchermUpdate();
-                // meteen in edit mode
-                if (!editModeAanToolStripMenuItem.Checked)
-                {
-                    editModeAanToolStripMenuItem.Checked = true;
-                    buttonEdit_Click(this, null);
-                }
             }
             else
             {
@@ -400,16 +394,20 @@ namespace KenisBank
                 foreach (FileInfo file in files)
                 {
                     _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
-                    if (ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
-                    {
-                        Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
-                        PaginaMetRegelsGevonden.Add(regel);
-                    }
+                    //if (ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
+                    //{
+                    //    Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
+                    //    PaginaMetRegelsGevonden.Add(regel);
+                    //}
                     for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
                     {
                         if (ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text)/* || ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].url_, ZF.textBoxZoek.Text)*/)
                         {
-                            Regel regel = new Regel(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].type_, InfoPagina.PaginaMetRegels[i].url_);
+                            Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new Regel(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].type_, InfoPagina.PaginaMetRegels[i].url_);
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new Regel("", type.Leeg, "");
                             PaginaMetRegelsGevonden.Add(regel);
                         }
                     }
@@ -451,8 +449,16 @@ namespace KenisBank
             {
                 // check of filenaam een item bevat wat geen file is
                 string FileNaam = Path.GetFileNameWithoutExtension(file.Name);
-                if (!filenaam.Contains(FileNaam))
-                    MessageBox.Show($"Wees : \n{FileNaam}");
+                if (!filenaam.Contains(FileNaam) && FileNaam != "Start")
+                {
+                    DialogResult dialogResult = MessageBox.Show($"Delete deze wees file ? \n{FileNaam}", "Vraagje", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        File.Delete(file.FullName);
+                        //MessageBox.Show($"Wees : \n{FileNaam}");
+                    }
+
+                }
             }
 
 

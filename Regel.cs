@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace KenisBank
@@ -93,26 +95,46 @@ namespace KenisBank
 
         public string RemoveOudeWikiTekens(string pagina)
         {
-            string ret = pagina;
-            ret = ret.Trim();
-            ret = ret.Replace(@"&", "");
-            ret = ret.Replace(@"\", "");
-            ret = ret.Replace(@"/", "");
-            ret = ret.Replace(@"(", "");
-            ret = ret.Replace(@")", "");
-            ret = ret.Replace(@" ", "_");
-            ret = ret.Replace(@"'", "_");
-            ret = ret.Replace(@"__", "_");
+            string resultaat = "";
+            for (int i = 0; i < pagina.Length; i++)
+            {
+                char test = pagina[i];
 
-            int pos = ret.IndexOf('"');
-            if (pos > -1)
-                ret = ret.Substring(0, pos) + ret.Substring(pos+1);
-            pos = ret.IndexOf('"');
-            if (pos > -1)
-                ret = ret.Substring(0, pos) + ret.Substring(pos + 1);
+                if (test > 127)
+                {
+                    resultaat = resultaat + " ";
+                }
+                else
+                {
+                    resultaat = resultaat + test;
+                }
+            }
+
+            resultaat.Trim();
+
+            resultaat = resultaat.Replace(@" ", "_");
+            resultaat = resultaat.Replace("\"", "");
+            resultaat = resultaat.Replace(@"&", "");
+            resultaat = resultaat.Replace(@"\", "");
+            resultaat = resultaat.Replace(@"/", "");
+            resultaat = resultaat.Replace(@"(", "");
+            resultaat = resultaat.Replace(@")", "");
+            resultaat = resultaat.Replace(@" ", "_");
+            resultaat = resultaat.Replace(@"'", "_");
+            resultaat = resultaat.Replace(@"__", "_");
 
 
-            return ret.ToLower();
+            
+
+            //int pos = ret.IndexOf('"');
+            //if (pos > -1)
+            //    ret = ret.Substring(0, pos) + ret.Substring(pos + 1);
+            //pos = ret.IndexOf('"');
+            //if (pos > -1)
+            //    ret = ret.Substring(0, pos) + ret.Substring(pos + 1);
+
+            return resultaat.ToLower();
+            
         }
 
         private static void MaakBackUpFile(string fi)
