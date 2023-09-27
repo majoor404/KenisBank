@@ -140,8 +140,8 @@ namespace KenisBank
         private static void MaakBackUpFile(string fi)
         {
             string opslagnaam = $"Data\\{fi}.xml";
-            string backup1 = $"Data\\{fi}.xm1";
-            string backup2 = $"Data\\{fi}.xm2";
+            string backup1 = $"Data\\{fi}_backup1.xml";
+            string backup2 = $"Data\\{fi}_backup2.xml";
                         
             // van 1 naar 2
             if(File.Exists(backup1))

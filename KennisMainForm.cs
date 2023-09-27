@@ -376,7 +376,23 @@ namespace KenisBank
         }
         private void vorigeVersiePaginaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _ = MessageBox.Show("Nog te doen");
+            // test of vorige versie bestaat
+            string fi = labelPaginaInBeeld.Text;
+            string opslagnaam = fi;
+            string backup1 = fi + "_backup1";
+            string backup2 = fi + "_backup2";
+
+            BackupTerug BT = new BackupTerug();
+
+            BT.PaginaNaam.Text = labelPaginaInBeeld.Text;
+            BT.labelHuidig.Text = GetLaatsteEdit(opslagnaam);
+            BT.labelBackup1.Text = GetLaatsteEdit(backup1);
+            BT.labelBackup2.Text = GetLaatsteEdit(backup2);
+
+            BT.ShowDialog();
+            
+            InfoPagina.Laad(fi);
+            SchermUpdate();
         }
         private void zoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -779,6 +795,24 @@ namespace KenisBank
             {
                 history.RemoveAt(i);
             }
+        }
+
+        private string GetLaatsteEdit(string file)
+        {
+            string ret = "";
+            string opslagnaam = $"Data\\{file}.xml";
+            if (File.Exists(opslagnaam))
+            {
+                InfoPagina.Laad(file);
+                for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+                {
+                    if (InfoPagina.PaginaMetRegels[i].type_ == type.EditInfo)
+                    {
+                        ret = InfoPagina.PaginaMetRegels[i].tekst_;
+                    }
+                }
+            }
+            return ret;
         }
     }
 }
