@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using System;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace KenisBank
 {
@@ -89,7 +90,7 @@ namespace KenisBank
         private void PlaatsPaginaOpBeeld(string link, string locatie, int eigenaar)
         {
             Panel panel = MaakNewPanel(eigenaar);
-            System.Windows.Forms.Button but = new Button();
+            System.Windows.Forms.Button but = new System.Windows.Forms.Button();
 
             Point org = new Point(but.Location.X, but.Location.Y);
             org.X += 30;
@@ -326,6 +327,27 @@ namespace KenisBank
                     panelGeselecteerd = panel;
                 }
             }
+        }
+
+        // ProgressBar
+        private void ProgressBarAan(int max)
+        {
+            progressBar.Maximum = max;
+            progressBar.Visible = true;
+            progressBar.Value = 1;
+            progressBar.Step = 1;
+        }
+        private void ProgressBarUit()
+        {
+            progressBar.Value = 1;
+            progressBar.Visible = false;
+        }
+        private void ProgressBarUpdate()
+        {
+            progressBar.PerformStep();
+            progressBar.Refresh();
+            _ = new System.Threading.ManualResetEvent(false).WaitOne(1);
+
         }
     }
 }

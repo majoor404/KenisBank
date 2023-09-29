@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 
 /*
@@ -51,6 +52,8 @@ namespace KenisBank
 
             // bouw Pagina
             SchermUpdate();
+
+            ProgressBarAan(100);
         }
         private void KennisMainForm_Resize(object sender, EventArgs e)
         {
@@ -358,19 +361,19 @@ namespace KenisBank
                             .ToList();
 
             InfoPagina.PaginaMetRegels.Clear();
-            int zoekinfo = files.Count;
+            ProgressBarAan(files.Count);
 
             foreach (FileInfo file in files)
             {
-                labelInfo.Text = zoekinfo.ToString();
-                labelInfo.Refresh();
-                zoekinfo--;
-
-                Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
-                InfoPagina.PaginaMetRegels.Add(regel);
+                ProgressBarUpdate();
+                if (!file.Name.Contains("_backup"))
+                {
+                    Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
+                    InfoPagina.PaginaMetRegels.Add(regel);
+                }
             }
             SchermUpdate();
-
+            ProgressBarUit();
             labelPaginaInBeeld.Text = "Alle paginas";
 
         }
@@ -405,35 +408,35 @@ namespace KenisBank
                 List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
                             .OrderByDescending(f => f.Name)
                             .ToList();
-
+                
+                ProgressBarAan(files.Count);
 
                 foreach (FileInfo file in files)
                 {
-                    _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
-                    //if (ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
-                    //{
-                    //    Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
-                    //    PaginaMetRegelsGevonden.Add(regel);
-                    //}
-                    for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+                    ProgressBarUpdate();
+                    if (!file.Name.Contains("_backup"))
                     {
-                        if (ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text)/* || ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].url_, ZF.textBoxZoek.Text)*/)
+                        _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                        
+                        for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
                         {
-                            Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new Regel(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].type_, InfoPagina.PaginaMetRegels[i].url_);
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new Regel("", type.Leeg, "");
-                            PaginaMetRegelsGevonden.Add(regel);
+                            if (ContainsCaseInsensitive(InfoPagina.PaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text))
+                            {
+                                Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
+                                PaginaMetRegelsGevonden.Add(regel);
+                                regel = new Regel(InfoPagina.PaginaMetRegels[i].tekst_, InfoPagina.PaginaMetRegels[i].type_, InfoPagina.PaginaMetRegels[i].url_);
+                                PaginaMetRegelsGevonden.Add(regel);
+                                regel = new Regel("", type.Leeg, "");
+                                PaginaMetRegelsGevonden.Add(regel);
+                            }
                         }
                     }
                 }
                 // bouw Pagina
                 labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
-
                 InfoPagina.PaginaMetRegels = PaginaMetRegelsGevonden;
                 SchermUpdate();
-                MessageBox.Show("Klaar met zoeken");
+                ProgressBarUit();
             }
         }
         private void zoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
@@ -443,31 +446,37 @@ namespace KenisBank
                             .OrderByDescending(f => f.Name)
                             .ToList();
 
+            ProgressBarAan(XMLFilesInDataDir.Count);
             // maak lijst met de linken naar pagina's
             List<string> LinkNaarPaginaLijst = new List<string>();
             foreach (FileInfo file in XMLFilesInDataDir)
             {
-                _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
-                for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+                ProgressBarUpdate();
+                if (!file.Name.Contains("_backup"))
                 {
-                    if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
+                    _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                    for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
                     {
-                        string linkNaarFile = InfoPagina.RemoveOudeWikiTekens(InfoPagina.PaginaMetRegels[i].tekst_);
-                        if (!LinkNaarPaginaLijst.Contains(linkNaarFile))
+                        if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
                         {
-                            LinkNaarPaginaLijst.Add(linkNaarFile);
+                            string linkNaarFile = InfoPagina.RemoveOudeWikiTekens(InfoPagina.PaginaMetRegels[i].tekst_);
+                            if (!LinkNaarPaginaLijst.Contains(linkNaarFile))
+                            {
+                                LinkNaarPaginaLijst.Add(linkNaarFile);
+                            }
                         }
                     }
                 }
             }
-
+            ProgressBarUit();
             InfoPagina.PaginaMetRegels.Clear();
-
+            ProgressBarAan(XMLFilesInDataDir.Count);
             foreach (FileInfo file in XMLFilesInDataDir)
             {
+                ProgressBarUpdate();
                 // check of filenaam een item bevat wat geen file is
                 string FileNaam = Path.GetFileNameWithoutExtension(file.Name);
-                if (!LinkNaarPaginaLijst.Contains(FileNaam) && FileNaam != "Start")
+                if (!LinkNaarPaginaLijst.Contains(FileNaam) && FileNaam != "Start" && !file.Name.Contains("_backup"))
                 {
                     Regel regel = new Regel(FileNaam, type.PaginaNaam, "");
                     InfoPagina.PaginaMetRegels.Add(regel);
@@ -475,6 +484,7 @@ namespace KenisBank
             }
             labelPaginaInBeeld.Text = $"Wees Pagina's";
             SchermUpdate();
+            ProgressBarUit();
         }
         private void terugToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -516,49 +526,53 @@ namespace KenisBank
 
                 foreach (FileInfo file in files)
                 {
-                    labelInfo.Text = $"Lees {file.Name}";
-                    labelInfo.Refresh();
-                    // laad file
-                    _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
-                    // verander
-                    int change = InfoPagina.PaginaMetRegels.Count;
-                    // door file heenstappen
-                    for (int i = InfoPagina.PaginaMetRegels.Count - 1; i > 0; i--)
+                    if (!file.Name.Contains("_backup"))
                     {
-                        //bij import vanuit oude wiki is link naar dir gelijk aan link naar file.
-                        // dus check of het geen file en geen dir is voordat ik verwijder
-
-                        if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
+                        labelInfo.Text = $"Lees {file.Name}";
+                        labelInfo.Refresh();
+                        // laad file
+                        _ = InfoPagina.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                        // verander
+                        int change = InfoPagina.PaginaMetRegels.Count;
+                        // door file heenstappen
+                        for (int i = InfoPagina.PaginaMetRegels.Count - 1; i > 0; i--)
                         {
-                            if (!File.Exists(InfoPagina.PaginaMetRegels[i].url_))
+                            //bij import vanuit oude wiki is link naar dir gelijk aan link naar file.
+                            // dus check of het geen file en geen dir is voordat ik verwijder
+
+                            if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkFile)
                             {
-                                if (!Directory.Exists((InfoPagina.PaginaMetRegels[i].url_)))
+                                if (!File.Exists(InfoPagina.PaginaMetRegels[i].url_))
                                 {
-                                    _ = MessageBox.Show($"Remove link naar file \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}\n{InfoPagina.PaginaMetRegels[i].url_}");
+                                    if (!Directory.Exists((InfoPagina.PaginaMetRegels[i].url_)))
+                                    {
+                                        _ = MessageBox.Show($"Remove link naar file \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}\n{InfoPagina.PaginaMetRegels[i].url_}");
+                                        InfoPagina.PaginaMetRegels.RemoveAt(i);
+                                    }
+                                }
+                            }
+                            else if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
+                            {
+                                if (!Directory.Exists(InfoPagina.PaginaMetRegels[i].url_))
+                                {
+                                    _ = MessageBox.Show($"Remove link naar dir \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                    InfoPagina.PaginaMetRegels.RemoveAt(i);
+                                }
+                            }
+                            else if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
+                            {
+                                if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
+                                {
+                                    _ = MessageBox.Show($"Remove link naar Pagina \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
                                     InfoPagina.PaginaMetRegels.RemoveAt(i);
                                 }
                             }
                         }
-                        else if (InfoPagina.PaginaMetRegels[i].type_ == type.LinkDir)
+
+                        if (change != InfoPagina.PaginaMetRegels.Count)
                         {
-                            if (!Directory.Exists(InfoPagina.PaginaMetRegels[i].url_))
-                            {
-                                _ = MessageBox.Show($"Remove link naar dir \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                InfoPagina.PaginaMetRegels.RemoveAt(i);
-                            }
+                            InfoPagina.Save(Path.GetFileNameWithoutExtension(file.Name));
                         }
-                        else if (InfoPagina.PaginaMetRegels[i].type_ == type.PaginaNaam)
-                        {
-                            if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
-                            {
-                                _ = MessageBox.Show($"Remove link naar Pagina \n{InfoPagina.PaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                InfoPagina.PaginaMetRegels.RemoveAt(i);
-                            }
-                        }
-                    }
-                    if (change != InfoPagina.PaginaMetRegels.Count)
-                    {
-                        InfoPagina.Save(Path.GetFileNameWithoutExtension(file.Name));
                     }
                 }
                 _ = MessageBox.Show("Klaar met clean kennisbank");
