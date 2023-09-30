@@ -150,7 +150,7 @@ namespace KenisBank
         public void Toevoegen(string text, type type, string url)
         {
             Regel regel = new Regel(text, type, url);
-            InfoPagina.PaginaMetRegels.Add(regel);
+            InfoPagina.InhoudPaginaMetRegels.Add(regel);
             change_pagina = true;
         }
         private void toevoegenLinkNaarDirToolStripMenuItem_Click(object sender, EventArgs e)
@@ -227,11 +227,11 @@ namespace KenisBank
             {
                 int eigenaar = (int)panelGeselecteerd.Tag;
 
-                for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+                for (int i = 0; i < InfoPagina.InhoudPaginaMetRegels.Count; i++)
                 {
-                    if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
+                    if (InfoPagina.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
                     {
-                        InfoPagina.PaginaMetRegels.RemoveAt(i);
+                        InfoPagina.InhoudPaginaMetRegels.RemoveAt(i);
                     }
                 }
 
@@ -257,7 +257,7 @@ namespace KenisBank
             {
                 a.BackColor = panelMain.BackColor;
                 a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == InfoPagina.PaginaMetRegels[InfoPagina.PaginaMetRegels.Count - 1].eigenaar_)
+                if ((int)a.Tag == InfoPagina.InhoudPaginaMetRegels[InfoPagina.InhoudPaginaMetRegels.Count - 1].eigenaar_)
                 {
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
@@ -274,7 +274,7 @@ namespace KenisBank
             {
                 a.BackColor = panelMain.BackColor;
                 a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == InfoPagina.PaginaMetRegels[0].eigenaar_)
+                if ((int)a.Tag == InfoPagina.InhoudPaginaMetRegels[0].eigenaar_)
                 {
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
@@ -293,20 +293,20 @@ namespace KenisBank
             int eigenaar = (int)panelGeselecteerd.Tag;
             int nieuw_index = -1;
 
-            for (int i = 0; i < InfoPagina.PaginaMetRegels.Count; i++)
+            for (int i = 0; i < InfoPagina.InhoudPaginaMetRegels.Count; i++)
             {
-                if (InfoPagina.PaginaMetRegels[i].eigenaar_ == eigenaar)
+                if (InfoPagina.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
                 {
                     nieuw_index = i + richting;
 
-                    if (nieuw_index < 0 || nieuw_index + 1 > InfoPagina.PaginaMetRegels.Count)
+                    if (nieuw_index < 0 || nieuw_index + 1 > InfoPagina.InhoudPaginaMetRegels.Count)
                     {
                         return;
                     }
 
-                    Regel gekozen = InfoPagina.PaginaMetRegels[i];
-                    InfoPagina.PaginaMetRegels.RemoveAt(i);
-                    InfoPagina.PaginaMetRegels.Insert(nieuw_index, gekozen);
+                    Regel gekozen = InfoPagina.InhoudPaginaMetRegels[i];
+                    InfoPagina.InhoudPaginaMetRegels.RemoveAt(i);
+                    InfoPagina.InhoudPaginaMetRegels.Insert(nieuw_index, gekozen);
                     i = 1000;
                     change_pagina = true;
                 }
@@ -317,7 +317,7 @@ namespace KenisBank
 
             // nu weer regel op nieuw_index kleuren
             // get eigenaar nummer
-            int eig = InfoPagina.PaginaMetRegels[nieuw_index].eigenaar_;
+            int eig = InfoPagina.InhoudPaginaMetRegels[nieuw_index].eigenaar_;
             foreach (Panel panel in panelMain.Controls)
             {
                 if ((int)panel.Tag == eig)

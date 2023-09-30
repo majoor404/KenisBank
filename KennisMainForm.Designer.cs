@@ -75,6 +75,8 @@
             this.panelInfo = new System.Windows.Forms.Panel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelInfo = new System.Windows.Forms.Label();
+            this.Undo = new System.Windows.Forms.Button();
+            this.Redu = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -362,8 +364,10 @@
             // 
             // panelUpDown
             // 
-            this.panelUpDown.BackColor = System.Drawing.Color.LightSalmon;
+            this.panelUpDown.BackColor = System.Drawing.SystemColors.Highlight;
             this.panelUpDown.Controls.Add(this.buttonSaveCloseEdit);
+            this.panelUpDown.Controls.Add(this.Redu);
+            this.panelUpDown.Controls.Add(this.Undo);
             this.panelUpDown.Controls.Add(this.buttonEditSelectie);
             this.panelUpDown.Controls.Add(this.buttonDelete);
             this.panelUpDown.Controls.Add(this.button6);
@@ -376,7 +380,7 @@
             this.panelUpDown.Controls.Add(this.buttonMoveUp);
             this.panelUpDown.Location = new System.Drawing.Point(1034, 81);
             this.panelUpDown.Name = "panelUpDown";
-            this.panelUpDown.Size = new System.Drawing.Size(413, 293);
+            this.panelUpDown.Size = new System.Drawing.Size(413, 326);
             this.panelUpDown.TabIndex = 0;
             this.panelUpDown.Visible = false;
             // 
@@ -384,7 +388,7 @@
             // 
             this.buttonSaveCloseEdit.Enabled = false;
             this.buttonSaveCloseEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(6, 255);
+            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(6, 290);
             this.buttonSaveCloseEdit.Name = "buttonSaveCloseEdit";
             this.buttonSaveCloseEdit.Size = new System.Drawing.Size(400, 29);
             this.buttonSaveCloseEdit.TabIndex = 10;
@@ -534,6 +538,28 @@
             this.labelInfo.TabIndex = 0;
             this.labelInfo.Text = "*";
             // 
+            // Undo
+            // 
+            this.Undo.Enabled = false;
+            this.Undo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Undo.Location = new System.Drawing.Point(6, 255);
+            this.Undo.Name = "Undo";
+            this.Undo.Size = new System.Drawing.Size(191, 29);
+            this.Undo.TabIndex = 9;
+            this.Undo.Text = "Undo";
+            this.Undo.UseVisualStyleBackColor = true;
+            // 
+            // Redu
+            // 
+            this.Redu.Enabled = false;
+            this.Redu.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Redu.Location = new System.Drawing.Point(215, 255);
+            this.Redu.Name = "Redu";
+            this.Redu.Size = new System.Drawing.Size(191, 29);
+            this.Redu.TabIndex = 9;
+            this.Redu.Text = "Redu";
+            this.Redu.UseVisualStyleBackColor = true;
+            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -611,6 +637,8 @@
         private System.Windows.Forms.ToolStripMenuItem terugToolStripMenuItem;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label labelInfo;
+        private System.Windows.Forms.Button Redu;
+        private System.Windows.Forms.Button Undo;
     }
 }
 

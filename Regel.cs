@@ -37,15 +37,15 @@ namespace KenisBank
         public int eigenaar_ { set; get; }
 
 
-        public List<Regel> PaginaMetRegels = new List<Regel>();
+        public List<Regel> InhoudPaginaMetRegels = new List<Regel>();
 
         public bool Laad(string file)
         {
             try
             {
                 string xmlTekst = File.ReadAllText($"Data\\{file}.xml");
-                PaginaMetRegels.Clear();
-                PaginaMetRegels = FromXML<List<Regel>>(xmlTekst);
+                InhoudPaginaMetRegels.Clear();
+                InhoudPaginaMetRegels = FromXML<List<Regel>>(xmlTekst);
                 return true;
             }
             catch
@@ -59,7 +59,7 @@ namespace KenisBank
             string edit = $"Laatste edit door : {Environment.UserName} op {DateTime.Now.ToString()}";
             bool al_edit_veld_aanwezig = false;
             // toevoegen EditInfo
-            foreach(Regel regel in PaginaMetRegels)
+            foreach(Regel regel in InhoudPaginaMetRegels)
             {
                 if(regel.type_ == type.EditInfo)
                 {
@@ -76,7 +76,7 @@ namespace KenisBank
                 r.type_ = type.EditInfo;
                 r.tekst_ = edit;
                 r.url_ = "";
-                PaginaMetRegels.Add(r);
+                InhoudPaginaMetRegels.Add(r);
             }
             
             try
@@ -87,7 +87,7 @@ namespace KenisBank
                 MaakBackUpFile(fi);
 
                 // save
-                string xmlTekst = ToXML(PaginaMetRegels);
+                string xmlTekst = ToXML(InhoudPaginaMetRegels);
                 File.WriteAllText(opslagnaam, xmlTekst);
             }
             catch { }
