@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Text.RegularExpressions;
 
 namespace KenisBank
 {
@@ -150,7 +151,14 @@ namespace KenisBank
         public void Toevoegen(string text, type type, string url)
         {
             Regel regel = new Regel(text, type, url);
-            InfoPagina.InhoudPaginaMetRegels.Add(regel);
+            regel.ID_ = MaakID();
+            PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
+            
+            Regel rg = new Regel(text, type, url);
+            regel.ID_ = MaakID();
+            rg.undo_ = type.Toevoegen;
+            PaginaInhoud.ChangePagina.Add(rg);
+            
             change_pagina = true;
         }
         private void toevoegenLinkNaarDirToolStripMenuItem_Click(object sender, EventArgs e)
@@ -227,11 +235,20 @@ namespace KenisBank
             {
                 int eigenaar = (int)panelGeselecteerd.Tag;
 
-                for (int i = 0; i < InfoPagina.InhoudPaginaMetRegels.Count; i++)
+                for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
                 {
-                    if (InfoPagina.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
+                    if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
                     {
-                        InfoPagina.InhoudPaginaMetRegels.RemoveAt(i);
+                        Regel rg = new Regel();
+                        rg.ID_ = MaakID();
+                        rg.tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
+                        rg.url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_;
+                        rg.type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_;
+                        rg.undo_ = type.Delete;
+                        rg.index_ = i;
+                        PaginaInhoud.ChangePagina.Add(rg);
+                        PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                        change_pagina = true;
                     }
                 }
 
@@ -257,7 +274,7 @@ namespace KenisBank
             {
                 a.BackColor = panelMain.BackColor;
                 a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == InfoPagina.InhoudPaginaMetRegels[InfoPagina.InhoudPaginaMetRegels.Count - 1].eigenaar_)
+                if ((int)a.Tag == PaginaInhoud.InhoudPaginaMetRegels[PaginaInhoud.InhoudPaginaMetRegels.Count - 1].eigenaar_)
                 {
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
@@ -274,7 +291,7 @@ namespace KenisBank
             {
                 a.BackColor = panelMain.BackColor;
                 a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == InfoPagina.InhoudPaginaMetRegels[0].eigenaar_)
+                if ((int)a.Tag == PaginaInhoud.InhoudPaginaMetRegels[0].eigenaar_)
                 {
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
@@ -293,21 +310,33 @@ namespace KenisBank
             int eigenaar = (int)panelGeselecteerd.Tag;
             int nieuw_index = -1;
 
-            for (int i = 0; i < InfoPagina.InhoudPaginaMetRegels.Count; i++)
+            for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
             {
-                if (InfoPagina.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
+                if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
                 {
                     nieuw_index = i + richting;
 
-                    if (nieuw_index < 0 || nieuw_index + 1 > InfoPagina.InhoudPaginaMetRegels.Count)
+                    if (nieuw_index < 0 || nieuw_index + 1 > PaginaInhoud.InhoudPaginaMetRegels.Count)
                     {
                         return;
                     }
 
-                    Regel gekozen = InfoPagina.InhoudPaginaMetRegels[i];
-                    InfoPagina.InhoudPaginaMetRegels.RemoveAt(i);
-                    InfoPagina.InhoudPaginaMetRegels.Insert(nieuw_index, gekozen);
+                    Regel rg = new Regel();
+                    rg.ID_ = MaakID();
+                    rg.tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
+                    rg.url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_;
+                    rg.type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_;
+                    rg.undo_ = type.Move;
+                    rg.index_ = nieuw_index;
+                    rg.eigenaar_ = richting;
+
+                    Regel gekozen = PaginaInhoud.InhoudPaginaMetRegels[i];
+                    PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                    PaginaInhoud.InhoudPaginaMetRegels.Insert(nieuw_index, gekozen);
                     i = 1000;
+                    
+                    PaginaInhoud.ChangePagina.Add(rg);
+
                     change_pagina = true;
                 }
             }
@@ -317,7 +346,7 @@ namespace KenisBank
 
             // nu weer regel op nieuw_index kleuren
             // get eigenaar nummer
-            int eig = InfoPagina.InhoudPaginaMetRegels[nieuw_index].eigenaar_;
+            int eig = PaginaInhoud.InhoudPaginaMetRegels[nieuw_index].eigenaar_;
             foreach (Panel panel in panelMain.Controls)
             {
                 if ((int)panel.Tag == eig)
@@ -332,6 +361,7 @@ namespace KenisBank
         // ProgressBar
         private void ProgressBarAan(int max)
         {
+            if (max == 0) max = 1;
             progressBar.Maximum = max;
             progressBar.Visible = true;
             progressBar.Value = 1;
@@ -349,5 +379,7 @@ namespace KenisBank
             _ = new System.Threading.ManualResetEvent(false).WaitOne(1);
 
         }
+
+       
     }
 }

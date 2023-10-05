@@ -17,7 +17,10 @@ namespace KenisBank
         TekstBlok,
         PaginaNaam,
         Leeg,
-        EditInfo
+        EditInfo,
+        Delete,
+        Move,
+        Toevoegen
     }
 
     [Serializable]
@@ -35,12 +38,24 @@ namespace KenisBank
         public type type_ { set; get; }
         public string url_ { set; get; }
         public int eigenaar_ { set; get; }
+        public type undo_ { set; get; }
+        public int index_ { set; get; }
+        public int ID_ { set; get; }
 
 
         public List<Regel> InhoudPaginaMetRegels = new List<Regel>();
+        public List<Regel> ChangePagina = new List<Regel>();
 
         public bool Laad(string file)
         {
+            try
+            {
+                string xmlTekst = File.ReadAllText($"Data\\{file}_Change.xml");
+                ChangePagina.Clear();
+                ChangePagina = FromXML<List<Regel>>(xmlTekst);
+            }
+            catch { }
+            
             try
             {
                 string xmlTekst = File.ReadAllText($"Data\\{file}.xml");
@@ -53,7 +68,6 @@ namespace KenisBank
                 return false;
             }
         }
-
         public void Save(string file)
         {
             string edit = $"Laatste edit door : {Environment.UserName} op {DateTime.Now.ToString()}";
@@ -84,15 +98,23 @@ namespace KenisBank
                 string fi = RemoveOudeWikiTekens(file);
                 string opslagnaam = $"Data\\{fi}.xml";
                 // backup
-                MaakBackUpFile(fi);
+                //MaakBackUpFile(fi);
 
                 // save
                 string xmlTekst = ToXML(InhoudPaginaMetRegels);
                 File.WriteAllText(opslagnaam, xmlTekst);
             }
             catch { }
-        }
 
+            try
+            {
+                string opslagnaam = $"Data\\{file}_Change.xml";
+                // save
+                string xmlTekst = ToXML(ChangePagina);
+                File.WriteAllText(opslagnaam, xmlTekst);
+            }
+            catch { }
+        }
         public string RemoveOudeWikiTekens(string pagina)
         {
             string resultaat = "";
@@ -136,21 +158,6 @@ namespace KenisBank
             return resultaat.ToLower();
             
         }
-
-        private static void MaakBackUpFile(string fi)
-        {
-            string opslagnaam = $"Data\\{fi}.xml";
-            string backup1 = $"Data\\{fi}_backup1.xml";
-            string backup2 = $"Data\\{fi}_backup2.xml";
-                        
-            // van 1 naar 2
-            if(File.Exists(backup1))
-                File.Copy(backup1, backup2,true);    
-            //van org naar 1
-            if(File.Exists(opslagnaam))
-                File.Copy(opslagnaam, backup1,true);
-        }
-
         private string ToXML<T>(T obj)
         {
             using (StringWriter stringWriter = new StringWriter(new StringBuilder()))
@@ -160,7 +167,6 @@ namespace KenisBank
                 return stringWriter.ToString();
             }
         }
-
         private static T FromXML<T>(string xml)
         {
             using (StringReader stringReader = new StringReader(xml))
@@ -169,9 +175,5 @@ namespace KenisBank
                 return (T)serializer.Deserialize(stringReader);
             }
         }
-
-
-
-
     }
 }
