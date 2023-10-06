@@ -173,7 +173,7 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-        private void toevoegenHoofdstukTextToolStripMenuItem_Click(object sender, EventArgs e)
+        public void toevoegenHoofdstukTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Hoofdstuk hoofdstuk = new Hoofdstuk();
             DialogResult save = hoofdstuk.ShowDialog();

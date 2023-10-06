@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using File = System.IO.File;
 
@@ -69,7 +68,7 @@ namespace KenisBank
         // interact met gebruiker
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            if ((labelPaginaInBeeld.Text .Length  > 3)&& (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek" || labelPaginaInBeeld.Text == "Alle paginas" || labelPaginaInBeeld.Text.Substring(0, 4) == "Wees"))
+            if ((labelPaginaInBeeld.Text.Length > 3) && (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek" || labelPaginaInBeeld.Text == "Alle paginas" || labelPaginaInBeeld.Text.Substring(0, 4) == "Wees"))
             {
                 editModeAanToolStripMenuItem.Checked = false;
                 return;
@@ -117,7 +116,9 @@ namespace KenisBank
         private void label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (editModeAanToolStripMenuItem.Checked)
+            {
                 return;
+            }
 
             System.Windows.Forms.LinkLabel label = (System.Windows.Forms.LinkLabel)sender;
             string link = (string)label.Tag;
@@ -133,8 +134,10 @@ namespace KenisBank
         private void PaginaButtonClick(object sender, EventArgs e)
         {
             if (editModeAanToolStripMenuItem.Checked)
+            {
                 return;
-            
+            }
+
             PrevPagina = labelPaginaInBeeld.Text;
             Button but = (Button)sender;
             string pagina = but.Text;
@@ -244,8 +247,10 @@ namespace KenisBank
                         DialogResult save = hoofdstuk.ShowDialog();
                         if (save == DialogResult.OK)
                         {
-                            Regel regel = new Regel(hoofdstuk.textBox1.Text, type.Hoofdstuk, "");
-                            regel.ID_ = MaakID();
+                            Regel regel = new Regel(hoofdstuk.textBox1.Text, type.Hoofdstuk, "")
+                            {
+                                ID_ = MaakID()
+                            };
                             change_pagina = true;
                             PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                             PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
@@ -263,8 +268,10 @@ namespace KenisBank
 
                         if (save == DialogResult.OK)
                         {
-                            Regel regel = new Regel(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
-                            regel.ID_ = MaakID();
+                            Regel regel = new Regel(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text)
+                            {
+                                ID_ = MaakID()
+                            };
                             change_pagina = true;
                             PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                             PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
@@ -281,8 +288,10 @@ namespace KenisBank
 
                         if (save == DialogResult.OK)
                         {
-                            Regel regel = new Regel(linkfile.textBox2.Text, type.LinkFile, linkfile.textBox1.Text);
-                            regel.ID_ = MaakID();
+                            Regel regel = new Regel(linkfile.textBox2.Text, type.LinkFile, linkfile.textBox1.Text)
+                            {
+                                ID_ = MaakID()
+                            };
                             change_pagina = true;
                             PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                             PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
@@ -298,8 +307,10 @@ namespace KenisBank
 
                         if (save == DialogResult.OK)
                         {
-                            Regel regel = new Regel(tb.textBoxTextBlok.Text, type.TekstBlok, "");
-                            regel.ID_ = MaakID();
+                            Regel regel = new Regel(tb.textBoxTextBlok.Text, type.TekstBlok, "")
+                            {
+                                ID_ = MaakID()
+                            };
                             change_pagina = true;
                             PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                             PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
@@ -317,8 +328,10 @@ namespace KenisBank
                         {
                             string oudenaam = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
                             //string linkregel = "#" + pa.textBoxPaginaNaam.Text;
-                            Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, "");
-                            regel.ID_ = MaakID();
+                            Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, "")
+                            {
+                                ID_ = MaakID()
+                            };
                             change_pagina = true;
                             PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                             PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
@@ -391,8 +404,10 @@ namespace KenisBank
             {
                 ProgressBarUpdate();
 
-                Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
-                regel.ID_ = MaakID();
+                Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "")
+                {
+                    ID_ = MaakID()
+                };
                 PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
 
             }
@@ -443,17 +458,24 @@ namespace KenisBank
 
                     for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
                     {
-                        if (ContainsCaseInsensitive(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text))
+                        if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkFile || PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkDir)
                         {
-                            Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
-                            regel.ID_ = MaakID();
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new Regel(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].type_, PaginaInhoud.InhoudPaginaMetRegels[i].url_);
-                            regel.ID_ = MaakID();
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new Regel("", type.Leeg, "");
-                            regel.ID_ = MaakID();
-                            PaginaMetRegelsGevonden.Add(regel);
+                            if (ContainsCaseInsensitive(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text))
+                            {
+                                //Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
+                                //regel.ID_ = MaakID();
+                                //PaginaMetRegelsGevonden.Add(regel);
+                                Regel regel = new Regel(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].type_, PaginaInhoud.InhoudPaginaMetRegels[i].url_)
+                                {
+                                    ID_ = MaakID()
+                                };
+                                PaginaMetRegelsGevonden.Add(regel);
+                                regel = new Regel("", type.Leeg, "")
+                                {
+                                    ID_ = MaakID()
+                                };
+                                PaginaMetRegelsGevonden.Add(regel);
+                            }
                         }
                     }
 
@@ -503,8 +525,10 @@ namespace KenisBank
                 string FileNaam = Path.GetFileNameWithoutExtension(file.Name);
                 if (!LinkNaarPaginaLijst.Contains(FileNaam) && FileNaam != "Start")
                 {
-                    Regel regel = new Regel(FileNaam, type.PaginaNaam, "");
-                    regel.ID_ = MaakID();
+                    Regel regel = new Regel(FileNaam, type.PaginaNaam, "")
+                    {
+                        ID_ = MaakID()
+                    };
                     PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
                 }
             }
@@ -607,7 +631,7 @@ namespace KenisBank
             int MakerInfoIndex = -1;
             ProgressBarAan(PaginaInhoud.InhoudPaginaMetRegels.Count);
 
-            LockWindowUpdate(panelMain.Handle);
+            _ = LockWindowUpdate(panelMain.Handle);
 
 
             for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
@@ -664,7 +688,7 @@ namespace KenisBank
                 PaginaInhoud.InhoudPaginaMetRegels[MakerInfoIndex].eigenaar_ = eigenaar;
             }
 
-            LockWindowUpdate(IntPtr.Zero);
+            _ = LockWindowUpdate(IntPtr.Zero);
 
             ProgressBarUit();
         }
@@ -840,18 +864,22 @@ namespace KenisBank
         // undo
         private void Undo_Click(object sender, EventArgs e)
         {
-            if (PaginaInhoud.ChangePagina.Count  < 1)
+            if (PaginaInhoud.ChangePagina.Count < 1)
+            {
                 return;
+            }
             // get laatste actie
-            Regel undo = PaginaInhoud.ChangePagina[PaginaInhoud.ChangePagina.Count-1];
+            Regel undo = PaginaInhoud.ChangePagina[PaginaInhoud.ChangePagina.Count - 1];
             // verwijder deze uit lijst
-            PaginaInhoud.ChangePagina.RemoveAt(PaginaInhoud.ChangePagina.Count-1);
+            PaginaInhoud.ChangePagina.RemoveAt(PaginaInhoud.ChangePagina.Count - 1);
             // nieuwe regel
-            Regel rg = new Regel();
-            rg.ID_ = MaakID();
-            rg.tekst_ = undo.tekst_;
-            rg.url_ = undo.url_;
-            rg.type_ = undo.type_;
+            Regel rg = new Regel
+            {
+                ID_ = MaakID(),
+                tekst_ = undo.tekst_,
+                url_ = undo.url_,
+                type_ = undo.type_
+            };
             // voor contra actie uit
             if (undo.undo_ == type.Delete)
             {
@@ -886,6 +914,5 @@ namespace KenisBank
             string dum = RandomString(10);
             return dum.GetHashCode();
         }
-        
     }
 }
