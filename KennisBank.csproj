@@ -97,6 +97,12 @@
     <Compile Include="SchermUI.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SelectHelpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectHelpForm.Designer.cs">
+      <DependentUpon>SelectHelpForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TekstBlok.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,6 +146,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SelectHelpForm.resx">
+      <DependentUpon>SelectHelpForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TekstBlok.resx">
       <DependentUpon>TekstBlok.cs</DependentUpon>
     </EmbeddedResource>
@@ -161,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="IMG_1457.JPG" />
+    <None Include="select.bmp" />
     <Content Include="solution.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

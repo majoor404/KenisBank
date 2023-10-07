@@ -50,14 +50,6 @@ namespace KenisBank
         {
             try
             {
-                string xmlTekst = File.ReadAllText($"Data\\{file}_Change.xml");
-                ChangePagina.Clear();
-                ChangePagina = FromXML<List<Regel>>(xmlTekst);
-            }
-            catch { }
-            
-            try
-            {
                 string xmlTekst = File.ReadAllText($"Data\\{file}.xml");
                 InhoudPaginaMetRegels.Clear();
                 InhoudPaginaMetRegels = FromXML<List<Regel>>(xmlTekst);
@@ -102,15 +94,6 @@ namespace KenisBank
 
                 // save
                 string xmlTekst = ToXML(InhoudPaginaMetRegels);
-                File.WriteAllText(opslagnaam, xmlTekst);
-            }
-            catch { }
-
-            try
-            {
-                string opslagnaam = $"Data\\{file}_Change.xml";
-                // save
-                string xmlTekst = ToXML(ChangePagina);
                 File.WriteAllText(opslagnaam, xmlTekst);
             }
             catch { }

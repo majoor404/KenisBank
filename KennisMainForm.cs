@@ -211,10 +211,14 @@ namespace KenisBank
         }
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {
+            if (!TestKlik())
+                return;
             MovePanel(-1);
         }
         private void buttonMoveDown_Click(object sender, EventArgs e)
         {
+            if (!TestKlik())
+                return;
             MovePanel(1);
         }
         private void buttonSaveCloseEdit_Click(object sender, EventArgs e)
@@ -233,6 +237,9 @@ namespace KenisBank
         }
         private void buttonEditSelectie_Click(object sender, EventArgs e)
         {
+            if (!TestKlik())
+                return;
+            
             int eigenaar = (int)panelGeselecteerd.Tag;
 
             for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
@@ -913,6 +920,17 @@ namespace KenisBank
         {
             string dum = RandomString(10);
             return dum.GetHashCode();
+        }
+
+        public bool TestKlik()
+        {
+            if (panelGeselecteerd == null)
+            {
+                SelectHelpForm sh = new SelectHelpForm();
+                sh.ShowDialog();
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -230,6 +230,8 @@ namespace KenisBank
         }
         private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!TestKlik())
+                return;
             DialogResult dialogResult = MessageBox.Show($"Zeker weten, verwijderen?", "Vraagje", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
