@@ -31,14 +31,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.PaginaNaam = new System.Windows.Forms.Label();
             this.labelHuidig = new System.Windows.Forms.Label();
             this.labelBackup1 = new System.Windows.Forms.Label();
-            this.labelBackup2 = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonBackup1 = new System.Windows.Forms.Button();
-            this.buttonBackup2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -67,19 +64,9 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(13, 110);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 18);
+            this.label3.Size = new System.Drawing.Size(58, 18);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Backup 1 ";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(13, 157);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(70, 18);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Backup 2";
+            this.label3.Text = "Backup";
             // 
             // PaginaNaam
             // 
@@ -111,16 +98,6 @@
             this.labelBackup1.TabIndex = 0;
             this.labelBackup1.Text = "Pagina Naam";
             // 
-            // labelBackup2
-            // 
-            this.labelBackup2.AutoSize = true;
-            this.labelBackup2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelBackup2.Location = new System.Drawing.Point(290, 157);
-            this.labelBackup2.Name = "labelBackup2";
-            this.labelBackup2.Size = new System.Drawing.Size(97, 18);
-            this.labelBackup2.TabIndex = 0;
-            this.labelBackup2.Text = "Pagina Naam";
-            // 
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -139,20 +116,9 @@
             this.buttonBackup1.Name = "buttonBackup1";
             this.buttonBackup1.Size = new System.Drawing.Size(213, 41);
             this.buttonBackup1.TabIndex = 1;
-            this.buttonBackup1.Text = "Zet Backup 1 terug";
+            this.buttonBackup1.Text = "Zet Backup terug";
             this.buttonBackup1.UseVisualStyleBackColor = true;
             this.buttonBackup1.Click += new System.EventHandler(this.buttonBackup1_Click);
-            // 
-            // buttonBackup2
-            // 
-            this.buttonBackup2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonBackup2.Location = new System.Drawing.Point(1059, 146);
-            this.buttonBackup2.Name = "buttonBackup2";
-            this.buttonBackup2.Size = new System.Drawing.Size(213, 41);
-            this.buttonBackup2.TabIndex = 1;
-            this.buttonBackup2.Text = "Zet Backup 2 terug";
-            this.buttonBackup2.UseVisualStyleBackColor = true;
-            this.buttonBackup2.Click += new System.EventHandler(this.buttonBackup2_Click);
             // 
             // BackupTerug
             // 
@@ -161,13 +127,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(1293, 229);
-            this.Controls.Add(this.buttonBackup2);
             this.Controls.Add(this.buttonBackup1);
             this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.labelBackup2);
             this.Controls.Add(this.labelBackup1);
             this.Controls.Add(this.labelHuidig);
             this.Controls.Add(this.PaginaNaam);
@@ -185,13 +148,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         public System.Windows.Forms.Label PaginaNaam;
         public System.Windows.Forms.Label labelHuidig;
         public System.Windows.Forms.Label labelBackup1;
-        public System.Windows.Forms.Label labelBackup2;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonBackup1;
-        private System.Windows.Forms.Button buttonBackup2;
     }
 }

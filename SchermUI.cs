@@ -150,8 +150,10 @@ namespace KenisBank
         // toevoegen regel 
         public void Toevoegen(string text, type type, string url)
         {
-            Regel regel = new Regel(text, type, url);
-            regel.ID_ = MaakID();
+            Regel regel = new Regel(text, type, url)
+            {
+                ID_ = MaakID()
+            };
             PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
             
             Regel rg = new Regel(text, type, url);
@@ -241,13 +243,15 @@ namespace KenisBank
                 {
                     if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
                     {
-                        Regel rg = new Regel();
-                        rg.ID_ = MaakID();
-                        rg.tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
-                        rg.url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_;
-                        rg.type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_;
-                        rg.undo_ = type.Delete;
-                        rg.index_ = i;
+                        Regel rg = new Regel
+                        {
+                            ID_ = MaakID(),
+                            tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
+                            url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
+                            type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
+                            undo_ = type.Delete,
+                            index_ = i
+                        };
                         PaginaInhoud.ChangePagina.Add(rg);
                         PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                         change_pagina = true;
@@ -255,7 +259,7 @@ namespace KenisBank
                 }
 
                 panelGeselecteerd = null;
-                deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
+                //deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
 
 
                 foreach (Panel a in panelMain.Controls)
@@ -271,7 +275,7 @@ namespace KenisBank
         private void SelecteerLaatstePaneel()
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
+            buttonEditSelectie.Enabled = false;
             foreach (Panel a in panelMain.Controls)
             {
                 a.BackColor = panelMain.BackColor;
@@ -281,14 +285,14 @@ namespace KenisBank
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
                     panelGeselecteerd = a;
-                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = true;
+                    buttonEditSelectie.Enabled = true;
                 }
             }
         }
         private void SelecteerEerstePaneel()
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
+            buttonEditSelectie.Enabled = false;
             foreach (Panel a in panelMain.Controls)
             {
                 a.BackColor = panelMain.BackColor;
@@ -298,7 +302,7 @@ namespace KenisBank
                     a.BackColor = Color.Aqua;
                     a.BorderStyle = BorderStyle.FixedSingle;
                     panelGeselecteerd = a;
-                    deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = true;
+                    buttonEditSelectie.Enabled = true;
                 }
             }
         }
@@ -323,14 +327,16 @@ namespace KenisBank
                         return;
                     }
 
-                    Regel rg = new Regel();
-                    rg.ID_ = MaakID();
-                    rg.tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
-                    rg.url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_;
-                    rg.type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_;
-                    rg.undo_ = type.Move;
-                    rg.index_ = nieuw_index;
-                    rg.eigenaar_ = richting;
+                    Regel rg = new Regel
+                    {
+                        ID_ = MaakID(),
+                        tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
+                        url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
+                        type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
+                        undo_ = type.Move,
+                        index_ = nieuw_index,
+                        eigenaar_ = richting
+                    };
 
                     Regel gekozen = PaginaInhoud.InhoudPaginaMetRegels[i];
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);

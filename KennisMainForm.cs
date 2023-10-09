@@ -5,7 +5,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 
 /*
@@ -53,6 +55,8 @@ namespace KenisBank
                 HistoryBalkAdd(labelPaginaInBeeld.Text);
                 saveHuidigePaginaToolStripMenuItem_Click(this, null);
             }
+
+            BackupNu();
 
             // bouw Pagina
             SchermUpdate();
@@ -102,7 +106,7 @@ namespace KenisBank
                         saveHuidigePaginaToolStripMenuItem_Click(this, null);
                     }
                 }
-                deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
+                buttonEditSelectie.Enabled = false;
                 editPaginaToolStripMenuItem.BackColor = SystemColors.MenuBar;
                 panelUpDown.Visible = false;
 
@@ -164,7 +168,7 @@ namespace KenisBank
         private void panel_Click(object sender, EventArgs e)
         {
             panelGeselecteerd = null;
-            deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = false;
+            buttonEditSelectie.Enabled = false;
             if (editModeAanToolStripMenuItem.Checked)
             {
                 foreach (Panel a in panelMain.Controls)
@@ -176,7 +180,7 @@ namespace KenisBank
                         a.BackColor = Color.Aqua;
                         a.BorderStyle = BorderStyle.FixedSingle;
                         panelGeselecteerd = a;
-                        deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = buttonEditSelectie.Enabled = true;
+                        buttonEditSelectie.Enabled = true;
                     }
                 }
             }
@@ -425,23 +429,21 @@ namespace KenisBank
         }
         private void vorigeVersiePaginaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //// test of vorige versie bestaat
-            //string fi = labelPaginaInBeeld.Text;
-            //string opslagnaam = fi;
-            //string backup1 = fi + "_backup1";
-            //string backup2 = fi + "_backup2";
+            // test of vorige versie bestaat
+            string fi = labelPaginaInBeeld.Text;
+            string opslagnaam = $"Data\\{fi}.xml";
+            string backup1 = $"Data\\{fi}.bak";
 
-            //BackupTerug BT = new BackupTerug();
+            BackupTerug BT = new BackupTerug();
 
-            //BT.PaginaNaam.Text = labelPaginaInBeeld.Text;
-            //BT.labelHuidig.Text = GetLaatsteEdit(opslagnaam);
-            //BT.labelBackup1.Text = GetLaatsteEdit(backup1);
-            //BT.labelBackup2.Text = GetLaatsteEdit(backup2);
+            BT.PaginaNaam.Text = fi;
+            BT.labelHuidig.Text = File.GetLastWriteTime(opslagnaam).ToLongDateString();
+            BT.labelBackup1.Text = File.GetLastWriteTime(backup1).ToLongDateString();
 
-            //BT.ShowDialog();
+            BT.ShowDialog();
 
-            //InfoPagina.Laad(fi);
-            //SchermUpdate();
+            PaginaInhoud.Laad(fi);
+            SchermUpdate();
         }
         private void zoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -866,7 +868,21 @@ namespace KenisBank
                 history.RemoveAt(i);
             }
         }
-
+        public int MaakID()
+        {
+            string dum = RandomString(10);
+            return dum.GetHashCode();
+        }
+        public bool TestKlik()
+        {
+            if (panelGeselecteerd == null)
+            {
+                SelectHelpForm sh = new SelectHelpForm();
+                sh.ShowDialog();
+                return false;
+            }
+            return true;
+        }
 
         // undo
         private void Undo_Click(object sender, EventArgs e)
@@ -915,22 +931,44 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
         }
-
-        public int MaakID()
+        public void BackupNu()
         {
-            string dum = RandomString(10);
-            return dum.GetHashCode();
-        }
-
-        public bool TestKlik()
-        {
-            if (panelGeselecteerd == null)
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Thursday || DateTime.Now.DayOfWeek == DayOfWeek.Monday)
             {
-                SelectHelpForm sh = new SelectHelpForm();
-                sh.ShowDialog();
-                return false;
+                if (!File.Exists("Data\\backup.time"))
+                {
+                    using (File.Create("Data\\backup.time"))
+                    { };
+                    Backup();
+                }
+                else // hier kijken of er een nieuwe dag is
+                {
+                    DateTime laatste_keer = File.GetLastWriteTime("Data\\backup.time");
+                    if (laatste_keer.Day != DateTime.Now.Day && DateTime.Now.Hour > 1)
+                    {
+                        Backup();
+                    }
+                }
             }
-            return true;
+        }
+        private void Backup()
+        {
+            MessageBox.Show("Even Backup van pagina's");
+            // lijst met all pagina's opgeslagen.
+            List<FileInfo> XMLFilesInDataDir = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+                        .OrderByDescending(f => f.Name)
+                        .ToList();
+            ProgressBarAan(XMLFilesInDataDir.Count);
+            
+            foreach (FileInfo file in XMLFilesInDataDir)
+            {
+                string baknaam = Path.ChangeExtension(file.FullName, ".bak");
+                //FileInfo fi = new FileInfo(baknaam);
+                //if (fi.Length != file.Length)
+                File.Copy(file.FullName, baknaam, true);
+                ProgressBarUpdate();
+            }
+            ProgressBarUit();
         }
     }
 }

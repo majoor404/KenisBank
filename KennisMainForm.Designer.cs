@@ -419,7 +419,6 @@
             // 
             // buttonDelete
             // 
-            this.buttonDelete.Enabled = false;
             this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonDelete.Location = new System.Drawing.Point(139, 191);
             this.buttonDelete.Name = "buttonDelete";

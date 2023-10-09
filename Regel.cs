@@ -62,7 +62,7 @@ namespace KenisBank
         }
         public void Save(string file)
         {
-            string edit = $"Laatste edit door : {Environment.UserName} op {DateTime.Now.ToString()}";
+            string edit = $"Laatste edit door : {Environment.UserName} op {DateTime.Now}";
             bool al_edit_veld_aanwezig = false;
             // toevoegen EditInfo
             foreach(Regel regel in InhoudPaginaMetRegels)
@@ -78,10 +78,12 @@ namespace KenisBank
             // eerste keer lege pagina dan aanmaken
             if(!al_edit_veld_aanwezig)
             {
-                Regel r = new Regel();
-                r.type_ = type.EditInfo;
-                r.tekst_ = edit;
-                r.url_ = "";
+                Regel r = new Regel
+                {
+                    type_ = type.EditInfo,
+                    tekst_ = edit,
+                    url_ = ""
+                };
                 InhoudPaginaMetRegels.Add(r);
             }
             
@@ -107,11 +109,11 @@ namespace KenisBank
 
                 if (test > 127)
                 {
-                    resultaat = resultaat + " ";
+                    resultaat += " ";
                 }
                 else
                 {
-                    resultaat = resultaat + test;
+                    resultaat += test;
                 }
             }
 
