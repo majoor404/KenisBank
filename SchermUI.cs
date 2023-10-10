@@ -349,6 +349,8 @@ namespace KenisBank
                 }
             }
 
+            if (BlokSchrijf)
+                return;
             // bouw Pagina
             SchermUpdate();
 

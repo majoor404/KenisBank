@@ -86,7 +86,7 @@
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox2.Size = new System.Drawing.Size(558, 405);
             this.textBox2.TabIndex = 5;
-            this.textBox2.Text = "Wordt gevuld door BezData\\versie.ini";
+            this.textBox2.Text = "Wordt gevuld door Data\\versie.ini";
             // 
             // label4
             // 

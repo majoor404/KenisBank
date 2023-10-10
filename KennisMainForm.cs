@@ -29,6 +29,7 @@ namespace KenisBank
         private readonly List<Regel> PaginaMetRegelsGevonden = new List<Regel>();
         private readonly List<string> history = new List<string>();
         public string PrevPagina = string.Empty;
+        public bool BlokSchrijf = false;
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern bool LockWindowUpdate(IntPtr hWndLock);
@@ -144,7 +145,7 @@ namespace KenisBank
 
             PrevPagina = labelPaginaInBeeld.Text;
             Button but = (Button)sender;
-            string pagina = but.Text;
+            string pagina = but.Text.Trim();
 
             //pagina worden opgeslagen in lower case Enabled elke spatie vervangen door _
             pagina = PaginaInhoud.RemoveOudeWikiTekens(pagina);
@@ -223,6 +224,30 @@ namespace KenisBank
         {
             if (!TestKlik())
                 return;
+            MovePanel(1);
+        }
+        private void buttonMoveUp5_Click(object sender, EventArgs e)
+        {
+            if (!TestKlik())
+                return;
+            BlokSchrijf = true;
+            MovePanel(-1);
+            MovePanel(-1);
+            MovePanel(-1);
+            MovePanel(-1);
+            BlokSchrijf = false;
+            MovePanel(-1);
+        }
+        private void buttonMoveDown5_Click(object sender, EventArgs e)
+        {
+            if (!TestKlik())
+                return;
+            BlokSchrijf = true;
+            MovePanel(1);
+            MovePanel(1);
+            MovePanel(1);
+            MovePanel(1);
+            BlokSchrijf = false;
             MovePanel(1);
         }
         private void buttonSaveCloseEdit_Click(object sender, EventArgs e)
@@ -365,7 +390,7 @@ namespace KenisBank
         {
             // importeer oude wiki data
             List<FileInfo> files = new DirectoryInfo("pages").EnumerateFiles("*.txt")
-                            .OrderByDescending(f => f.Name)
+                            .OrderBy(f => f.Name)
                             .ToList();
 
             foreach (FileInfo file in files)
@@ -396,6 +421,7 @@ namespace KenisBank
                 }
                 // save als 
                 PaginaInhoud.ChangePagina.Clear();
+                //string file_Naam = file.Name.Trim();
                 PaginaInhoud.Save(Path.GetFileNameWithoutExtension(file.Name));
             }
             change_pagina = false;
@@ -981,9 +1007,9 @@ namespace KenisBank
             {
                 importAllePaginasOudeWikiToolStripMenuItem.Visible = true;
                 paginaBackupTerugZettenToolStripMenuItem.Visible = true;
-                allePaginasToolStripMenuItem1.Visible = true;
                 zoekNaarWeesPaginasToolStripMenuItem1.Visible = true;
                 zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Visible = true;
+                allePaginasToolStripMenuItem1.Visible=true;
             }
         }
 
@@ -994,43 +1020,52 @@ namespace KenisBank
             //Specify the size of the window using the parameters passed
             Size size = new Size(width, height);
             //Create a new form using a System.Windows Form
-            Form inputBox = new Form();
-
-            inputBox.FormBorderStyle = FormBorderStyle.FixedDialog;
-            inputBox.ClientSize = size;
-            //Set the window title using the parameter passed
-            inputBox.Text = title;
+            Form inputBox = new Form
+            {
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                ClientSize = size,
+                //Set the window title using the parameter passed
+                Text = title
+            };
 
             //Create a new label to hold the prompt
-            Label label = new Label();
-            label.Text = prompt;
-            label.Location = new Point(5, 5);
-            label.Width = size.Width - 10;
+            Label label = new Label
+            {
+                Text = prompt,
+                Location = new Point(5, 5),
+                Width = size.Width - 10
+            };
             inputBox.Controls.Add(label);
 
             //Create a textbox to accept the user's input
-            TextBox textBox = new TextBox();
-            textBox.Size = new Size(size.Width - 10, 23);
-            textBox.Location = new Point(5, label.Location.Y + 20);
-            textBox.Text = input;
+            TextBox textBox = new TextBox
+            {
+                Size = new Size(size.Width - 10, 23),
+                Location = new Point(5, label.Location.Y + 20),
+                Text = input
+            };
             inputBox.Controls.Add(textBox);
 
             //Create an OK Button 
-            Button okButton = new Button();
-            okButton.DialogResult = DialogResult.OK;
-            okButton.Name = "okButton";
-            okButton.Size = new Size(75, 23);
-            okButton.Text = "&OK";
-            okButton.Location = new Point(size.Width - 80 - 80, size.Height - 30);
+            Button okButton = new Button
+            {
+                DialogResult = DialogResult.OK,
+                Name = "okButton",
+                Size = new Size(75, 23),
+                Text = "&OK",
+                Location = new Point(size.Width - 80 - 80, size.Height - 30)
+            };
             inputBox.Controls.Add(okButton);
 
             //Create a Cancel Button
-            Button cancelButton = new Button();
-            cancelButton.DialogResult = DialogResult.Cancel;
-            cancelButton.Name = "cancelButton";
-            cancelButton.Size = new Size(75, 23);
-            cancelButton.Text = "&Cancel";
-            cancelButton.Location = new Point(size.Width - 80, size.Height - 30);
+            Button cancelButton = new Button
+            {
+                DialogResult = DialogResult.Cancel,
+                Name = "cancelButton",
+                Size = new Size(75, 23),
+                Text = "&Cancel",
+                Location = new Point(size.Width - 80, size.Height - 30)
+            };
             inputBox.Controls.Add(cancelButton);
 
             //Set the input box's buttons to the created OK and Cancel Buttons respectively so the window appropriately behaves with the button clicks
@@ -1044,5 +1079,7 @@ namespace KenisBank
             //After input has been submitted, return the input value
             return result;
         }
+
+ 
     }
 }

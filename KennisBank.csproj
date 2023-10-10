@@ -164,6 +164,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="versie.ini" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
