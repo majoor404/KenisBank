@@ -1007,11 +1007,11 @@ namespace KenisBank
 
         private void beheerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string input = "...";
-            //Display the custom input dialog box with the following prompt, window title, and dimensions
-            ShowInputDialogBox(ref input, "Wachtwoord", "Wachtwoord", 300, 200);
+            
+            InputStringForm IPS = new InputStringForm();
 
-            if (input == "majoor404")
+            DialogResult dialogResult = IPS.ShowDialog();
+            if (dialogResult == DialogResult.OK && IPS.textBox1.Text == "majoor404") 
             {
                 importAllePaginasOudeWikiToolStripMenuItem.Visible = true;
                 paginaBackupTerugZettenToolStripMenuItem.Visible = true;
@@ -1020,74 +1020,5 @@ namespace KenisBank
                 allePaginasToolStripMenuItem1.Visible=true;
             }
         }
-
-        private static DialogResult ShowInputDialogBox(ref string input, string prompt, string title = "Title", int width = 300, int height = 200)
-        {
-            //This function creates the custom input dialog box by individually creating the different window elements and adding them to the dialog box
-
-            //Specify the size of the window using the parameters passed
-            Size size = new Size(width, height);
-            //Create a new form using a System.Windows Form
-            Form inputBox = new Form
-            {
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                ClientSize = size,
-                //Set the window title using the parameter passed
-                Text = title
-            };
-
-            //Create a new label to hold the prompt
-            Label label = new Label
-            {
-                Text = prompt,
-                Location = new Point(5, 5),
-                Width = size.Width - 10
-            };
-            inputBox.Controls.Add(label);
-
-            //Create a textbox to accept the user's input
-            TextBox textBox = new TextBox
-            {
-                Size = new Size(size.Width - 10, 23),
-                Location = new Point(5, label.Location.Y + 20),
-                Text = input
-            };
-            inputBox.Controls.Add(textBox);
-
-            //Create an OK Button 
-            Button okButton = new Button
-            {
-                DialogResult = DialogResult.OK,
-                Name = "okButton",
-                Size = new Size(75, 23),
-                Text = "&OK",
-                Location = new Point(size.Width - 80 - 80, size.Height - 30)
-            };
-            inputBox.Controls.Add(okButton);
-
-            //Create a Cancel Button
-            Button cancelButton = new Button
-            {
-                DialogResult = DialogResult.Cancel,
-                Name = "cancelButton",
-                Size = new Size(75, 23),
-                Text = "&Cancel",
-                Location = new Point(size.Width - 80, size.Height - 30)
-            };
-            inputBox.Controls.Add(cancelButton);
-
-            //Set the input box's buttons to the created OK and Cancel Buttons respectively so the window appropriately behaves with the button clicks
-            inputBox.AcceptButton = okButton;
-            inputBox.CancelButton = cancelButton;
-
-            //Show the window dialog box 
-            DialogResult result = inputBox.ShowDialog();
-            input = textBox.Text;
-
-            //After input has been submitted, return the input value
-            return result;
-        }
-
- 
     }
 }

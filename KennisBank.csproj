@@ -67,6 +67,12 @@
     <Compile Include="Hoofdstuk.Designer.cs">
       <DependentUpon>Hoofdstuk.cs</DependentUpon>
     </Compile>
+    <Compile Include="InputStringForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputStringForm.Designer.cs">
+      <DependentUpon>InputStringForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="KennisMainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Hoofdstuk.resx">
       <DependentUpon>Hoofdstuk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputStringForm.resx">
+      <DependentUpon>InputStringForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KennisMainForm.resx">
       <DependentUpon>KennisMainForm.cs</DependentUpon>
