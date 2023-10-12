@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace KenisBank
 {
@@ -150,6 +151,7 @@ namespace KenisBank
         // toevoegen regel 
         public void Toevoegen(string text, type type, string url)
         {
+            text = text.Trim();
             Regel regel = new Regel(text, type, url)
             {
                 ID_ = MaakID()
@@ -234,6 +236,7 @@ namespace KenisBank
         {
             if (!TestKlik())
                 return;
+
             DialogResult dialogResult = MessageBox.Show($"Zeker weten, verwijderen?", "Vraagje", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
@@ -243,24 +246,32 @@ namespace KenisBank
                 {
                     if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
                     {
-                        Regel rg = new Regel
+                        //als wees pagina gewoon xml verwijderen
+                        if (labelPaginaInBeeld.Text.Length > 3 && labelPaginaInBeeld.Text.Substring(0, 4) == "Wees")
                         {
-                            ID_ = MaakID(),
-                            tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
-                            url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
-                            type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
-                            undo_ = type.Delete,
-                            index_ = i
-                        };
-                        PaginaInhoud.ChangePagina.Add(rg);
-                        PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                        change_pagina = true;
+                            string file_naam = $"Data\\{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}.xml";
+                            File.Delete(file_naam);
+                            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                            change_pagina = false;
+                        }
+                        else {
+                            Regel rg = new Regel
+                            {
+                                ID_ = MaakID(),
+                                tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
+                                url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
+                                type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
+                                undo_ = type.Delete,
+                                index_ = i
+                            };
+                            PaginaInhoud.ChangePagina.Add(rg);
+                            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                            change_pagina = true;
+                        }
                     }
                 }
 
                 panelGeselecteerd = null;
-                //deleteItemToolStripMenuItem.Enabled = buttonDelete.Enabled = false;
-
 
                 foreach (Panel a in panelMain.Controls)
                 {

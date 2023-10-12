@@ -44,15 +44,15 @@ namespace KenisBank
             // zet panelen netjes
             KennisMainForm_Resize(this, null);
             // laad Start.xml
-            if (PaginaInhoud.Laad("Start"))
+            if (PaginaInhoud.Laad("start"))
             {
-                labelPaginaInBeeld.Text = "Start";
+                labelPaginaInBeeld.Text = "start";
                 HistoryBalkAdd(labelPaginaInBeeld.Text);
             }
             else
             {
                 // start bestaan niet, maak lege
-                labelPaginaInBeeld.Text = "Start";
+                labelPaginaInBeeld.Text = "start";
                 HistoryBalkAdd(labelPaginaInBeeld.Text);
                 saveHuidigePaginaToolStripMenuItem_Click(this, null);
             }
@@ -73,7 +73,8 @@ namespace KenisBank
         // interact met gebruiker
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            if ((labelPaginaInBeeld.Text.Length > 3) && (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek" || labelPaginaInBeeld.Text == "Alle paginas" || labelPaginaInBeeld.Text.Substring(0, 4) == "Wees"))
+            // ook in alle paginaas en zoek, wees , alleen een beheerder kan hier bij komen.
+            if ((labelPaginaInBeeld.Text.Length > 3) && (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek"/* || labelPaginaInBeeld.Text == "Alle paginas" || labelPaginaInBeeld.Text.Substring(0, 4) == "Wees"*/))
             {
                 editModeAanToolStripMenuItem.Checked = false;
                 return;
@@ -192,9 +193,9 @@ namespace KenisBank
             buttonEdit_Click(this, null);
 
             // laad Start.xml
-            if (PaginaInhoud.Laad("Start"))
+            if (PaginaInhoud.Laad("start"))
             {
-                labelPaginaInBeeld.Text = "Start";
+                labelPaginaInBeeld.Text = "start";
                 HistoryBalkAdd(labelPaginaInBeeld.Text);
             }
 
@@ -203,6 +204,12 @@ namespace KenisBank
         }
         private void saveHuidigePaginaToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (labelPaginaInBeeld.Text.Length > 3 && labelPaginaInBeeld.Text.Substring(0, 4) == "Wees")
+            {
+                change_pagina = false;
+                return;
+            }
+
             PaginaInhoud.Save(labelPaginaInBeeld.Text);
             change_pagina = false;
         }
@@ -373,6 +380,7 @@ namespace KenisBank
                             PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
                             // zoek nu naam.xml op en zet om in nieuwe naam.
 
+                            oudenaam = PaginaInhoud.RemoveOudeWikiTekens(oudenaam);
                             System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{pa.textBoxPaginaNaam.Text}.xml");
                         }
                         // bouw Pagina
@@ -558,7 +566,7 @@ namespace KenisBank
                 ProgressBarUpdate();
                 // check of filenaam een item bevat wat geen file is
                 string FileNaam = Path.GetFileNameWithoutExtension(file.Name);
-                if (!LinkNaarPaginaLijst.Contains(FileNaam) && FileNaam != "Start")
+                if (!LinkNaarPaginaLijst.Contains(FileNaam) && FileNaam != "start")
                 {
                     Regel regel = new Regel(FileNaam, type.PaginaNaam, "")
                     {
@@ -863,7 +871,7 @@ namespace KenisBank
         }
         private void HistoryBalkAdd(string pagina)
         {
-            if (pagina == "Start")
+            if (pagina == "start")
             {
                 history.Clear();
             }
