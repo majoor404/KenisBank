@@ -29,11 +29,10 @@ namespace KenisBank
         private readonly List<Regel> PaginaMetRegelsGevonden = new List<Regel>();
         private readonly List<string> history = new List<string>();
         public string PrevPagina = string.Empty;
-        public bool BlokSchrijf = false;
+        public bool BlokSchrijf = false;  // bij 5 plekken omhoog of omlaag niet schrijven tussendoor.
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern bool LockWindowUpdate(IntPtr hWndLock);
-
 
         public KennisMainForm()
         {
@@ -68,7 +67,6 @@ namespace KenisBank
             panelMain.Width = Width - 45;
             panelMain.Height = Height - 180;
         }
-
 
         // interact met gebruiker
         private void buttonEdit_Click(object sender, EventArgs e)
@@ -484,6 +482,8 @@ namespace KenisBank
             ZoekForm ZF = new ZoekForm();
             DialogResult save = ZF.ShowDialog();
             PaginaMetRegelsGevonden.Clear();
+            List<string> PaginaTitelMetTextGevonden = new List<string>();
+            Regel b = new Regel();
 
             if (save == DialogResult.OK)
             {
@@ -492,7 +492,31 @@ namespace KenisBank
                             .ToList();
 
                 ProgressBarAan(files.Count);
+                if(ZF.checkBoxPaginaTitel.Checked)
+                {
+                    foreach (FileInfo file in files)
+                    {
+                        ProgressBarUpdate();
+                        if(ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
+                        {
+                            string paginanaam = Path.GetFileNameWithoutExtension(file.Name).Trim();
+                            if (!PaginaTitelMetTextGevonden.Contains(paginanaam))
+                                PaginaTitelMetTextGevonden.Add(paginanaam);
+                        }
+                    }
 
+                    for (int i = 0;i < PaginaTitelMetTextGevonden.Count();i++)
+                    {
+                        Regel regel = new Regel(PaginaTitelMetTextGevonden[i], type.PaginaNaam, PaginaTitelMetTextGevonden[i])
+                        {
+                            ID_ = MaakID()
+                        };
+                        PaginaMetRegelsGevonden.Add(regel);
+                    }
+                }
+                ProgressBarUit();
+
+                ProgressBarAan(files.Count);
                 foreach (FileInfo file in files)
                 {
                     ProgressBarUpdate();
@@ -505,10 +529,10 @@ namespace KenisBank
                         {
                             if (ContainsCaseInsensitive(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text))
                             {
-                                //Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
-                                //regel.ID_ = MaakID();
-                                //PaginaMetRegelsGevonden.Add(regel);
-                                Regel regel = new Regel(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].type_, PaginaInhoud.InhoudPaginaMetRegels[i].url_)
+                                Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
+                                regel.ID_ = MaakID();
+                                PaginaMetRegelsGevonden.Add(regel);
+                                regel = new Regel(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].type_, PaginaInhoud.InhoudPaginaMetRegels[i].url_)
                                 {
                                     ID_ = MaakID()
                                 };
