@@ -139,6 +139,7 @@ namespace KenisBank
         {
             if (editModeAanToolStripMenuItem.Checked)
             {
+                MessageBox.Show("Eerst uit edit mode om naar andere pagina te gaan.");
                 return;
             }
 
@@ -147,7 +148,7 @@ namespace KenisBank
             string pagina = but.Text.Trim();
 
             //pagina worden opgeslagen in lower case Enabled elke spatie vervangen door _
-            pagina = PaginaInhoud.RemoveOudeWikiTekens(pagina);
+            pagina = PaginaInhoud.VertaalNaarFileNaam(pagina);
 
             if (!PaginaInhoud.Laad(pagina))
             {
@@ -368,7 +369,6 @@ namespace KenisBank
                         if (save == DialogResult.OK)
                         {
                             string oudenaam = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
-                            //string linkregel = "#" + pa.textBoxPaginaNaam.Text;
                             Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, "")
                             {
                                 ID_ = MaakID()
@@ -376,10 +376,11 @@ namespace KenisBank
                             change_pagina = true;
                             PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                             PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
-                            // zoek nu naam.xml op en zet om in nieuwe naam.
 
-                            oudenaam = PaginaInhoud.RemoveOudeWikiTekens(oudenaam);
-                            System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{pa.textBoxPaginaNaam.Text}.xml");
+                            // zoek nu naam.xml op en zet om in nieuwe naam.
+                            oudenaam = PaginaInhoud.VertaalNaarFileNaam(oudenaam);
+                            string nieuwnaam = PaginaInhoud.VertaalNaarFileNaam(pa.textBoxPaginaNaam.Text);
+                            System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{nieuwnaam}.xml");
                         }
                         // bouw Pagina
                         SchermUpdate();
@@ -427,8 +428,8 @@ namespace KenisBank
                 }
                 // save als 
                 PaginaInhoud.ChangePagina.Clear();
-                //string file_Naam = file.Name.Trim();
-                PaginaInhoud.Save(Path.GetFileNameWithoutExtension(file.Name));
+                string file_Naam = Path.GetFileNameWithoutExtension(file.Name);
+                PaginaInhoud.Save(file_Naam);
             }
             change_pagina = false;
             SchermUpdate();
@@ -573,7 +574,7 @@ namespace KenisBank
                 {
                     if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.PaginaNaam)
                     {
-                        string linkNaarFile = PaginaInhoud.RemoveOudeWikiTekens(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
+                        string linkNaarFile = PaginaInhoud.VertaalNaarFileNaam(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
                         if (!LinkNaarPaginaLijst.Contains(linkNaarFile))
                         {
                             LinkNaarPaginaLijst.Add(linkNaarFile);

@@ -16,5 +16,11 @@ namespace KenisBank
         {
             InitializeComponent();
         }
+
+        private void InputStringForm_Shown(object sender, EventArgs e)
+        {
+            textBox1.Text = string.Empty;
+            textBox1.Focus();
+        }
     }
 }

@@ -89,7 +89,7 @@ namespace KenisBank
             
             try
             {
-                string fi = RemoveOudeWikiTekens(file);
+                string fi = VertaalNaarFileNaam(file);
                 string opslagnaam = $"Data\\{fi}.xml";
                 // backup
                 //MaakBackUpFile(fi);
@@ -100,7 +100,7 @@ namespace KenisBank
             }
             catch { }
         }
-        public string RemoveOudeWikiTekens(string pagina)
+        public string VertaalNaarFileNaam(string pagina)
         {
             string resultaat = "";
             for (int i = 0; i < pagina.Length; i++)
@@ -129,18 +129,9 @@ namespace KenisBank
             resultaat = resultaat.Replace(@" ", "_");
             resultaat = resultaat.Replace(@"'", "_");
             resultaat = resultaat.Replace(@"__", "_");
+            resultaat = resultaat.ToLower();
 
-
-            
-
-            //int pos = ret.IndexOf('"');
-            //if (pos > -1)
-            //    ret = ret.Substring(0, pos) + ret.Substring(pos + 1);
-            //pos = ret.IndexOf('"');
-            //if (pos > -1)
-            //    ret = ret.Substring(0, pos) + ret.Substring(pos + 1);
-
-            return resultaat.ToLower();
+            return resultaat;
             
         }
         private string ToXML<T>(T obj)
