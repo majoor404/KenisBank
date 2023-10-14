@@ -46,7 +46,6 @@
             this.buttonHoofdstuk.TabIndex = 11;
             this.buttonHoofdstuk.Text = "Save";
             this.buttonHoofdstuk.UseVisualStyleBackColor = true;
-            this.buttonHoofdstuk.Click += new System.EventHandler(this.buttonHoofdstuk_Click);
             // 
             // textBoxHoofdstuk
             // 
@@ -109,6 +108,7 @@
             this.Name = "Hoofdstuk";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Hoofdstuk";
+            this.Shown += new System.EventHandler(this.Hoofdstuk_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -18,9 +18,9 @@ namespace KenisBank
             InitializeComponent();
         }
 
-        private void buttonHoofdstuk_Click(object sender, EventArgs e)
+        private void Hoofdstuk_Shown(object sender, EventArgs e)
         {
-            
+            textBox1.Focus();
         }
     }
 }

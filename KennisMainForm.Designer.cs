@@ -59,9 +59,12 @@
             this.paginaBackupTerugZettenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekNaarWeesPaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allePaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
+            this.PasteBut = new System.Windows.Forms.Button();
+            this.CopyBut = new System.Windows.Forms.Button();
             this.Undo = new System.Windows.Forms.Button();
             this.buttonEditSelectie = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
@@ -78,7 +81,6 @@
             this.panelInfo = new System.Windows.Forms.Panel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelInfo = new System.Windows.Forms.Label();
-            this.allePaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -362,6 +364,14 @@
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Visible = false;
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Click += new System.EventHandler(this.zoekLinksDieNietMeerBestaanToolStripMenuItem_Click);
             // 
+            // allePaginasToolStripMenuItem1
+            // 
+            this.allePaginasToolStripMenuItem1.Name = "allePaginasToolStripMenuItem1";
+            this.allePaginasToolStripMenuItem1.Size = new System.Drawing.Size(325, 24);
+            this.allePaginasToolStripMenuItem1.Text = "Alle Pagina\'s";
+            this.allePaginasToolStripMenuItem1.Visible = false;
+            this.allePaginasToolStripMenuItem1.Click += new System.EventHandler(this.allePaginasToolStripMenuItem_Click);
+            // 
             // versieToolStripMenuItem
             // 
             this.versieToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -372,8 +382,10 @@
             // 
             // panelUpDown
             // 
-            this.panelUpDown.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panelUpDown.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.panelUpDown.Controls.Add(this.buttonSaveCloseEdit);
+            this.panelUpDown.Controls.Add(this.PasteBut);
+            this.panelUpDown.Controls.Add(this.CopyBut);
             this.panelUpDown.Controls.Add(this.Undo);
             this.panelUpDown.Controls.Add(this.buttonEditSelectie);
             this.panelUpDown.Controls.Add(this.buttonDelete);
@@ -387,9 +399,9 @@
             this.panelUpDown.Controls.Add(this.buttonMoveDown);
             this.panelUpDown.Controls.Add(this.buttonMoveUp5);
             this.panelUpDown.Controls.Add(this.buttonMoveUp);
-            this.panelUpDown.Location = new System.Drawing.Point(1120, 81);
+            this.panelUpDown.Location = new System.Drawing.Point(1121, 81);
             this.panelUpDown.Name = "panelUpDown";
-            this.panelUpDown.Size = new System.Drawing.Size(413, 355);
+            this.panelUpDown.Size = new System.Drawing.Size(412, 392);
             this.panelUpDown.TabIndex = 0;
             this.panelUpDown.Visible = false;
             // 
@@ -397,13 +409,35 @@
             // 
             this.buttonSaveCloseEdit.Enabled = false;
             this.buttonSaveCloseEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(6, 320);
+            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(6, 355);
             this.buttonSaveCloseEdit.Name = "buttonSaveCloseEdit";
             this.buttonSaveCloseEdit.Size = new System.Drawing.Size(400, 29);
             this.buttonSaveCloseEdit.TabIndex = 10;
             this.buttonSaveCloseEdit.Text = "Close Edit";
             this.buttonSaveCloseEdit.UseVisualStyleBackColor = true;
             this.buttonSaveCloseEdit.Click += new System.EventHandler(this.buttonSaveCloseEdit_Click);
+            // 
+            // PasteBut
+            // 
+            this.PasteBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PasteBut.Location = new System.Drawing.Point(215, 320);
+            this.PasteBut.Name = "PasteBut";
+            this.PasteBut.Size = new System.Drawing.Size(190, 29);
+            this.PasteBut.TabIndex = 9;
+            this.PasteBut.Text = "Paste";
+            this.PasteBut.UseVisualStyleBackColor = true;
+            this.PasteBut.Click += new System.EventHandler(this.PasteBut_Click);
+            // 
+            // CopyBut
+            // 
+            this.CopyBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CopyBut.Location = new System.Drawing.Point(6, 320);
+            this.CopyBut.Name = "CopyBut";
+            this.CopyBut.Size = new System.Drawing.Size(190, 29);
+            this.CopyBut.TabIndex = 9;
+            this.CopyBut.Text = "Copy";
+            this.CopyBut.UseVisualStyleBackColor = true;
+            this.CopyBut.Click += new System.EventHandler(this.CopyBut_Click);
             // 
             // Undo
             // 
@@ -577,14 +611,6 @@
             this.labelInfo.TabIndex = 0;
             this.labelInfo.Text = "*";
             // 
-            // allePaginasToolStripMenuItem1
-            // 
-            this.allePaginasToolStripMenuItem1.Name = "allePaginasToolStripMenuItem1";
-            this.allePaginasToolStripMenuItem1.Size = new System.Drawing.Size(325, 24);
-            this.allePaginasToolStripMenuItem1.Text = "Alle Pagina\'s";
-            this.allePaginasToolStripMenuItem1.Visible = false;
-            this.allePaginasToolStripMenuItem1.Click += new System.EventHandler(this.allePaginasToolStripMenuItem_Click);
-            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -666,6 +692,8 @@
         private System.Windows.Forms.Button buttonMoveDown5;
         private System.Windows.Forms.Button buttonMoveUp5;
         private System.Windows.Forms.ToolStripMenuItem allePaginasToolStripMenuItem1;
+        private System.Windows.Forms.Button PasteBut;
+        private System.Windows.Forms.Button CopyBut;
     }
 }
 

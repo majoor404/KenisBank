@@ -30,6 +30,7 @@ namespace KenisBank
         private readonly List<string> history = new List<string>();
         public string PrevPagina = string.Empty;
         public bool BlokSchrijf = false;  // bij 5 plekken omhoog of omlaag niet schrijven tussendoor.
+        public Regel CopyRegel = null;
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern bool LockWindowUpdate(IntPtr hWndLock);
@@ -274,7 +275,7 @@ namespace KenisBank
         {
             if (!TestKlik())
                 return;
-            
+
             int eigenaar = (int)panelGeselecteerd.Tag;
 
             for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
@@ -493,12 +494,12 @@ namespace KenisBank
                             .ToList();
 
                 ProgressBarAan(files.Count);
-                if(ZF.checkBoxPaginaTitel.Checked)
+                if (ZF.checkBoxPaginaTitel.Checked)
                 {
                     foreach (FileInfo file in files)
                     {
                         ProgressBarUpdate();
-                        if(ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
+                        if (ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
                         {
                             string paginanaam = Path.GetFileNameWithoutExtension(file.Name).Trim();
                             if (!PaginaTitelMetTextGevonden.Contains(paginanaam))
@@ -506,7 +507,7 @@ namespace KenisBank
                         }
                     }
 
-                    for (int i = 0;i < PaginaTitelMetTextGevonden.Count();i++)
+                    for (int i = 0; i < PaginaTitelMetTextGevonden.Count(); i++)
                     {
                         Regel regel = new Regel(PaginaTitelMetTextGevonden[i], type.PaginaNaam, PaginaTitelMetTextGevonden[i])
                         {
@@ -954,34 +955,28 @@ namespace KenisBank
             Regel undo = PaginaInhoud.ChangePagina[PaginaInhoud.ChangePagina.Count - 1];
             // verwijder deze uit lijst
             PaginaInhoud.ChangePagina.RemoveAt(PaginaInhoud.ChangePagina.Count - 1);
-            // nieuwe regel
-            Regel rg = new Regel
-            {
-                ID_ = MaakID(),
-                tekst_ = undo.tekst_,
-                url_ = undo.url_,
-                type_ = undo.type_
-            };
+            change_pagina = true;
+            
             // voor contra actie uit
             if (undo.undo_ == type.Delete)
             {
                 // dus toevoegen
-                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_, rg);
+                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_, undo);
             }
 
             if (undo.undo_ == type.Move)
             {
                 PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(undo.index_);
-                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_ - undo.eigenaar_, rg);
+                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_ - undo.eigenaar_, undo);
             }
 
-            if (undo.undo_ == type.Toevoegen) // even error om na vakantie verder te gaan.
+            if (undo.undo_ == type.Toevoegen)
             {
                 // dus verwijderen
 
                 for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
                 {
-                    if (PaginaInhoud.InhoudPaginaMetRegels[i].ID_ == rg.ID_)
+                    if (PaginaInhoud.InhoudPaginaMetRegels[i].ID_ == undo.ID_)
                     {
                         PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     }
@@ -1018,7 +1013,7 @@ namespace KenisBank
                         .OrderByDescending(f => f.Name)
                         .ToList();
             ProgressBarAan(XMLFilesInDataDir.Count);
-            
+
             foreach (FileInfo file in XMLFilesInDataDir)
             {
                 string baknaam = Path.ChangeExtension(file.FullName, ".bak");
@@ -1032,18 +1027,46 @@ namespace KenisBank
 
         private void beheerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+
             InputStringForm IPS = new InputStringForm();
 
             DialogResult dialogResult = IPS.ShowDialog();
-            if (dialogResult == DialogResult.OK && IPS.textBox1.Text == "majoor404") 
+            if (dialogResult == DialogResult.OK && IPS.textBox1.Text == "majoor404")
             {
                 importAllePaginasOudeWikiToolStripMenuItem.Visible = true;
                 paginaBackupTerugZettenToolStripMenuItem.Visible = true;
                 zoekNaarWeesPaginasToolStripMenuItem1.Visible = true;
                 zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Visible = true;
-                allePaginasToolStripMenuItem1.Visible=true;
+                allePaginasToolStripMenuItem1.Visible = true;
             }
+        }
+
+        private void CopyBut_Click(object sender, EventArgs e)
+        {
+            if (!TestKlik())
+                return;
+
+            int eigenaar = (int)panelGeselecteerd.Tag;
+
+            for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+            {
+                if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
+                {
+                    // oke panel en regel nu bekend.
+                    CopyRegel = PaginaInhoud.InhoudPaginaMetRegels[i];
+                    i = 50000;
+                    break;
+                }
+            }
+        }
+        private void PasteBut_Click(object sender, EventArgs e)
+        {
+            Toevoegen(CopyRegel.tekst_, CopyRegel.type_, CopyRegel.url_);
+            change_pagina = true;
+            
+            // bouw Pagina
+            SchermUpdate();
+            SelecteerLaatstePaneel();
         }
     }
 }

@@ -159,7 +159,7 @@ namespace KenisBank
             PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
             
             Regel rg = new Regel(text, type, url);
-            regel.ID_ = MaakID();
+            rg.ID_ = regel.ID_;
             rg.undo_ = type.Toevoegen;
             PaginaInhoud.ChangePagina.Add(rg);
             

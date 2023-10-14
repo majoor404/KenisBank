@@ -37,10 +37,10 @@ namespace KenisBank
         public string tekst_ { set; get; }
         public type type_ { set; get; }
         public string url_ { set; get; }
-        public int eigenaar_ { set; get; }
+        public int eigenaar_ { set; get; } // eigenaar is uniek nummer welk gelijk is tussen paneel en regel welk daarop leeft.
         public type undo_ { set; get; }
         public int index_ { set; get; }
-        public int ID_ { set; get; }
+        public int ID_ { set; get; }    // uniek nummer voor undo actie's
 
 
         public List<Regel> InhoudPaginaMetRegels = new List<Regel>();
