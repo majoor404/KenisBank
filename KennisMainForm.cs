@@ -73,8 +73,9 @@ namespace KenisBank
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             // ook in alle paginaas en zoek, wees , alleen een beheerder kan hier bij komen.
-            if ((labelPaginaInBeeld.Text.Length > 3) && (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek"/* || labelPaginaInBeeld.Text == "Alle paginas" || labelPaginaInBeeld.Text.Substring(0, 4) == "Wees"*/))
+            if ((labelPaginaInBeeld.Text.Length > 3) && (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek"))
             {
+                MessageBox.Show("Zoek pagina kunt u niet aanpassen!");
                 editModeAanToolStripMenuItem.Checked = false;
                 return;
             }
@@ -682,12 +683,14 @@ namespace KenisBank
                             }
                         }
                     }
+
                     if (change != PaginaInhoud.InhoudPaginaMetRegels.Count)
                     {
                         PaginaInhoud.Save(Path.GetFileNameWithoutExtension(file.Name));
                     }
                 }
                 _ = MessageBox.Show("Klaar met clean kennisbank");
+                SchermUpdate();
             }
         }
 

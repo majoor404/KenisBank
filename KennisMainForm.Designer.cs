@@ -459,6 +459,7 @@
             this.buttonEditSelectie.Size = new System.Drawing.Size(267, 29);
             this.buttonEditSelectie.TabIndex = 9;
             this.buttonEditSelectie.Text = "Edit Selectie";
+            this.buttonEditSelectie.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonEditSelectie.UseVisualStyleBackColor = true;
             this.buttonEditSelectie.Click += new System.EventHandler(this.buttonEditSelectie_Click);
             // 
@@ -470,6 +471,7 @@
             this.buttonDelete.Size = new System.Drawing.Size(267, 29);
             this.buttonDelete.TabIndex = 8;
             this.buttonDelete.Text = "Delete Selectie";
+            this.buttonDelete.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
             // 
@@ -481,6 +483,7 @@
             this.button6.Size = new System.Drawing.Size(267, 29);
             this.button6.TabIndex = 7;
             this.button6.Text = "Toevoegen Lege Regel";
+            this.button6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.toevoegenLegeRegelToolStripMenuItem_Click);
             // 
@@ -492,6 +495,7 @@
             this.button5.Size = new System.Drawing.Size(267, 29);
             this.button5.TabIndex = 6;
             this.button5.Text = "Toevoegen Link naar Pagina";
+            this.button5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click);
             // 
@@ -503,6 +507,7 @@
             this.button4.Size = new System.Drawing.Size(267, 29);
             this.button4.TabIndex = 5;
             this.button4.Text = "Toevoegen Tekst Blok";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.toevoegenTekstBlokToolStripMenuItem_Click);
             // 
@@ -513,7 +518,8 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(267, 29);
             this.button3.TabIndex = 4;
-            this.button3.Text = "Toevoegen Link naar Dir";
+            this.button3.Text = "Toevoegen Link naar Directory";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.toevoegenLinkNaarDirToolStripMenuItem_Click);
             // 
@@ -525,6 +531,7 @@
             this.button2.Size = new System.Drawing.Size(267, 29);
             this.button2.TabIndex = 3;
             this.button2.Text = "Toevoegen Link naar File";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.toevoegenLinkNaarFileToolStripMenuItem_Click);
             // 
@@ -536,6 +543,7 @@
             this.button1.Size = new System.Drawing.Size(267, 29);
             this.button1.TabIndex = 2;
             this.button1.Text = "Toevoegen Hoofdstuk Tekst";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.toevoegenHoofdstukTextToolStripMenuItem_Click);
             // 
