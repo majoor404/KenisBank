@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
 using static System.Net.WebRequestMethods;
+using static System.Windows.Forms.LinkLabel;
 using File = System.IO.File;
 
 /*
@@ -637,15 +638,19 @@ namespace KenisBank
         }
         private void zoekLinksDieNietMeerBestaanToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show($"Doorzoek alle paginas en verwijder links die niet meer bestaan?", "Vraagje", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show($"Doorzoek alle paginas en naar links die niet meer bestaan?", "Vraagje", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
                 List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
                             .OrderByDescending(f => f.Name)
                             .ToList();
 
+                List<string> LijstMetLinksDieNietBestaan = new List<string>();
+
+                ProgressBarAan(files.Count);
                 foreach (FileInfo file in files)
                 {
+                    ProgressBarUpdate();
                     _ = PaginaInhoud.Laad(Path.GetFileNameWithoutExtension(file.Name));
                     // verander
                     int change = PaginaInhoud.InhoudPaginaMetRegels.Count;
@@ -661,8 +666,11 @@ namespace KenisBank
                             {
                                 if (!Directory.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
                                 {
-                                    _ = MessageBox.Show($"Remove link naar file \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}\n{PaginaInhoud.InhoudPaginaMetRegels[i].url_}");
-                                    PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                                    LijstMetLinksDieNietBestaan.Add($"Op Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                    LijstMetLinksDieNietBestaan.Add($"{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}");
+                                    LijstMetLinksDieNietBestaan.Add("");
+                                    //_ = MessageBox.Show($"Remove link naar file \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}\n{PaginaInhoud.InhoudPaginaMetRegels[i].url_}");
+                                    //PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                                 }
                             }
                         }
@@ -670,27 +678,50 @@ namespace KenisBank
                         {
                             if (!Directory.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
                             {
-                                _ = MessageBox.Show($"Remove link naar dir \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                                LijstMetLinksDieNietBestaan.Add($"Op Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                LijstMetLinksDieNietBestaan.Add($"{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}");
+                                LijstMetLinksDieNietBestaan.Add("");
+                                //_ = MessageBox.Show($"Remove link naar dir \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                //PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                             }
                         }
                         else if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.PaginaNaam)
                         {
                             if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
                             {
-                                _ = MessageBox.Show($"Remove link naar Pagina \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                                LijstMetLinksDieNietBestaan.Add($"Op Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                LijstMetLinksDieNietBestaan.Add($"{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}");
+                                LijstMetLinksDieNietBestaan.Add("");
+                                //_ = MessageBox.Show($"Remove link naar Pagina \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                //PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                             }
                         }
                     }
 
-                    if (change != PaginaInhoud.InhoudPaginaMetRegels.Count)
-                    {
-                        PaginaInhoud.Save(Path.GetFileNameWithoutExtension(file.Name));
-                    }
+                    //if (change != PaginaInhoud.InhoudPaginaMetRegels.Count)
+                    //{
+                    //    PaginaInhoud.Save(Path.GetFileNameWithoutExtension(file.Name));
+                    //}
                 }
-                _ = MessageBox.Show("Klaar met clean kennisbank");
-                SchermUpdate();
+                //_ = MessageBox.Show("Klaar met clean kennisbank");
+                
+                try
+                {
+                    File.WriteAllLines("Data\\NietWerkendeLinks.txt", LijstMetLinksDieNietBestaan);
+                    Process process = new Process();
+                    process.StartInfo.FileName = "Data\\NietWerkendeLinks.txt";
+                    try
+                    {
+                        _ = process.Start();
+                    }
+                    catch { }
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("info file save Error()");
+                }
+                ProgressBarUit();
+                homeToolStripMenuItem_Click(this, null);
             }
         }
 
