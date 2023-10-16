@@ -1032,8 +1032,10 @@ namespace KenisBank
                 else // hier kijken of er een nieuwe dag is
                 {
                     DateTime laatste_keer = File.GetLastWriteTime("Data\\backup.time");
+
                     if (laatste_keer.Day != DateTime.Now.Day && DateTime.Now.Hour > 1)
                     {
+                        File.SetLastWriteTime("Data\\backup.time", DateTime.Now);
                         Backup();
                     }
                 }
