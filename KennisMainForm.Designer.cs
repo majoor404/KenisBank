@@ -60,6 +60,7 @@
             this.zoekNaarWeesPaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allePaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.editZijBlakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
@@ -81,6 +82,7 @@
             this.panelInfo = new System.Windows.Forms.Panel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelInfo = new System.Windows.Forms.Label();
+            this.panelZij = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -98,7 +100,7 @@
             this.panel1.Controls.Add(this.labelPaginaInBeeld);
             this.panel1.Location = new System.Drawing.Point(12, 31);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1570, 44);
+            this.panel1.Size = new System.Drawing.Size(1860, 44);
             this.panel1.TabIndex = 0;
             // 
             // linkLabelHis0
@@ -166,9 +168,9 @@
             this.panelMain.AutoScroll = true;
             this.panelMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelMain.Location = new System.Drawing.Point(12, 91);
+            this.panelMain.Location = new System.Drawing.Point(266, 91);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(1602, 701);
+            this.panelMain.Size = new System.Drawing.Size(1606, 816);
             this.panelMain.TabIndex = 2;
             // 
             // menuStrip1
@@ -319,7 +321,8 @@
             this.paginaBackupTerugZettenToolStripMenuItem,
             this.zoekNaarWeesPaginasToolStripMenuItem1,
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem,
-            this.allePaginasToolStripMenuItem1});
+            this.allePaginasToolStripMenuItem1,
+            this.editZijBlakToolStripMenuItem});
             this.beheerToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.beheerToolStripMenuItem.Name = "beheerToolStripMenuItem";
             this.beheerToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
@@ -371,6 +374,14 @@
             this.allePaginasToolStripMenuItem1.Text = "Alle Pagina\'s";
             this.allePaginasToolStripMenuItem1.Visible = false;
             this.allePaginasToolStripMenuItem1.Click += new System.EventHandler(this.allePaginasToolStripMenuItem_Click);
+            // 
+            // editZijBlakToolStripMenuItem
+            // 
+            this.editZijBlakToolStripMenuItem.Name = "editZijBlakToolStripMenuItem";
+            this.editZijBlakToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
+            this.editZijBlakToolStripMenuItem.Text = "Edit ZijBlak";
+            this.editZijBlakToolStripMenuItem.Visible = false;
+            this.editZijBlakToolStripMenuItem.Click += new System.EventHandler(this.editZijBlakToolStripMenuItem_Click);
             // 
             // versieToolStripMenuItem
             // 
@@ -619,11 +630,20 @@
             this.labelInfo.TabIndex = 0;
             this.labelInfo.Text = "*";
             // 
+            // panelZij
+            // 
+            this.panelZij.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelZij.Location = new System.Drawing.Point(13, 91);
+            this.panelZij.Name = "panelZij";
+            this.panelZij.Size = new System.Drawing.Size(231, 816);
+            this.panelZij.TabIndex = 5;
+            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1884, 961);
+            this.Controls.Add(this.panelZij);
             this.Controls.Add(this.panelUpDown);
             this.Controls.Add(this.panelInfo);
             this.Controls.Add(this.panelMain);
@@ -702,6 +722,8 @@
         private System.Windows.Forms.ToolStripMenuItem allePaginasToolStripMenuItem1;
         private System.Windows.Forms.Button PasteBut;
         private System.Windows.Forms.Button CopyBut;
+        private System.Windows.Forms.Panel panelZij;
+        private System.Windows.Forms.ToolStripMenuItem editZijBlakToolStripMenuItem;
     }
 }
 

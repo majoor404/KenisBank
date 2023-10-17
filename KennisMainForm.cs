@@ -24,6 +24,8 @@ namespace KenisBank
     public partial class KennisMainForm : Form
     {
         public Regel PaginaInhoud = new Regel();
+        public Regel PaginaZijBalk = new Regel();
+
         public Panel panelGeselecteerd = new Panel();
         public bool change_pagina = false;
         private static readonly Random random = new Random();
@@ -58,16 +60,22 @@ namespace KenisBank
                 saveHuidigePaginaToolStripMenuItem_Click(this, null);
             }
 
+            
+
             BackupNu();
 
             // bouw Pagina
             SchermUpdate();
+            
+            if(PaginaZijBalk.Laad("zijbalk"))
+                SchermUpdateZijBalk();
         }
         private void KennisMainForm_Resize(object sender, EventArgs e)
         {
-            panel1.Width = Width - 45;
-            panelMain.Width = Width - 45;
+            panel1.Width = Width - 50;
+            panelMain.Width = Width - 305;
             panelMain.Height = Height - 180;
+            panelZij.Height = Height - 180;
         }
 
         // interact met gebruiker
@@ -203,6 +211,7 @@ namespace KenisBank
 
             // bouw Pagina
             SchermUpdate();
+            SchermUpdateZijBalk();
         }
         private void saveHuidigePaginaToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -752,32 +761,32 @@ namespace KenisBank
 
                 if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.Hoofdstuk)
                 {
-                    PlaatsHoofdstukOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, eigenaar);
+                    PlaatsHoofdstukOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, eigenaar, panelMain);
                     PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkDir)
                 {
-                    PlaatsLinkOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].url_, eigenaar);
+                    PlaatsLinkOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].url_, eigenaar, panelMain);
                     PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkFile)
                 {
-                    PlaatsLinkOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].url_, eigenaar);
+                    PlaatsLinkOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].url_, eigenaar, panelMain);
                     PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.TekstBlok)
                 {
-                    PlaatsTextOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, eigenaar);
+                    PlaatsTextOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, eigenaar, panelMain);
                     PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.PaginaNaam)
                 {
-                    PlaatsPaginaOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].url_, eigenaar);
+                    PlaatsPaginaOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].url_, eigenaar, panelMain);
                     PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.Leeg)
                 {
-                    PlaatsTextOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, eigenaar);
+                    PlaatsTextOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, eigenaar, panelMain);
                     PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
                 }
                 if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.EditInfo)
@@ -791,10 +800,61 @@ namespace KenisBank
             {
                 string dum = RandomString(10);
                 int eigenaar = dum.GetHashCode();
-                PlaatsTextOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[MakerInfoIndex].tekst_, eigenaar);
+                PlaatsTextOpBeeld(PaginaInhoud.InhoudPaginaMetRegels[MakerInfoIndex].tekst_, eigenaar, panelMain);
                 PaginaInhoud.InhoudPaginaMetRegels[MakerInfoIndex].eigenaar_ = eigenaar;
             }
 
+            _ = LockWindowUpdate(IntPtr.Zero);
+
+            ProgressBarUit();
+        }
+
+        private void SchermUpdateZijBalk()
+        {
+            // delete oude
+            panelZij.Controls.Clear();
+            
+            ProgressBarAan(PaginaZijBalk.InhoudPaginaMetRegels.Count);
+
+            _ = LockWindowUpdate(panelZij.Handle);
+
+            for (int i = 0; i < PaginaZijBalk.InhoudPaginaMetRegels.Count; i++)
+            {
+                ProgressBarUpdate();
+                string dum = RandomString(10);
+                int eigenaar = dum.GetHashCode();
+
+                if (PaginaZijBalk.InhoudPaginaMetRegels[i].type_ == type.Hoofdstuk)
+                {
+                    PlaatsHoofdstukOpBeeld(PaginaZijBalk.InhoudPaginaMetRegels[i].tekst_, eigenaar, panelZij);
+                    PaginaZijBalk.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (PaginaZijBalk.InhoudPaginaMetRegels[i].type_ == type.LinkDir)
+                {
+                    PlaatsLinkOpBeeld(PaginaZijBalk.InhoudPaginaMetRegels[i].tekst_, PaginaZijBalk.InhoudPaginaMetRegels[i].url_, eigenaar, panelZij);
+                    PaginaZijBalk.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (PaginaZijBalk.InhoudPaginaMetRegels[i].type_ == type.LinkFile)
+                {
+                    PlaatsLinkOpBeeld(PaginaZijBalk.InhoudPaginaMetRegels[i].tekst_, PaginaZijBalk.InhoudPaginaMetRegels[i].url_, eigenaar, panelZij);
+                    PaginaZijBalk.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (PaginaZijBalk.InhoudPaginaMetRegels[i].type_ == type.TekstBlok)
+                {
+                    PlaatsTextOpBeeld(PaginaZijBalk.InhoudPaginaMetRegels[i].tekst_, eigenaar, panelZij);
+                    PaginaZijBalk.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (PaginaZijBalk.InhoudPaginaMetRegels[i].type_ == type.PaginaNaam)
+                {
+                    PlaatsPaginaOpBeeld(PaginaZijBalk.InhoudPaginaMetRegels[i].tekst_, PaginaZijBalk.InhoudPaginaMetRegels[i].url_, eigenaar, panelZij);
+                    PaginaZijBalk.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+                if (PaginaZijBalk.InhoudPaginaMetRegels[i].type_ == type.Leeg)
+                {
+                    PlaatsTextOpBeeld(PaginaZijBalk.InhoudPaginaMetRegels[i].tekst_, eigenaar, panelZij);
+                    PaginaZijBalk.InhoudPaginaMetRegels[i].eigenaar_ = eigenaar;
+                }
+            }
             _ = LockWindowUpdate(IntPtr.Zero);
 
             ProgressBarUit();
@@ -1078,6 +1138,7 @@ namespace KenisBank
                 zoekNaarWeesPaginasToolStripMenuItem1.Visible = true;
                 zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Visible = true;
                 allePaginasToolStripMenuItem1.Visible = true;
+                editZijBlakToolStripMenuItem.Visible = true;
             }
         }
 
@@ -1107,6 +1168,24 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
             SelecteerLaatstePaneel();
+        }
+
+        private void editZijBlakToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // laad ZijBalk.xml
+            if (PaginaInhoud.Laad("zijbalk"))
+            {
+                labelPaginaInBeeld.Text = "zijbalk";
+                HistoryBalkAdd(labelPaginaInBeeld.Text);
+            }
+            else
+            {
+                PaginaInhoud.InhoudPaginaMetRegels.Clear();
+                labelPaginaInBeeld.Text = "zijbalk";
+                HistoryBalkAdd(labelPaginaInBeeld.Text);
+                saveHuidigePaginaToolStripMenuItem_Click(this, null);
+            }
+            SchermUpdate();
         }
     }
 }

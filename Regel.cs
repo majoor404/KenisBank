@@ -62,31 +62,33 @@ namespace KenisBank
         }
         public void Save(string file)
         {
-            string edit = $"Laatste edit door : {Environment.UserName} op {DateTime.Now}";
-            bool al_edit_veld_aanwezig = false;
-            // toevoegen EditInfo
-            foreach(Regel regel in InhoudPaginaMetRegels)
+            if (file != "zijbalk")
             {
-                if(regel.type_ == type.EditInfo)
+                string edit = $"Laatste edit door : {Environment.UserName} op {DateTime.Now}";
+                bool al_edit_veld_aanwezig = false;
+                // toevoegen EditInfo
+                foreach (Regel regel in InhoudPaginaMetRegels)
                 {
-                    regel.tekst_ = edit;
-                    regel.type_ = type.EditInfo;
-                    al_edit_veld_aanwezig = true;
+                    if (regel.type_ == type.EditInfo)
+                    {
+                        regel.tekst_ = edit;
+                        regel.type_ = type.EditInfo;
+                        al_edit_veld_aanwezig = true;
+                    }
+                }
+
+                // eerste keer lege pagina dan aanmaken
+                if (!al_edit_veld_aanwezig)
+                {
+                    Regel r = new Regel
+                    {
+                        type_ = type.EditInfo,
+                        tekst_ = edit,
+                        url_ = ""
+                    };
+                    InhoudPaginaMetRegels.Add(r);
                 }
             }
-            
-            // eerste keer lege pagina dan aanmaken
-            if(!al_edit_veld_aanwezig)
-            {
-                Regel r = new Regel
-                {
-                    type_ = type.EditInfo,
-                    tekst_ = edit,
-                    url_ = ""
-                };
-                InhoudPaginaMetRegels.Add(r);
-            }
-            
             try
             {
                 string fi = VertaalNaarFileNaam(file);

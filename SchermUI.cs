@@ -10,7 +10,7 @@ namespace KenisBank
     partial class KennisMainForm
     {
         // plaats regel op formulier
-        private Panel MaakNewPanel(int eigenaar)
+        private Panel MaakNewPanel(int eigenaar, Panel PanelNaam)
         {
             // maak new panel
             Panel panel = new Panel
@@ -21,14 +21,14 @@ namespace KenisBank
                 Tag = eigenaar
             };
 
-            panelMain.Controls.Add(panel);
-            panelMain.Controls.SetChildIndex(panel, 0);
+            PanelNaam.Controls.Add(panel);
+            PanelNaam.Controls.SetChildIndex(panel, 0);
             panel.Click += new EventHandler(panel_Click);
             return panel;
         }
-        private void PlaatsHoofdstukOpBeeld(string text, int eigenaar)
+        private void PlaatsHoofdstukOpBeeld(string text, int eigenaar, Panel PanelNaam)
         {
-            Panel panel = MaakNewPanel(eigenaar);
+            Panel panel = MaakNewPanel(eigenaar, PanelNaam);
 
             System.Windows.Forms.Label label = new System.Windows.Forms.Label();
             Point org = new Point(label.Location.X, label.Location.Y);
@@ -41,10 +41,10 @@ namespace KenisBank
             panel.Controls.Add(label);
             panelMain.Refresh();
         }
-        private void PlaatsTextOpBeeld(string tekst, int eigenaar)
+        private void PlaatsTextOpBeeld(string tekst, int eigenaar, Panel PanelNaam)
         {
 
-            Panel panel = MaakNewPanel(eigenaar);
+            Panel panel = MaakNewPanel(eigenaar, PanelNaam);
 
             panel.SuspendLayout();
 
@@ -67,10 +67,9 @@ namespace KenisBank
             }
             panel.ResumeLayout();
         }
-        private void PlaatsLinkOpBeeld(string link, string locatie, int eigenaar)
+        private void PlaatsLinkOpBeeld(string link, string locatie, int eigenaar, Panel PanelNaam)
         {
-            Panel panel = MaakNewPanel(eigenaar);
-
+            Panel panel = MaakNewPanel(eigenaar, PanelNaam);
 
             System.Windows.Forms.LinkLabel label = new System.Windows.Forms.LinkLabel();
 
@@ -89,9 +88,10 @@ namespace KenisBank
             panel.Controls.Add(label);
             panelMain.Refresh();
         }
-        private void PlaatsPaginaOpBeeld(string link, string locatie, int eigenaar)
+        private void PlaatsPaginaOpBeeld(string link, string locatie, int eigenaar, Panel PanelNaam)
         {
-            Panel panel = MaakNewPanel(eigenaar);
+            Panel panel = MaakNewPanel(eigenaar, PanelNaam);
+
             System.Windows.Forms.Button but = new System.Windows.Forms.Button();
 
             Point org = new Point(but.Location.X, but.Location.Y);
@@ -231,6 +231,7 @@ namespace KenisBank
         {
             // bouw Pagina
             SchermUpdate();
+            SchermUpdateZijBalk();
         }
         private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
