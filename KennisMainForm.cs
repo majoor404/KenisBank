@@ -270,6 +270,10 @@ namespace KenisBank
                 {
                     saveHuidigePaginaToolStripMenuItem_Click(this, null);
                 }
+                else
+                {
+                    change_pagina = false;
+                }
             }
             SchermUpdate();
         }
