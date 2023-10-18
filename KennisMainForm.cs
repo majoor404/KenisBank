@@ -116,6 +116,7 @@ namespace KenisBank
                     {
                         saveHuidigePaginaToolStripMenuItem_Click(this, null);
                     }
+                    change_pagina = false;
                 }
                 buttonEditSelectie.Enabled = false;
                 editPaginaToolStripMenuItem.BackColor = SystemColors.MenuBar;
@@ -799,6 +800,7 @@ namespace KenisBank
                 }
             }
             labelInfo.Text = "";
+            
             if (MakerInfoIndex > -1)
             {
                 string dum = RandomString(10);
@@ -811,7 +813,6 @@ namespace KenisBank
 
             ProgressBarUit();
         }
-
         private void SchermUpdateZijBalk()
         {
             // delete oude

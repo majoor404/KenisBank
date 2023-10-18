@@ -294,10 +294,12 @@ namespace KenisBank
         }
         private void SelecteerLaatstePaneel()
         {
+            int hoog = 0;
             panelGeselecteerd = null;
             buttonEditSelectie.Enabled = false;
             foreach (Panel a in panelMain.Controls)
             {
+                hoog += a.Height;
                 a.BackColor = panelMain.BackColor;
                 a.BorderStyle = BorderStyle.None;
                 if ((int)a.Tag == PaginaInhoud.InhoudPaginaMetRegels[PaginaInhoud.InhoudPaginaMetRegels.Count - 1].eigenaar_)
@@ -308,6 +310,7 @@ namespace KenisBank
                     buttonEditSelectie.Enabled = true;
                 }
             }
+            panelMain.AutoScrollPosition = new Point(0, hoog);
         }
         private void SelecteerEerstePaneel()
         {
@@ -325,6 +328,7 @@ namespace KenisBank
                     buttonEditSelectie.Enabled = true;
                 }
             }
+            panelMain.AutoScrollPosition = new Point(0, 0);
         }
         private void MovePanel(int richting)
         {
@@ -371,12 +375,14 @@ namespace KenisBank
 
             if (BlokSchrijf)
                 return;
+            
             // bouw Pagina
             SchermUpdate();
 
             // nu weer regel op nieuw_index kleuren
             // get eigenaar nummer
             int eig = PaginaInhoud.InhoudPaginaMetRegels[nieuw_index].eigenaar_;
+
             foreach (Panel panel in panelMain.Controls)
             {
                 if ((int)panel.Tag == eig)
@@ -386,6 +392,7 @@ namespace KenisBank
                     panelGeselecteerd = panel;
                 }
             }
+            panelMain.AutoScrollPosition = new Point(0, nieuw_index * 20);
         }
 
         // ProgressBar
