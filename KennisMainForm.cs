@@ -211,6 +211,7 @@ namespace KenisBank
 
             // bouw Pagina
             SchermUpdate();
+            PaginaZijBalk.Laad("zijbalk");
             SchermUpdateZijBalk();
         }
         private void saveHuidigePaginaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -445,6 +446,8 @@ namespace KenisBank
                 // save als 
                 PaginaInhoud.ChangePagina.Clear();
                 string file_Naam = Path.GetFileNameWithoutExtension(file.Name);
+                if (file_Naam == "sidebar")
+                    file_Naam = "zijbalk";
                 PaginaInhoud.Save(file_Naam);
             }
             change_pagina = false;

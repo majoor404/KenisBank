@@ -95,15 +95,22 @@ namespace KenisBank
             System.Windows.Forms.Button but = new System.Windows.Forms.Button();
 
             Point org = new Point(but.Location.X, but.Location.Y);
-            org.X += 30;
-            but.Location = org;
 
-            but.Width = 500;
-            but.Height = 30;
+            if (PanelNaam == panelMain)
+            {
+                org.X += 30;
+                but.Width = 500;
+                but.Height = 30;
+            }
+            else
+            {
+                org.X += 10;
+                but.Width = 200;
+                but.Height = 30;
+            }
+            but.Location = org;
             but.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
             but.Text = link;
-            //but.Tag = locatie;
-            //but.BorderStyle = BorderStyle.None;
             but.Click += new EventHandler(PaginaButtonClick);
             panel.Controls.Add(but);
             panelMain.Refresh();
@@ -231,6 +238,7 @@ namespace KenisBank
         {
             // bouw Pagina
             SchermUpdate();
+            PaginaZijBalk.Laad("zijbalk");
             SchermUpdateZijBalk();
         }
         private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
@@ -238,9 +246,9 @@ namespace KenisBank
             if (!TestKlik())
                 return;
 
-            DialogResult dialogResult = MessageBox.Show($"Zeker weten, verwijderen?", "Vraagje", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
+            //DialogResult dialogResult = MessageBox.Show($"Zeker weten, verwijderen?", "Vraagje", MessageBoxButtons.YesNo);
+            //if (dialogResult == DialogResult.Yes)
+            //{
                 int eigenaar = (int)panelGeselecteerd.Tag;
 
                 for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
@@ -282,7 +290,7 @@ namespace KenisBank
 
                 // bouw Pagina
                 SchermUpdate();
-            }
+            //}
         }
         private void SelecteerLaatstePaneel()
         {
