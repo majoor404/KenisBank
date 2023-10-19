@@ -564,7 +564,7 @@
             this.buttonMoveDown5.Name = "buttonMoveDown5";
             this.buttonMoveDown5.Size = new System.Drawing.Size(130, 64);
             this.buttonMoveDown5.TabIndex = 1;
-            this.buttonMoveDown5.Text = "Down 5 Plekken";
+            this.buttonMoveDown5.Text = "Down 10 Plekken";
             this.buttonMoveDown5.UseVisualStyleBackColor = true;
             this.buttonMoveDown5.Click += new System.EventHandler(this.buttonMoveDown5_Click);
             // 
@@ -584,7 +584,7 @@
             this.buttonMoveUp5.Name = "buttonMoveUp5";
             this.buttonMoveUp5.Size = new System.Drawing.Size(130, 64);
             this.buttonMoveUp5.TabIndex = 0;
-            this.buttonMoveUp5.Text = "Up 5 Plekken";
+            this.buttonMoveUp5.Text = "Up 10 Plekken";
             this.buttonMoveUp5.UseVisualStyleBackColor = true;
             this.buttonMoveUp5.Click += new System.EventHandler(this.buttonMoveUp5_Click);
             // 

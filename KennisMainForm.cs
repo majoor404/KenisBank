@@ -60,8 +60,6 @@ namespace KenisBank
                 saveHuidigePaginaToolStripMenuItem_Click(this, null);
             }
 
-            
-
             BackupNu();
 
             // bouw Pagina
@@ -251,10 +249,10 @@ namespace KenisBank
             if (!TestKlik())
                 return;
             BlokSchrijf = true;
-            MovePanel(-1);
-            MovePanel(-1);
-            MovePanel(-1);
-            MovePanel(-1);
+            for (int i = 0; i < 9; i++)
+            {
+                MovePanel(-1);
+            }
             BlokSchrijf = false;
             MovePanel(-1);
         }
@@ -263,10 +261,10 @@ namespace KenisBank
             if (!TestKlik())
                 return;
             BlokSchrijf = true;
-            MovePanel(1);
-            MovePanel(1);
-            MovePanel(1);
-            MovePanel(1);
+            for (int i = 0; i < 9; i++)
+            {
+                MovePanel(1);
+            }
             BlokSchrijf = false;
             MovePanel(1);
         }
@@ -1121,9 +1119,17 @@ namespace KenisBank
             foreach (FileInfo file in XMLFilesInDataDir)
             {
                 string baknaam = Path.ChangeExtension(file.FullName, ".bak");
-                //FileInfo fi = new FileInfo(baknaam);
-                //if (fi.Length != file.Length)
-                File.Copy(file.FullName, baknaam, true);
+                
+                if(!File.Exists(baknaam))
+                {
+                    File.Copy(file.FullName, baknaam, true);
+                }
+                else
+                {
+                    FileInfo fi = new FileInfo(baknaam);
+                    if (fi.Length != file.Length)
+                        File.Copy(file.FullName, baknaam, true);
+                }
                 ProgressBarUpdate();
             }
             ProgressBarUit();
