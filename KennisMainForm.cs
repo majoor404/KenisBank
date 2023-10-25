@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
@@ -64,16 +65,17 @@ namespace KenisBank
 
             // bouw Pagina
             SchermUpdate();
-            
-            if(PaginaZijBalk.Laad("zijbalk"))
+
+            if (PaginaZijBalk.Laad("zijbalk"))
                 SchermUpdateZijBalk();
         }
         private void KennisMainForm_Resize(object sender, EventArgs e)
         {
-            panel1.Width = Width - 50;
-            panelMain.Width = Width - 305;
-            panelMain.Height = Height - 180;
-            panelZij.Height = Height - 180;
+            panel1.Width = Width - 50; // top
+            Point hoek = panel1.Location;
+            flowHistorie.Location = new Point(hoek.X + panel1.Width - flowHistorie.Width, flowHistorie.Location.Y);
+            panelMain.Width = this.Width - panelZij.Width - flowHistorie.Width - 95;
+            flowHistorie.Height = panelMain.Height = panelZij.Height = Height - 180;
         }
 
         // interact met gebruiker
@@ -624,32 +626,17 @@ namespace KenisBank
         }
         private void terugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (history.Count > 1)
+            if (flowHistorie.Controls.Count > 1)
             {
-                string vorige_pagina = history[history.Count - 2];
+                LinkLabel a = (LinkLabel)flowHistorie.Controls[flowHistorie.Controls.Count - 2];
+                string vorige_pagina = a.Text;
+                
                 _ = PaginaInhoud.Laad(vorige_pagina);
                 labelPaginaInBeeld.Text = vorige_pagina;
-                history.RemoveAt(history.Count - 1);
-                PlaatsHistoryOpScherm();
+
+                flowHistorie.Controls.RemoveAt(flowHistorie.Controls.Count-1);
                 SchermUpdate();
             }
-        }
-        private void linkLabelHis1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            LinkLabel a = (LinkLabel)sender;
-            editModeAanToolStripMenuItem.Checked = false;
-            buttonEdit_Click(this, null);
-
-            if (PaginaInhoud.Laad(a.Text))
-            {
-                labelPaginaInBeeld.Text = a.Text;
-                HistoryBalkChange(labelPaginaInBeeld.Text);
-                PlaatsHistoryOpScherm();
-            }
-
-            // bouw Pagina
-            SchermUpdate();
-
         }
         private void zoekLinksDieNietMeerBestaanToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -719,7 +706,7 @@ namespace KenisBank
                     //}
                 }
                 //_ = MessageBox.Show("Klaar met clean kennisbank");
-                
+
                 try
                 {
                     File.WriteAllLines("Data\\NietWerkendeLinks.txt", LijstMetLinksDieNietBestaan);
@@ -798,7 +785,7 @@ namespace KenisBank
                 }
             }
             labelInfo.Text = "";
-            
+
             if (MakerInfoIndex > -1)
             {
                 string dum = RandomString(10);
@@ -810,12 +797,14 @@ namespace KenisBank
             _ = LockWindowUpdate(IntPtr.Zero);
 
             ProgressBarUit();
+
+            KennisMainForm_Resize(this, null);
         }
         private void SchermUpdateZijBalk()
         {
             // delete oude
             panelZij.Controls.Clear();
-            
+
             ProgressBarAan(PaginaZijBalk.InhoudPaginaMetRegels.Count);
 
             _ = LockWindowUpdate(panelZij.Handle);
@@ -999,34 +988,17 @@ namespace KenisBank
         {
             if (pagina == "start")
             {
-                history.Clear();
+                flowHistorie.Controls.Clear();
             }
+            LinkLabel a = new LinkLabel();
+            a.AutoSize = true;
+            a.Tag = pagina;
+            a.Text = pagina;
+            a.Font = new Font("Microsoft Sans Serif", 11);
+            a.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(historylabel_LinkClicked);
+            flowHistorie.Controls.Add(a);
 
-            history.Add(pagina);
-
-            if (history.Count > 5)
-            {
-                history.RemoveAt(0);
-            }
-
-            PlaatsHistoryOpScherm();
-
-        }
-        private void HistoryBalkChange(string pagina)
-        {
-            int gevonden_pos = history.Count;
-            for (int i = 0; i < 4; i++)
-            {
-                if (history[i] == pagina)
-                {
-                    gevonden_pos = i;
-                    break;
-                }
-            }
-            for (int i = history.Count - 1; i > gevonden_pos; i--)
-            {
-                history.RemoveAt(i);
-            }
+            KennisMainForm_Resize(this, null);
         }
         public int MaakID()
         {
@@ -1056,7 +1028,7 @@ namespace KenisBank
             // verwijder deze uit lijst
             PaginaInhoud.ChangePagina.RemoveAt(PaginaInhoud.ChangePagina.Count - 1);
             change_pagina = true;
-            
+
             // voor contra actie uit
             if (undo.undo_ == type.Delete)
             {
@@ -1119,8 +1091,8 @@ namespace KenisBank
             foreach (FileInfo file in XMLFilesInDataDir)
             {
                 string baknaam = Path.ChangeExtension(file.FullName, ".bak");
-                
-                if(!File.Exists(baknaam))
+
+                if (!File.Exists(baknaam))
                 {
                     File.Copy(file.FullName, baknaam, true);
                 }
@@ -1174,7 +1146,7 @@ namespace KenisBank
         {
             Toevoegen(CopyRegel.tekst_, CopyRegel.type_, CopyRegel.url_);
             change_pagina = true;
-            
+
             // bouw Pagina
             SchermUpdate();
             SelecteerLaatstePaneel();
@@ -1196,6 +1168,37 @@ namespace KenisBank
                 saveHuidigePaginaToolStripMenuItem_Click(this, null);
             }
             SchermUpdate();
+        }
+        private void historylabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LinkLabel a = (LinkLabel)sender;
+            string pagina = a.Tag as string;
+
+            if (editModeAanToolStripMenuItem.Checked)
+            {
+                MessageBox.Show("Eerst uit edit mode!");
+            }
+            else
+            {
+                if (PaginaInhoud.Laad(pagina))
+                {
+                    labelPaginaInBeeld.Text = pagina;
+
+                    if (flowHistorie.Controls.Count > 1)
+                    {
+                        for (int i = flowHistorie.Controls.Count - 1; i > 0; i--)
+                        {
+                            LinkLabel qa = (LinkLabel)flowHistorie.Controls[i];
+                            if ((string)qa.Tag != pagina)
+                            {
+                                flowHistorie.Controls.RemoveAt(i);
+                            }
+                        }
+                    }
+                }
+                // bouw Pagina
+                SchermUpdate();
+            }
         }
     }
 }
