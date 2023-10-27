@@ -4,12 +4,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
-using static System.Net.WebRequestMethods;
-using static System.Windows.Forms.LinkLabel;
 using File = System.IO.File;
 
 /*
@@ -67,15 +64,20 @@ namespace KenisBank
             SchermUpdate();
 
             if (PaginaZijBalk.Laad("zijbalk"))
+            {
                 SchermUpdateZijBalk();
+            }
         }
         private void KennisMainForm_Resize(object sender, EventArgs e)
         {
             panel1.Width = Width - 50; // top
             Point hoek = panel1.Location;
             flowHistorie.Location = new Point(hoek.X + panel1.Width - flowHistorie.Width, flowHistorie.Location.Y);
-            panelMain.Width = this.Width - panelZij.Width - flowHistorie.Width - 95;
+            panelMain.Width = Width - panelZij.Width - flowHistorie.Width - 95;
             flowHistorie.Height = panelMain.Height = panelZij.Height = Height - 180;
+
+            progressBar.Location = new Point(hoek.X, progressBar.Location.Y);
+            progressBar.Width = panel1.Width;
         }
 
         // interact met gebruiker
@@ -84,7 +86,7 @@ namespace KenisBank
             // ook in alle paginaas en zoek, wees , alleen een beheerder kan hier bij komen.
             if ((labelPaginaInBeeld.Text.Length > 3) && (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek"))
             {
-                MessageBox.Show("Zoek pagina kunt u niet aanpassen!");
+                _ = MessageBox.Show("Zoek pagina kunt u niet aanpassen!");
                 editModeAanToolStripMenuItem.Checked = false;
                 return;
             }
@@ -116,7 +118,7 @@ namespace KenisBank
                     }
                     else
                     {
-                        PaginaInhoud.Laad(labelPaginaInBeeld.Text);
+                        _ = PaginaInhoud.Laad(labelPaginaInBeeld.Text);
                         SchermUpdate();
                     }
                     change_pagina = false;
@@ -154,7 +156,7 @@ namespace KenisBank
         {
             if (editModeAanToolStripMenuItem.Checked)
             {
-                MessageBox.Show("Eerst uit edit mode om naar andere pagina te gaan.");
+                _ = MessageBox.Show("Eerst uit edit mode om naar andere pagina te gaan.");
                 return;
             }
 
@@ -215,7 +217,7 @@ namespace KenisBank
 
             // bouw Pagina
             SchermUpdate();
-            PaginaZijBalk.Laad("zijbalk");
+            _ = PaginaZijBalk.Laad("zijbalk");
             SchermUpdateZijBalk();
         }
         private void saveHuidigePaginaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -240,19 +242,28 @@ namespace KenisBank
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
+            {
                 return;
+            }
+
             MovePanel(-1);
         }
         private void buttonMoveDown_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
+            {
                 return;
+            }
+
             MovePanel(1);
         }
         private void buttonMoveUp5_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
+            {
                 return;
+            }
+
             BlokSchrijf = true;
             for (int i = 0; i < 9; i++)
             {
@@ -264,7 +275,10 @@ namespace KenisBank
         private void buttonMoveDown5_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
+            {
                 return;
+            }
+
             BlokSchrijf = true;
             for (int i = 0; i < 9; i++)
             {
@@ -281,7 +295,9 @@ namespace KenisBank
         private void buttonEditSelectie_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
+            {
                 return;
+            }
 
             int eigenaar = (int)panelGeselecteerd.Tag;
 
@@ -438,7 +454,10 @@ namespace KenisBank
                 PaginaInhoud.ChangePagina.Clear();
                 string file_Naam = Path.GetFileNameWithoutExtension(file.Name);
                 if (file_Naam == "sidebar")
+                {
                     file_Naam = "zijbalk";
+                }
+
                 PaginaInhoud.Save(file_Naam);
             }
             change_pagina = false;
@@ -483,9 +502,9 @@ namespace KenisBank
             BT.labelHuidig.Text = File.GetLastWriteTime(opslagnaam).ToLongDateString();
             BT.labelBackup1.Text = File.GetLastWriteTime(backup1).ToLongDateString();
 
-            BT.ShowDialog();
+            _ = BT.ShowDialog();
 
-            PaginaInhoud.Laad(fi);
+            _ = PaginaInhoud.Laad(fi);
             SchermUpdate();
         }
         private void zoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -512,7 +531,9 @@ namespace KenisBank
                         {
                             string paginanaam = Path.GetFileNameWithoutExtension(file.Name).Trim();
                             if (!PaginaTitelMetTextGevonden.Contains(paginanaam))
+                            {
                                 PaginaTitelMetTextGevonden.Add(paginanaam);
+                            }
                         }
                     }
 
@@ -540,8 +561,10 @@ namespace KenisBank
                         {
                             if (ContainsCaseInsensitive(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text))
                             {
-                                Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
-                                regel.ID_ = MaakID();
+                                Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "")
+                                {
+                                    ID_ = MaakID()
+                                };
                                 PaginaMetRegelsGevonden.Add(regel);
                                 regel = new Regel(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].type_, PaginaInhoud.InhoudPaginaMetRegels[i].url_)
                                 {
@@ -620,11 +643,11 @@ namespace KenisBank
             {
                 LinkLabel a = (LinkLabel)flowHistorie.Controls[flowHistorie.Controls.Count - 2];
                 string vorige_pagina = a.Text;
-                
+
                 _ = PaginaInhoud.Laad(vorige_pagina);
                 labelPaginaInBeeld.Text = vorige_pagina;
 
-                flowHistorie.Controls.RemoveAt(flowHistorie.Controls.Count-1);
+                flowHistorie.Controls.RemoveAt(flowHistorie.Controls.Count - 1);
                 SchermUpdate();
             }
         }
@@ -654,6 +677,7 @@ namespace KenisBank
 
                         if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkFile)
                         {
+
                             if (!File.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
                             {
                                 if (!Directory.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
@@ -665,6 +689,7 @@ namespace KenisBank
                                     //PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                                 }
                             }
+
                         }
                         else if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkDir)
                         {
@@ -710,7 +735,7 @@ namespace KenisBank
                 }
                 catch (IOException)
                 {
-                    MessageBox.Show("info file save Error()");
+                    _ = MessageBox.Show("info file save Error()");
                 }
                 ProgressBarUit();
                 homeToolStripMenuItem_Click(this, null);
@@ -980,11 +1005,13 @@ namespace KenisBank
             {
                 flowHistorie.Controls.Clear();
             }
-            LinkLabel a = new LinkLabel();
-            a.AutoSize = true;
-            a.Tag = pagina;
-            a.Text = pagina;
-            a.Font = new Font("Microsoft Sans Serif", 11);
+            LinkLabel a = new LinkLabel
+            {
+                AutoSize = true,
+                Tag = pagina,
+                Text = pagina,
+                Font = new Font("Microsoft Sans Serif", 11)
+            };
             a.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(historylabel_LinkClicked);
             flowHistorie.Controls.Add(a);
 
@@ -1000,7 +1027,7 @@ namespace KenisBank
             if (panelGeselecteerd == null)
             {
                 SelectHelpForm sh = new SelectHelpForm();
-                sh.ShowDialog();
+                _ = sh.ShowDialog();
                 return false;
             }
             return true;
@@ -1071,7 +1098,7 @@ namespace KenisBank
         }
         private void Backup()
         {
-            MessageBox.Show("Even Backup van pagina's");
+            _ = MessageBox.Show("Even Backup van pagina's");
             // lijst met all pagina's opgeslagen.
             List<FileInfo> XMLFilesInDataDir = new DirectoryInfo("Data").EnumerateFiles("*.xml")
                         .OrderByDescending(f => f.Name)
@@ -1090,7 +1117,9 @@ namespace KenisBank
                 {
                     FileInfo fi = new FileInfo(baknaam);
                     if (fi.Length != file.Length)
+                    {
                         File.Copy(file.FullName, baknaam, true);
+                    }
                 }
                 ProgressBarUpdate();
             }
@@ -1117,7 +1146,9 @@ namespace KenisBank
         private void CopyBut_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
+            {
                 return;
+            }
 
             int eigenaar = (int)panelGeselecteerd.Tag;
 
@@ -1127,7 +1158,6 @@ namespace KenisBank
                 {
                     // oke panel en regel nu bekend.
                     CopyRegel = PaginaInhoud.InhoudPaginaMetRegels[i];
-                    i = 50000;
                     break;
                 }
             }
@@ -1166,7 +1196,7 @@ namespace KenisBank
 
             if (editModeAanToolStripMenuItem.Checked)
             {
-                MessageBox.Show("Eerst uit edit mode!");
+                _ = MessageBox.Show("Eerst uit edit mode!");
             }
             else
             {

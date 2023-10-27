@@ -569,7 +569,7 @@
             this.progressBar.Location = new System.Drawing.Point(11, 5);
             this.progressBar.MarqueeAnimationSpeed = 0;
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(1860, 20);
+            this.progressBar.Size = new System.Drawing.Size(1416, 20);
             this.progressBar.Step = 1;
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 1;
