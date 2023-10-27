@@ -111,7 +111,7 @@
             this.panelMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelMain.Location = new System.Drawing.Point(266, 91);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(1393, 816);
+            this.panelMain.Size = new System.Drawing.Size(999, 816);
             this.panelMain.TabIndex = 2;
             // 
             // flowHistorie
@@ -120,7 +120,7 @@
             this.flowHistorie.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowHistorie.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowHistorie.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowHistorie.Location = new System.Drawing.Point(1674, 91);
+            this.flowHistorie.Location = new System.Drawing.Point(1306, 91);
             this.flowHistorie.Name = "flowHistorie";
             this.flowHistorie.Padding = new System.Windows.Forms.Padding(10);
             this.flowHistorie.Size = new System.Drawing.Size(22, 22);
@@ -139,7 +139,7 @@
             this.versieToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1884, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1454, 28);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -347,7 +347,7 @@
             // 
             // panelUpDown
             // 
-            this.panelUpDown.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.panelUpDown.BackColor = System.Drawing.SystemColors.Highlight;
             this.panelUpDown.Controls.Add(this.buttonSaveCloseEdit);
             this.panelUpDown.Controls.Add(this.PasteBut);
             this.panelUpDown.Controls.Add(this.CopyBut);
@@ -364,7 +364,7 @@
             this.panelUpDown.Controls.Add(this.buttonMoveDown);
             this.panelUpDown.Controls.Add(this.buttonMoveUp5);
             this.panelUpDown.Controls.Add(this.buttonMoveUp);
-            this.panelUpDown.Location = new System.Drawing.Point(1121, 81);
+            this.panelUpDown.Location = new System.Drawing.Point(876, 81);
             this.panelUpDown.Name = "panelUpDown";
             this.panelUpDown.Size = new System.Drawing.Size(412, 392);
             this.panelUpDown.TabIndex = 0;
@@ -561,7 +561,7 @@
             this.panelInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelInfo.Location = new System.Drawing.Point(0, 928);
             this.panelInfo.Name = "panelInfo";
-            this.panelInfo.Size = new System.Drawing.Size(1884, 33);
+            this.panelInfo.Size = new System.Drawing.Size(1454, 33);
             this.panelInfo.TabIndex = 4;
             // 
             // progressBar
@@ -597,7 +597,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1884, 961);
+            this.ClientSize = new System.Drawing.Size(1454, 961);
             this.Controls.Add(this.flowHistorie);
             this.Controls.Add(this.panelZij);
             this.Controls.Add(this.panelUpDown);

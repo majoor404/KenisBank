@@ -98,12 +98,10 @@ namespace KenisBank
                 change_pagina = false;
                 SelecteerEerstePaneel();
 
-                Point newlocatie = new Point
-                {
-                    X = panelMain.Width - panelUpDown.Width - 10,
-                    Y = panelMain.Location.Y + 10
-                };
-                panelUpDown.Location = newlocatie;
+                panel1.Width = Width - 50; // top
+                Point hoek = panel1.Location;
+                panelUpDown.Location = new Point(hoek.X + panel1.Width - panelUpDown.Width, flowHistorie.Location.Y);
+
                 panelUpDown.Visible = true;
                 panelUpDown.BringToFront();
             }
@@ -115,6 +113,11 @@ namespace KenisBank
                     if (dialogResult == DialogResult.Yes)
                     {
                         saveHuidigePaginaToolStripMenuItem_Click(this, null);
+                    }
+                    else
+                    {
+                        PaginaInhoud.Laad(labelPaginaInBeeld.Text);
+                        SchermUpdate();
                     }
                     change_pagina = false;
                 }
@@ -274,19 +277,6 @@ namespace KenisBank
         {
             editModeAanToolStripMenuItem.Checked = false;
             buttonEdit_Click(this, null);
-            if (change_pagina)
-            {
-                DialogResult dialogResult = MessageBox.Show($"Pagina is aangepast, eerst saven ?", "Vraagje", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    saveHuidigePaginaToolStripMenuItem_Click(this, null);
-                }
-                else
-                {
-                    change_pagina = false;
-                }
-            }
-            SchermUpdate();
         }
         private void buttonEditSelectie_Click(object sender, EventArgs e)
         {

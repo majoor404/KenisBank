@@ -1,13 +1,11 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using System;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace KenisBank
 {
-    partial class KennisMainForm
+    public partial class KennisMainForm
     {
         // plaats regel op formulier
         private Panel MaakNewPanel(int eigenaar, Panel PanelNaam)
@@ -115,7 +113,7 @@ namespace KenisBank
             panel.Controls.Add(but);
             panelMain.Refresh();
         }
-        
+
         // toevoegen regel 
         public void Toevoegen(string text, type type, string url)
         {
@@ -125,12 +123,14 @@ namespace KenisBank
                 ID_ = MaakID()
             };
             PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
-            
-            Regel rg = new Regel(text, type, url);
-            rg.ID_ = regel.ID_;
-            rg.undo_ = type.Toevoegen;
+
+            Regel rg = new Regel(text, type, url)
+            {
+                ID_ = regel.ID_,
+                undo_ = type.Toevoegen
+            };
             PaginaInhoud.ChangePagina.Add(rg);
-            
+
             change_pagina = true;
         }
         private void toevoegenLinkNaarDirToolStripMenuItem_Click(object sender, EventArgs e)
@@ -199,59 +199,58 @@ namespace KenisBank
         {
             // bouw Pagina
             SchermUpdate();
-            PaginaZijBalk.Laad("zijbalk");
+            _ = PaginaZijBalk.Laad("zijbalk");
             SchermUpdateZijBalk();
         }
         private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
+            {
                 return;
+            }
 
-            //DialogResult dialogResult = MessageBox.Show($"Zeker weten, verwijderen?", "Vraagje", MessageBoxButtons.YesNo);
-            //if (dialogResult == DialogResult.Yes)
-            //{
-                int eigenaar = (int)panelGeselecteerd.Tag;
+            int eigenaar = (int)panelGeselecteerd.Tag;
 
-                for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+            for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+            {
+                if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
                 {
-                    if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
+                    //als wees pagina gewoon xml verwijderen
+                    if (labelPaginaInBeeld.Text.Length > 3 && labelPaginaInBeeld.Text.Substring(0, 4) == "Wees")
                     {
-                        //als wees pagina gewoon xml verwijderen
-                        if (labelPaginaInBeeld.Text.Length > 3 && labelPaginaInBeeld.Text.Substring(0, 4) == "Wees")
+                        string file_naam = $"Data\\{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}.xml";
+                        File.Delete(file_naam);
+                        PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                        change_pagina = false;
+                    }
+                    else
+                    {
+                        Regel rg = new Regel
                         {
-                            string file_naam = $"Data\\{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}.xml";
-                            File.Delete(file_naam);
-                            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                            change_pagina = false;
-                        }
-                        else {
-                            Regel rg = new Regel
-                            {
-                                ID_ = MaakID(),
-                                tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
-                                url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
-                                type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
-                                undo_ = type.Delete,
-                                index_ = i
-                            };
-                            PaginaInhoud.ChangePagina.Add(rg);
-                            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                            change_pagina = true;
-                        }
+                            ID_ = MaakID(),
+                            tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
+                            url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
+                            type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
+                            undo_ = type.Delete,
+                            index_ = i
+                        };
+                        PaginaInhoud.ChangePagina.Add(rg);
+                        PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                        change_pagina = true;
                     }
                 }
+            }
 
-                panelGeselecteerd = null;
+            panelGeselecteerd = null;
 
-                foreach (Panel a in panelMain.Controls)
-                {
-                    a.BackColor = panelMain.BackColor;
-                    a.BorderStyle = BorderStyle.None;
-                }
+            foreach (Panel a in panelMain.Controls)
+            {
+                a.BackColor = panelMain.BackColor;
+                a.BorderStyle = BorderStyle.None;
+            }
 
-                // bouw Pagina
-                SchermUpdate();
-            //}
+            // bouw Pagina
+            SchermUpdate();
         }
         private void SelecteerLaatstePaneel()
         {
@@ -327,7 +326,7 @@ namespace KenisBank
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(nieuw_index, gekozen);
                     i = 1000;
-                    
+
                     PaginaInhoud.ChangePagina.Add(rg);
 
                     change_pagina = true;
@@ -335,8 +334,10 @@ namespace KenisBank
             }
 
             if (BlokSchrijf)
+            {
                 return;
-            
+            }
+
             // bouw Pagina
             SchermUpdate();
 
@@ -359,7 +360,11 @@ namespace KenisBank
         // ProgressBar
         private void ProgressBarAan(int max)
         {
-            if (max == 0) max = 1;
+            if (max == 0)
+            {
+                max = 1;
+            }
+
             progressBar.Maximum = max;
             progressBar.Visible = true;
             progressBar.Value = 1;
@@ -378,6 +383,6 @@ namespace KenisBank
 
         }
 
-       
+
     }
 }
