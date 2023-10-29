@@ -126,6 +126,7 @@
             this.flowHistorie.Size = new System.Drawing.Size(22, 22);
             this.flowHistorie.TabIndex = 0;
             this.flowHistorie.WrapContents = false;
+            this.flowHistorie.SizeChanged += new System.EventHandler(this.flowHistorie_SizeChanged);
             // 
             // menuStrip1
             // 

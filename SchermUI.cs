@@ -59,6 +59,7 @@ namespace KenisBank
                 regeloffset++;
                 label.Location = org;
                 label.AutoSize = true;
+                label.MaximumSize = new Size (panel.Width - 60,0);
                 label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
                 label.Text = str;
                 panel.Controls.Add(label);

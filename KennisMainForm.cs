@@ -1220,5 +1220,15 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
+
+        private void flowHistorie_SizeChanged(object sender, EventArgs e)
+        {
+            // een max with
+            if (flowHistorie.Width > 200)
+            {
+                flowHistorie.Width = 200;
+                flowHistorie.Height = flowHistorie.Height + 30;
+            }
+        }
     }
 }
