@@ -57,6 +57,7 @@
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allePaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.editZijBlakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boomKennisDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
@@ -277,7 +278,8 @@
             this.zoekNaarWeesPaginasToolStripMenuItem1,
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem,
             this.allePaginasToolStripMenuItem1,
-            this.editZijBlakToolStripMenuItem});
+            this.editZijBlakToolStripMenuItem,
+            this.boomKennisDataToolStripMenuItem});
             this.beheerToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.beheerToolStripMenuItem.Name = "beheerToolStripMenuItem";
             this.beheerToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
@@ -292,6 +294,7 @@
             // 
             // importAllePaginasOudeWikiToolStripMenuItem
             // 
+            this.importAllePaginasOudeWikiToolStripMenuItem.Enabled = false;
             this.importAllePaginasOudeWikiToolStripMenuItem.Name = "importAllePaginasOudeWikiToolStripMenuItem";
             this.importAllePaginasOudeWikiToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
             this.importAllePaginasOudeWikiToolStripMenuItem.Text = "Import Alle Paginas Oude Wiki";
@@ -337,6 +340,14 @@
             this.editZijBlakToolStripMenuItem.Text = "Edit ZijBlak";
             this.editZijBlakToolStripMenuItem.Visible = false;
             this.editZijBlakToolStripMenuItem.Click += new System.EventHandler(this.editZijBlakToolStripMenuItem_Click);
+            // 
+            // boomKennisDataToolStripMenuItem
+            // 
+            this.boomKennisDataToolStripMenuItem.Name = "boomKennisDataToolStripMenuItem";
+            this.boomKennisDataToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
+            this.boomKennisDataToolStripMenuItem.Text = "Maak Boom KennisData";
+            this.boomKennisDataToolStripMenuItem.Visible = false;
+            this.boomKennisDataToolStripMenuItem.Click += new System.EventHandler(this.boomKennisDataToolStripMenuItem_Click);
             // 
             // versieToolStripMenuItem
             // 
@@ -677,6 +688,7 @@
         private System.Windows.Forms.Panel panelZij;
         private System.Windows.Forms.ToolStripMenuItem editZijBlakToolStripMenuItem;
         private System.Windows.Forms.FlowLayoutPanel flowHistorie;
+        private System.Windows.Forms.ToolStripMenuItem boomKennisDataToolStripMenuItem;
     }
 }
 
