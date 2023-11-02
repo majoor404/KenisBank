@@ -58,6 +58,7 @@
             this.allePaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.editZijBlakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.boomKennisDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.repareerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.buttonSaveCloseEdit = new System.Windows.Forms.Button();
@@ -80,6 +81,9 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelInfo = new System.Windows.Forms.Label();
             this.panelZij = new System.Windows.Forms.Panel();
+            this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
@@ -110,6 +114,7 @@
             this.panelMain.AutoScroll = true;
             this.panelMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelMain.Location = new System.Drawing.Point(266, 91);
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(999, 816);
@@ -137,6 +142,7 @@
             this.refreshToolStripMenuItem,
             this.zoekToolStripMenuItem,
             this.editPaginaToolStripMenuItem,
+            this.extraToolStripMenuItem,
             this.beheerToolStripMenuItem,
             this.versieToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -279,7 +285,8 @@
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem,
             this.allePaginasToolStripMenuItem1,
             this.editZijBlakToolStripMenuItem,
-            this.boomKennisDataToolStripMenuItem});
+            this.boomKennisDataToolStripMenuItem,
+            this.repareerToolStripMenuItem});
             this.beheerToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.beheerToolStripMenuItem.Name = "beheerToolStripMenuItem";
             this.beheerToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
@@ -348,6 +355,14 @@
             this.boomKennisDataToolStripMenuItem.Text = "Maak Boom KennisData";
             this.boomKennisDataToolStripMenuItem.Visible = false;
             this.boomKennisDataToolStripMenuItem.Click += new System.EventHandler(this.boomKennisDataToolStripMenuItem_Click);
+            // 
+            // repareerToolStripMenuItem
+            // 
+            this.repareerToolStripMenuItem.Name = "repareerToolStripMenuItem";
+            this.repareerToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
+            this.repareerToolStripMenuItem.Text = "Maak Link Lijst";
+            this.repareerToolStripMenuItem.Visible = false;
+            this.repareerToolStripMenuItem.Click += new System.EventHandler(this.MaakLinkLijst);
             // 
             // versieToolStripMenuItem
             // 
@@ -605,6 +620,30 @@
             this.panelZij.Size = new System.Drawing.Size(231, 816);
             this.panelZij.TabIndex = 5;
             // 
+            // extraToolStripMenuItem
+            // 
+            this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem1});
+            this.extraToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
+            this.extraToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
+            this.extraToolStripMenuItem.Text = "Extra";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(214, 24);
+            this.toolStripMenuItem1.Text = "Link Lijst";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.linkLijstToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(214, 24);
+            this.toolStripMenuItem2.Text = "Opbouw KennisBank";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.opbouwKennisBankToolStripMenuItem_Click);
+            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -689,6 +728,10 @@
         private System.Windows.Forms.ToolStripMenuItem editZijBlakToolStripMenuItem;
         private System.Windows.Forms.FlowLayoutPanel flowHistorie;
         private System.Windows.Forms.ToolStripMenuItem boomKennisDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem repareerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extraToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

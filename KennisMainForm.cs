@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using File = System.IO.File;
@@ -32,7 +33,7 @@ namespace KenisBank
         public string PrevPagina = string.Empty;
         public bool BlokSchrijf = false;  // bij 5 plekken omhoog of omlaag niet schrijven tussendoor.
         public Regel CopyRegel = null;
-        static int diep = 0;
+        private static int diep = 0;
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern bool LockWindowUpdate(IntPtr hWndLock);
@@ -654,9 +655,6 @@ namespace KenisBank
         }
         private void zoekLinksDieNietMeerBestaanToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show($"Doorzoek alle paginas en naar links die niet meer bestaan?", "Vraagje", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
                 List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
                             .OrderByDescending(f => f.Name)
                             .ToList();
@@ -667,51 +665,49 @@ namespace KenisBank
                 foreach (FileInfo file in files)
                 {
                     ProgressBarUpdate();
-                    _ = PaginaInhoud.Laad(Path.GetFileNameWithoutExtension(file.Name));
-                    // verander
-                    int change = PaginaInhoud.InhoudPaginaMetRegels.Count;
-                    // door file heenstappen
-                    for (int i = PaginaInhoud.InhoudPaginaMetRegels.Count - 1; i > 0; i--)
+                    if (file.Name != "zijbalk.xml")
                     {
-                        //bij import vanuit oude wiki is link naar dir gelijk aan link naar file.
-                        // dus check of het geen file en geen dir is voordat ik verwijder
-
-                        if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkFile)
+                        _ = PaginaInhoud.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                        // verander
+                        int change = PaginaInhoud.InhoudPaginaMetRegels.Count;
+                        // door file heenstappen
+                        for (int i = PaginaInhoud.InhoudPaginaMetRegels.Count - 1; i > 0; i--)
                         {
-
-                            if (!File.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
+                            //bij import vanuit oude wiki is link naar dir gelijk aan link naar file.
+                            // dus check of het geen file en geen dir is voordat ik verwijder
+                            if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkFile)
+                            {
+                                if (!File.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
+                                {
+                                    if (!Directory.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
+                                    {
+                                        LijstMetLinksDieNietBestaan.Add($"Op Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                        LijstMetLinksDieNietBestaan.Add($"{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}");
+                                        LijstMetLinksDieNietBestaan.Add("");
+                                    }
+                                }
+                            }
+                            else if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkDir)
                             {
                                 if (!Directory.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
                                 {
                                     LijstMetLinksDieNietBestaan.Add($"Op Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
                                     LijstMetLinksDieNietBestaan.Add($"{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}");
                                     LijstMetLinksDieNietBestaan.Add("");
-                                    //_ = MessageBox.Show($"Remove link naar file \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}\n{PaginaInhoud.InhoudPaginaMetRegels[i].url_}");
+                                    //_ = MessageBox.Show($"Remove link naar dir \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
                                     //PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                                 }
                             }
-
-                        }
-                        else if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkDir)
-                        {
-                            if (!Directory.Exists(PaginaInhoud.InhoudPaginaMetRegels[i].url_))
+                            else if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.PaginaNaam)
                             {
-                                LijstMetLinksDieNietBestaan.Add($"Op Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                LijstMetLinksDieNietBestaan.Add($"{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}");
-                                LijstMetLinksDieNietBestaan.Add("");
-                                //_ = MessageBox.Show($"Remove link naar dir \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                //PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                            }
-                        }
-                        else if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.PaginaNaam)
-                        {
-                            if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
-                            {
-                                LijstMetLinksDieNietBestaan.Add($"Op Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                LijstMetLinksDieNietBestaan.Add($"{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}");
-                                LijstMetLinksDieNietBestaan.Add("");
-                                //_ = MessageBox.Show($"Remove link naar Pagina \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
-                                //PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                                if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
+                                {
+                                    LijstMetLinksDieNietBestaan.Add($"Op Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                    LijstMetLinksDieNietBestaan.Add($"{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}");
+                                    LijstMetLinksDieNietBestaan.Add("");
+                                    //_ = MessageBox.Show($"Remove link naar Pagina \n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\nOp Pagina {Path.GetFileNameWithoutExtension(file.Name)}");
+                                    //PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                                }
                             }
                         }
                     }
@@ -734,7 +730,6 @@ namespace KenisBank
                 }
                 ProgressBarUit();
                 homeToolStripMenuItem_Click(this, null);
-            }
         }
 
         // main scherm update roetine
@@ -1136,7 +1131,8 @@ namespace KenisBank
                 zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Visible = true;
                 allePaginasToolStripMenuItem1.Visible = true;
                 editZijBlakToolStripMenuItem.Visible = true;
-                boomKennisDataToolStripMenuItem.Visible=true;
+                boomKennisDataToolStripMenuItem.Visible = true;
+                repareerToolStripMenuItem.Visible=true;
             }
         }
         private void CopyBut_Click(object sender, EventArgs e)
@@ -1226,7 +1222,7 @@ namespace KenisBank
             if (flowHistorie.Width > 250)
             {
                 flowHistorie.Width = 250;
-                flowHistorie.Height = flowHistorie.Height + 30;
+                flowHistorie.Height += 30;
             }
         }
         private void boomKennisDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1234,14 +1230,16 @@ namespace KenisBank
             DialogResult dialogResult = MessageBox.Show($"Maak Boom structuur van Kennisbank Data, kan even duren!", "Vraagje", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                List<string> BoomData = new List<string>();
-                BoomData.Add("Start");
+                List<string> BoomData = new List<string>
+                {
+                    "Start"
+                };
 
                 string VorigePagina = "Start";
                 int VorigeIndex = 0;
                 diep = 0;
 
-                BoomDataVerzamel("Start", BoomData, VorigeIndex, VorigePagina);
+                _ = BoomDataVerzamel("Start", BoomData, VorigeIndex, VorigePagina);
 
                 try
                 {
@@ -1266,13 +1264,10 @@ namespace KenisBank
             string pagina = PaginaInhoud.VertaalNaarFileNaam(ZoekPagina);
             if (!PaginaInhoud.Laad(pagina))
             {
-                MessageBox.Show($"Kon pagina {ZoekPagina} niet laden, staat op vorige pagina {VorigePagina}");
+                _ = MessageBox.Show($"Kon pagina {ZoekPagina} niet laden, staat op vorige pagina {VorigePagina}");
                 Process.GetCurrentProcess().Kill();
             }
 
-            string bewaarVorigePagina = VorigePagina;
-            int bewaarVorigeIndex = VorigeIndex;
-            
             for (int index = VorigeIndex; index < PaginaInhoud.InhoudPaginaMetRegels.Count; index++)
             {
                 if (PaginaInhoud.InhoudPaginaMetRegels[index].type_ == type.PaginaNaam)
@@ -1286,19 +1281,121 @@ namespace KenisBank
                     BoomData.Add($"{inspring} {GevondenPagina}");
                     diep++;
                     VorigeIndex = index;
-                    bewaarVorigePagina = pagina;
+                    string bewaarVorigePagina = pagina;
                     // nieuwe pagina, dus begin op index 0
-                    if (!BoomDataVerzamel(GevondenPagina, BoomData, 0 , ZoekPagina))
+                    if (!BoomDataVerzamel(GevondenPagina, BoomData, 0, ZoekPagina))
                     {
                         index = VorigeIndex;
                         pagina = PaginaInhoud.VertaalNaarFileNaam(bewaarVorigePagina);
                         if (!PaginaInhoud.Laad(pagina))
-                            MessageBox.Show($"Kon pagina {ZoekPagina} niet laden");
+                        {
+                            _ = MessageBox.Show($"Kon pagina {ZoekPagina} niet laden");
+                        }
+
                         diep--;
                     }
                 }
             }
             return false;
+        }
+
+        private void opbouwKennisBankToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = "Data\\BoomData.txt";
+                try
+                {
+                    _ = process.Start();
+                }
+                catch { }
+            }
+            catch (IOException)
+            {
+                _ = MessageBox.Show("Opbouw Kennisbank niet aanwezig.");
+            }
+        }
+
+        private void MaakLinkLijst(object sender, EventArgs e)
+        {
+            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+            .OrderByDescending(f => f.Name)
+            .ToList();
+
+            List<string> LijstUrl = new List<string>();
+
+            foreach (FileInfo file in files)
+            {
+                bool verander = false;
+                if (file.Name != "zijbalk.xml")
+                {
+                    _ = PaginaInhoud.Laad(Path.GetFileNameWithoutExtension(file.Name));
+
+                    // door file heenstappen
+                    for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+                    {
+                        type Type = PaginaInhoud.InhoudPaginaMetRegels[i].type_;
+
+                        switch (Type)
+                        {
+                            case type.Leeg: break;
+                            case type.LinkFile:
+                                
+                                string ext = Path.GetExtension(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
+                                if(ext=="")
+                                {
+                                    // Dan is het een link naar een dir
+                                    PaginaInhoud.InhoudPaginaMetRegels[i].type_ = type.LinkDir;
+                                    verander = true; 
+                                    break;
+                                }
+                                if (PaginaInhoud.InhoudPaginaMetRegels[i].url_.Substring(0, 2) == @"/Q")
+                                {
+                                    PaginaInhoud.InhoudPaginaMetRegels[i].url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_.Substring(1);
+                                    verander = true;
+                                }
+                                LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
+                                break;
+                        }
+                    }
+                    if (verander)
+                        PaginaInhoud.Save(Path.GetFileNameWithoutExtension(file.Name));
+                }
+            }
+            try
+            {
+                File.WriteAllLines("Data\\Url.txt", LijstUrl);
+                Process process = new Process();
+                process.StartInfo.FileName = "Data\\Url.txt";
+                try
+                {
+                    _ = process.Start();
+                }
+                catch { }
+            }
+            catch (IOException)
+            {
+                _ = MessageBox.Show("info file save Error()");
+            }
+        }
+
+        private void linkLijstToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = "Data\\Url.txt";
+                try
+                {
+                    _ = process.Start();
+                }
+                catch { }
+            }
+            catch (IOException)
+            {
+                _ = MessageBox.Show("Kan Link Lijst niet Laden.");
+            }
         }
     }
 }

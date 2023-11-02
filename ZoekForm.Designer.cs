@@ -71,9 +71,9 @@
             this.checkBoxPaginaTitel.Location = new System.Drawing.Point(423, 12);
             this.checkBoxPaginaTitel.Name = "checkBoxPaginaTitel";
             this.checkBoxPaginaTitel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.checkBoxPaginaTitel.Size = new System.Drawing.Size(179, 22);
+            this.checkBoxPaginaTitel.Size = new System.Drawing.Size(187, 22);
             this.checkBoxPaginaTitel.TabIndex = 3;
-            this.checkBoxPaginaTitel.Text = "Zoek ook in pagina titel";
+            this.checkBoxPaginaTitel.Text = "Zoek ook in pagina titels";
             this.checkBoxPaginaTitel.UseVisualStyleBackColor = true;
             // 
             // ZoekForm
