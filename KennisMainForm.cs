@@ -140,6 +140,7 @@ namespace KenisBank
         {
             if (editModeAanToolStripMenuItem.Checked)
             {
+                _ = MessageBox.Show("Eerst uit edit mode om link te volgen.");
                 return;
             }
 
