@@ -181,6 +181,7 @@
   <ItemGroup>
     <None Include="IMG_1457.JPG" />
     <None Include="select.bmp" />
+    <None Include="Resources\logo.png" />
     <Content Include="solution.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

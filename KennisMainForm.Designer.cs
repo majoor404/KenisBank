@@ -49,6 +49,9 @@
             this.toevoegenLegeRegelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveHuidigePaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.beheerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beheerVrijgaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importAllePaginasOudeWikiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,13 +84,12 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelInfo = new System.Windows.Forms.Label();
             this.panelZij = new System.Windows.Forms.Panel();
-            this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
             this.panelInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -275,6 +277,30 @@
             this.saveHuidigePaginaToolStripMenuItem.Text = "Save Huidige Pagina";
             this.saveHuidigePaginaToolStripMenuItem.Click += new System.EventHandler(this.saveHuidigePaginaToolStripMenuItem_Click);
             // 
+            // extraToolStripMenuItem
+            // 
+            this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem1});
+            this.extraToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
+            this.extraToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
+            this.extraToolStripMenuItem.Text = "Extra";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(214, 24);
+            this.toolStripMenuItem2.Text = "Opbouw KennisBank";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.opbouwKennisBankToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(214, 24);
+            this.toolStripMenuItem1.Text = "Link Lijst";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.linkLijstToolStripMenuItem_Click);
+            // 
             // beheerToolStripMenuItem
             // 
             this.beheerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -374,7 +400,8 @@
             // 
             // panelUpDown
             // 
-            this.panelUpDown.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panelUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(231)))), ((int)(((byte)(150)))));
+            this.panelUpDown.Controls.Add(this.pictureBox1);
             this.panelUpDown.Controls.Add(this.buttonSaveCloseEdit);
             this.panelUpDown.Controls.Add(this.PasteBut);
             this.panelUpDown.Controls.Add(this.CopyBut);
@@ -393,7 +420,7 @@
             this.panelUpDown.Controls.Add(this.buttonMoveUp);
             this.panelUpDown.Location = new System.Drawing.Point(876, 81);
             this.panelUpDown.Name = "panelUpDown";
-            this.panelUpDown.Size = new System.Drawing.Size(412, 392);
+            this.panelUpDown.Size = new System.Drawing.Size(412, 515);
             this.panelUpDown.TabIndex = 0;
             this.panelUpDown.Visible = false;
             // 
@@ -401,9 +428,9 @@
             // 
             this.buttonSaveCloseEdit.Enabled = false;
             this.buttonSaveCloseEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(6, 355);
+            this.buttonSaveCloseEdit.Location = new System.Drawing.Point(9, 463);
             this.buttonSaveCloseEdit.Name = "buttonSaveCloseEdit";
-            this.buttonSaveCloseEdit.Size = new System.Drawing.Size(400, 29);
+            this.buttonSaveCloseEdit.Size = new System.Drawing.Size(388, 43);
             this.buttonSaveCloseEdit.TabIndex = 10;
             this.buttonSaveCloseEdit.Text = "Close Edit";
             this.buttonSaveCloseEdit.UseVisualStyleBackColor = true;
@@ -412,9 +439,9 @@
             // PasteBut
             // 
             this.PasteBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PasteBut.Location = new System.Drawing.Point(215, 320);
+            this.PasteBut.Location = new System.Drawing.Point(207, 414);
             this.PasteBut.Name = "PasteBut";
-            this.PasteBut.Size = new System.Drawing.Size(190, 29);
+            this.PasteBut.Size = new System.Drawing.Size(190, 43);
             this.PasteBut.TabIndex = 9;
             this.PasteBut.Text = "Paste";
             this.PasteBut.UseVisualStyleBackColor = true;
@@ -423,9 +450,9 @@
             // CopyBut
             // 
             this.CopyBut.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CopyBut.Location = new System.Drawing.Point(6, 320);
+            this.CopyBut.Location = new System.Drawing.Point(9, 414);
             this.CopyBut.Name = "CopyBut";
-            this.CopyBut.Size = new System.Drawing.Size(190, 29);
+            this.CopyBut.Size = new System.Drawing.Size(190, 43);
             this.CopyBut.TabIndex = 9;
             this.CopyBut.Text = "Copy";
             this.CopyBut.UseVisualStyleBackColor = true;
@@ -434,9 +461,9 @@
             // Undo
             // 
             this.Undo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Undo.Location = new System.Drawing.Point(6, 285);
+            this.Undo.Location = new System.Drawing.Point(9, 365);
             this.Undo.Name = "Undo";
-            this.Undo.Size = new System.Drawing.Size(400, 29);
+            this.Undo.Size = new System.Drawing.Size(388, 43);
             this.Undo.TabIndex = 9;
             this.Undo.Text = "Undo";
             this.Undo.UseVisualStyleBackColor = true;
@@ -446,9 +473,9 @@
             // 
             this.buttonEditSelectie.Enabled = false;
             this.buttonEditSelectie.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEditSelectie.Location = new System.Drawing.Point(139, 250);
+            this.buttonEditSelectie.Location = new System.Drawing.Point(164, 317);
             this.buttonEditSelectie.Name = "buttonEditSelectie";
-            this.buttonEditSelectie.Size = new System.Drawing.Size(267, 29);
+            this.buttonEditSelectie.Size = new System.Drawing.Size(233, 43);
             this.buttonEditSelectie.TabIndex = 9;
             this.buttonEditSelectie.Text = "Edit Selectie";
             this.buttonEditSelectie.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -458,9 +485,9 @@
             // buttonDelete
             // 
             this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonDelete.Location = new System.Drawing.Point(139, 215);
+            this.buttonDelete.Location = new System.Drawing.Point(164, 274);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(267, 29);
+            this.buttonDelete.Size = new System.Drawing.Size(233, 43);
             this.buttonDelete.TabIndex = 8;
             this.buttonDelete.Text = "Delete Selectie";
             this.buttonDelete.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -470,9 +497,9 @@
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(139, 180);
+            this.button6.Location = new System.Drawing.Point(164, 231);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(267, 29);
+            this.button6.Size = new System.Drawing.Size(233, 43);
             this.button6.TabIndex = 7;
             this.button6.Text = "Toevoegen Lege Regel";
             this.button6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -482,9 +509,9 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(139, 145);
+            this.button5.Location = new System.Drawing.Point(164, 188);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(267, 29);
+            this.button5.Size = new System.Drawing.Size(233, 43);
             this.button5.TabIndex = 6;
             this.button5.Text = "Toevoegen Link naar Pagina";
             this.button5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -494,9 +521,9 @@
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(139, 110);
+            this.button4.Location = new System.Drawing.Point(164, 145);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(267, 29);
+            this.button4.Size = new System.Drawing.Size(233, 43);
             this.button4.TabIndex = 5;
             this.button4.Text = "Toevoegen Tekst Blok";
             this.button4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -506,9 +533,9 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(139, 75);
+            this.button3.Location = new System.Drawing.Point(164, 102);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(267, 29);
+            this.button3.Size = new System.Drawing.Size(233, 43);
             this.button3.TabIndex = 4;
             this.button3.Text = "Toevoegen Link naar Directory";
             this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -518,9 +545,9 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(139, 40);
+            this.button2.Location = new System.Drawing.Point(164, 59);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(267, 29);
+            this.button2.Size = new System.Drawing.Size(233, 43);
             this.button2.TabIndex = 3;
             this.button2.Text = "Toevoegen Link naar File";
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -529,21 +556,23 @@
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.White;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(139, 5);
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(164, 16);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(267, 29);
+            this.button1.Size = new System.Drawing.Size(233, 43);
             this.button1.TabIndex = 2;
             this.button1.Text = "Toevoegen Hoofdstuk Tekst";
             this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.toevoegenHoofdstukTextToolStripMenuItem_Click);
             // 
             // buttonMoveDown5
             // 
-            this.buttonMoveDown5.Location = new System.Drawing.Point(6, 215);
+            this.buttonMoveDown5.Location = new System.Drawing.Point(9, 305);
             this.buttonMoveDown5.Name = "buttonMoveDown5";
-            this.buttonMoveDown5.Size = new System.Drawing.Size(130, 64);
+            this.buttonMoveDown5.Size = new System.Drawing.Size(142, 54);
             this.buttonMoveDown5.TabIndex = 1;
             this.buttonMoveDown5.Text = "Down 10 Plekken";
             this.buttonMoveDown5.UseVisualStyleBackColor = true;
@@ -551,9 +580,9 @@
             // 
             // buttonMoveDown
             // 
-            this.buttonMoveDown.Location = new System.Drawing.Point(6, 146);
+            this.buttonMoveDown.Location = new System.Drawing.Point(9, 239);
             this.buttonMoveDown.Name = "buttonMoveDown";
-            this.buttonMoveDown.Size = new System.Drawing.Size(130, 64);
+            this.buttonMoveDown.Size = new System.Drawing.Size(142, 54);
             this.buttonMoveDown.TabIndex = 1;
             this.buttonMoveDown.Text = "Down";
             this.buttonMoveDown.UseVisualStyleBackColor = true;
@@ -561,9 +590,9 @@
             // 
             // buttonMoveUp5
             // 
-            this.buttonMoveUp5.Location = new System.Drawing.Point(6, 5);
+            this.buttonMoveUp5.Location = new System.Drawing.Point(9, 113);
             this.buttonMoveUp5.Name = "buttonMoveUp5";
-            this.buttonMoveUp5.Size = new System.Drawing.Size(130, 64);
+            this.buttonMoveUp5.Size = new System.Drawing.Size(142, 54);
             this.buttonMoveUp5.TabIndex = 0;
             this.buttonMoveUp5.Text = "Up 10 Plekken";
             this.buttonMoveUp5.UseVisualStyleBackColor = true;
@@ -571,9 +600,9 @@
             // 
             // buttonMoveUp
             // 
-            this.buttonMoveUp.Location = new System.Drawing.Point(6, 74);
+            this.buttonMoveUp.Location = new System.Drawing.Point(9, 179);
             this.buttonMoveUp.Name = "buttonMoveUp";
-            this.buttonMoveUp.Size = new System.Drawing.Size(130, 64);
+            this.buttonMoveUp.Size = new System.Drawing.Size(142, 54);
             this.buttonMoveUp.TabIndex = 0;
             this.buttonMoveUp.Text = "Up";
             this.buttonMoveUp.UseVisualStyleBackColor = true;
@@ -593,6 +622,7 @@
             // 
             // progressBar
             // 
+            this.progressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(231)))), ((int)(((byte)(150)))));
             this.progressBar.Location = new System.Drawing.Point(11, 5);
             this.progressBar.MarqueeAnimationSpeed = 0;
             this.progressBar.Name = "progressBar";
@@ -620,29 +650,15 @@
             this.panelZij.Size = new System.Drawing.Size(231, 816);
             this.panelZij.TabIndex = 5;
             // 
-            // extraToolStripMenuItem
+            // pictureBox1
             // 
-            this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem1});
-            this.extraToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
-            this.extraToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
-            this.extraToolStripMenuItem.Text = "Extra";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(214, 24);
-            this.toolStripMenuItem1.Text = "Link Lijst";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.linkLijstToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(214, 24);
-            this.toolStripMenuItem2.Text = "Opbouw KennisBank";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.opbouwKennisBankToolStripMenuItem_Click);
+            this.pictureBox1.Image = global::KenisBank.Properties.Resources.logo;
+            this.pictureBox1.Location = new System.Drawing.Point(9, 14);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(100, 93);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 11;
+            this.pictureBox1.TabStop = false;
             // 
             // KennisMainForm
             // 
@@ -670,6 +686,7 @@
             this.panelUpDown.ResumeLayout(false);
             this.panelInfo.ResumeLayout(false);
             this.panelInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -732,6 +749,7 @@
         private System.Windows.Forms.ToolStripMenuItem extraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
