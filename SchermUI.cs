@@ -7,114 +7,6 @@ namespace KenisBank
 {
     public partial class KennisMainForm
     {
-        // plaats regel op formulier
-        private Panel MaakNewPanel(int eigenaar, Panel PanelNaam)
-        {
-            // maak new panel
-            Panel panel = new Panel
-            {
-                Dock = DockStyle.Top,
-                BorderStyle = BorderStyle.None,
-                AutoSize = true,
-                Tag = eigenaar
-            };
-
-            PanelNaam.Controls.Add(panel);
-            PanelNaam.Controls.SetChildIndex(panel, 0);
-            panel.Click += new EventHandler(panel_Click);
-            return panel;
-        }
-        private void PlaatsHoofdstukOpBeeld(string text, int eigenaar, Panel PanelNaam)
-        {
-            Panel panel = MaakNewPanel(eigenaar, PanelNaam);
-
-            System.Windows.Forms.Label label = new System.Windows.Forms.Label();
-            Point org = new Point(label.Location.X, label.Location.Y);
-            org.X += 30;
-            label.Location = org;
-            label.AutoSize = true;
-            label.Font = new Font("Microsoft Sans Serif", 18, FontStyle.Bold);
-            label.Text = text;
-
-            panel.Controls.Add(label);
-            panelMain.Refresh();
-        }
-        private void PlaatsTextOpBeeld(string tekst, int eigenaar, Panel PanelNaam)
-        {
-
-            Panel panel = MaakNewPanel(eigenaar, PanelNaam);
-
-            panel.SuspendLayout();
-
-            // split string at new line
-            //string t = tekst.Replace("\n", "");
-            string[] result = tekst.Split('\n');
-            int regeloffset = 0;
-            foreach (string str in result)
-            {
-                System.Windows.Forms.Label label = new System.Windows.Forms.Label();
-                Point org = new Point(label.Location.X, label.Location.Y);
-                org.X += 30;
-                org.Y += regeloffset * 20;
-                regeloffset++;
-                label.Location = org;
-                label.AutoSize = true;
-                label.MaximumSize = new Size (panel.Width - 60,0);
-                label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
-                label.Text = str;
-                panel.Controls.Add(label);
-            }
-            panel.ResumeLayout();
-        }
-        private void PlaatsLinkOpBeeld(string link, string locatie, int eigenaar, Panel PanelNaam)
-        {
-            Panel panel = MaakNewPanel(eigenaar, PanelNaam);
-
-            System.Windows.Forms.LinkLabel label = new System.Windows.Forms.LinkLabel();
-
-            Point org = new Point(label.Location.X, label.Location.Y);
-            org.X += 30;
-            label.Location = org;
-
-            label.Width = panelMain.Width - 100;
-            label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
-            label.Text = link;
-            label.Tag = locatie;
-            label.BorderStyle = BorderStyle.None;
-            label.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(label_LinkClicked);
-            label.MouseHover += new EventHandler(LinkHover);
-
-            panel.Controls.Add(label);
-            panelMain.Refresh();
-        }
-        private void PlaatsPaginaOpBeeld(string link, string locatie, int eigenaar, Panel PanelNaam)
-        {
-            Panel panel = MaakNewPanel(eigenaar, PanelNaam);
-
-            System.Windows.Forms.Button but = new System.Windows.Forms.Button();
-
-            Point org = new Point(but.Location.X, but.Location.Y);
-
-            if (PanelNaam == panelMain)
-            {
-                org.X += 30;
-                but.Width = 500;
-                but.Height = 30;
-            }
-            else
-            {
-                org.X += 10;
-                but.Width = 200;
-                but.Height = 30;
-            }
-            but.Location = org;
-            but.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
-            but.Text = link;
-            but.Click += new EventHandler(PaginaButtonClick);
-            panel.Controls.Add(but);
-            panelMain.Refresh();
-        }
-
         // toevoegen regel 
         public void Toevoegen(string text, type type, string url)
         {
@@ -134,7 +26,7 @@ namespace KenisBank
 
             change_pagina = true;
         }
-        private void toevoegenLinkNaarDirToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToevoegenLinkNaarDirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LinkDir linkdir = new LinkDir();
             DialogResult save = linkdir.ShowDialog();
@@ -146,7 +38,7 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-        public void toevoegenHoofdstukTextToolStripMenuItem_Click(object sender, EventArgs e)
+        public void ToevoegenHoofdstukTextToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Hoofdstuk hoofdstuk = new Hoofdstuk();
             DialogResult save = hoofdstuk.ShowDialog();
@@ -158,7 +50,7 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-        private void toevoegenLinkNaarFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToevoegenLinkNaarFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LinkFile linkFile = new LinkFile();
             DialogResult save = linkFile.ShowDialog();
@@ -170,7 +62,7 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-        private void toevoegenTekstBlokToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToevoegenTekstBlokToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TekstBlok tekstblok = new TekstBlok();
             DialogResult save = tekstblok.ShowDialog();
@@ -182,7 +74,7 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-        private void toevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToevoegenLinkNaarNieuwePaginaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Pagina pagina = new Pagina();
             DialogResult save = pagina.ShowDialog();
@@ -196,21 +88,21 @@ namespace KenisBank
         }
 
         // hulp roetines voor scherm dingen
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // bouw Pagina
             SchermUpdate();
             _ = PaginaZijBalk.Laad("zijbalk");
             SchermUpdateZijBalk();
         }
-        private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
             {
                 return;
             }
 
-            int eigenaar = (int)panelGeselecteerd.Tag;
+            int eigenaar = int.Parse(GekozenItem.Text);
 
             for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
             {
@@ -242,7 +134,7 @@ namespace KenisBank
                 }
             }
 
-            panelGeselecteerd = null;
+            GekozenItem.Text = "000000";// panelGeselecteerd = null;
 
             foreach (Panel a in panelMain.Controls)
             {
@@ -255,40 +147,15 @@ namespace KenisBank
         }
         private void SelecteerLaatstePaneel()
         {
-            int hoog = 0;
-            panelGeselecteerd = null;
-            buttonEditSelectie.Enabled = false;
-            foreach (Panel a in panelMain.Controls)
-            {
-                hoog += a.Height;
-                a.BackColor = panelMain.BackColor;
-                a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == PaginaInhoud.InhoudPaginaMetRegels[PaginaInhoud.InhoudPaginaMetRegels.Count - 1].eigenaar_)
-                {
-                    a.BackColor = Color.Aqua;
-                    a.BorderStyle = BorderStyle.FixedSingle;
-                    panelGeselecteerd = a;
-                    buttonEditSelectie.Enabled = true;
-                }
-            }
-            panelMain.AutoScrollPosition = new Point(0, hoog);
+            KleurGeselecteerdePanel(PaginaInhoud.InhoudPaginaMetRegels[PaginaInhoud.InhoudPaginaMetRegels.Count - 1].eigenaar_);
+            int beneden = panelMain.Height / PaginaInhoud.InhoudPaginaMetRegels.Count;
+            panelMain.AutoScrollPosition = new Point(0, 50000);
         }
         private void SelecteerEerstePaneel()
         {
-            panelGeselecteerd = null;
             buttonEditSelectie.Enabled = false;
-            foreach (Panel a in panelMain.Controls)
-            {
-                a.BackColor = panelMain.BackColor;
-                a.BorderStyle = BorderStyle.None;
-                if ((int)a.Tag == PaginaInhoud.InhoudPaginaMetRegels[0].eigenaar_)
-                {
-                    a.BackColor = Color.Aqua;
-                    a.BorderStyle = BorderStyle.FixedSingle;
-                    panelGeselecteerd = a;
-                    buttonEditSelectie.Enabled = true;
-                }
-            }
+            if(PaginaInhoud.InhoudPaginaMetRegels.Count > 0)
+                KleurGeselecteerdePanel(PaginaInhoud.InhoudPaginaMetRegels[0].eigenaar_);
             panelMain.AutoScrollPosition = new Point(0, 0);
         }
         private void MovePanel(int richting)
@@ -298,7 +165,7 @@ namespace KenisBank
                 return;
             }
 
-            int eigenaar = (int)panelGeselecteerd.Tag;
+            int eigenaar = int.Parse(GekozenItem.Text);
             int nieuw_index = -1;
 
             for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
@@ -342,19 +209,9 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
 
-            // nu weer regel op nieuw_index kleuren
-            // get eigenaar nummer
             int eig = PaginaInhoud.InhoudPaginaMetRegels[nieuw_index].eigenaar_;
+            KleurGeselecteerdePanel(eig);
 
-            foreach (Panel panel in panelMain.Controls)
-            {
-                if ((int)panel.Tag == eig)
-                {
-                    panel.BackColor = Color.Aqua;
-                    panel.BorderStyle = BorderStyle.FixedSingle;
-                    panelGeselecteerd = panel;
-                }
-            }
             panelMain.AutoScrollPosition = new Point(0, nieuw_index * 20);
         }
 

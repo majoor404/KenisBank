@@ -79,6 +79,9 @@
     <Compile Include="KennisMainForm.Designer.cs">
       <DependentUpon>KennisMainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="KennisPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="LinkDir.cs">
       <SubType>Form</SubType>
     </Compile>

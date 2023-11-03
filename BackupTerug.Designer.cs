@@ -118,7 +118,7 @@
             this.buttonBackup1.TabIndex = 1;
             this.buttonBackup1.Text = "Zet Backup terug";
             this.buttonBackup1.UseVisualStyleBackColor = true;
-            this.buttonBackup1.Click += new System.EventHandler(this.buttonBackup1_Click);
+            this.buttonBackup1.Click += new System.EventHandler(this.ButtonBackup1_Click);
             // 
             // BackupTerug
             // 

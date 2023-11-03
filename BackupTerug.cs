@@ -18,7 +18,7 @@ namespace KenisBank
             InitializeComponent();
         }
 
-        private void buttonBackup1_Click(object sender, EventArgs e)
+        private void ButtonBackup1_Click(object sender, EventArgs e)
         {
             string opslagnaam = $"Data\\{PaginaNaam.Text}.xml";
             string backup1 = $"Data\\{PaginaNaam.Text}.bak";
