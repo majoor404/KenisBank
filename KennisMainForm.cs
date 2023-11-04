@@ -81,6 +81,15 @@ namespace KenisBank
             progressBar.Location = new Point(hoek.X, progressBar.Location.Y);
             progressBar.Width = panel1.Width;
         }
+        private void FlowHistorie_SizeChanged(object sender, EventArgs e)
+        {
+            // een max with
+            if (flowHistorie.Width > 250)
+            {
+                flowHistorie.Width = 250;
+                flowHistorie.Height += 30;
+            }
+        }
 
         // interact met gebruiker
         private void ButtonEdit_Click(object sender, EventArgs e)
@@ -838,156 +847,7 @@ namespace KenisBank
 
             ProgressBarUit();
         }
-        // hulp roetines
-        public static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-        public bool ContainsCaseInsensitive(string source, string substring)
-        {
-            return source?.IndexOf(substring, StringComparison.OrdinalIgnoreCase) > -1;
-        }
-        private void HistoryBalkAdd(string pagina)
-        {
-            if (pagina == "start")
-            {
-                flowHistorie.Controls.Clear();
-            }
-            LinkLabel a = new LinkLabel
-            {
-                AutoSize = true,
-                Tag = pagina,
-                Text = pagina,
-                Font = new Font("Microsoft Sans Serif", 11)
-            };
-            a.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(Historylabel_LinkClicked);
-            flowHistorie.Controls.Add(a);
-
-            KennisMainForm_Resize(this, null);
-        }
-        public static int MaakID()
-        {
-            string dum = RandomString(10);
-            return dum.GetHashCode();
-        }
-        public bool TestKlik()
-        {
-            if (mainForm.GekozenItem.Text == "000000")
-            {
-                SelectHelpForm sh = new SelectHelpForm();
-                _ = sh.ShowDialog();
-                return false;
-            }
-            return true;
-        }
-        private int GetIndexVanId(int Id)
-        {
-            for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
-            {
-                if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == Id)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-        // undo
-        private void Undo_Click(object sender, EventArgs e)
-        {
-            if (PaginaInhoud.ChangePagina.Count < 1)
-            {
-                return;
-            }
-            // get laatste actie
-            Regel undo = PaginaInhoud.ChangePagina[PaginaInhoud.ChangePagina.Count - 1];
-            // verwijder deze uit lijst
-            PaginaInhoud.ChangePagina.RemoveAt(PaginaInhoud.ChangePagina.Count - 1);
-            change_pagina = true;
-
-            // voor contra actie uit
-            if (undo.undo_ == type.Delete)
-            {
-                // dus toevoegen
-                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_, undo);
-            }
-
-            if (undo.undo_ == type.Move)
-            {
-                PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(undo.eigenaar_);
-                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_, undo);
-            }
-
-            if (undo.undo_ == type.Toevoegen)
-            {
-                // dus verwijderen
-
-                for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
-                {
-                    if (PaginaInhoud.InhoudPaginaMetRegels[i].ID_ == undo.ID_)
-                    {
-                        PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                    }
-                }
-            }
-            // bouw Pagina
-            SchermUpdate();
-            change_pagina = true;
-        }
-        public void BackupNu()
-        {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Thursday || DateTime.Now.DayOfWeek == DayOfWeek.Monday)
-            {
-                if (!File.Exists("Data\\backup.time"))
-                {
-                    using (File.Create("Data\\backup.time"))
-                    { };
-                    Backup();
-                }
-                else // hier kijken of er een nieuwe dag is
-                {
-                    DateTime laatste_keer = File.GetLastWriteTime("Data\\backup.time");
-
-                    if (laatste_keer.Day != DateTime.Now.Day && DateTime.Now.Hour > 1)
-                    {
-                        File.SetLastWriteTime("Data\\backup.time", DateTime.Now);
-                        Backup();
-                        BoomKennisDataToolStripMenuItem_Click(this, null);
-                        MaakLinkLijst(this, null);
-                    }
-                }
-            }
-        }
-        private void Backup()
-        {
-            _ = MessageBox.Show("Even Backup van pagina's");
-            // lijst met all pagina's opgeslagen.
-            List<FileInfo> XMLFilesInDataDir = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-                        .OrderByDescending(f => f.Name)
-                        .ToList();
-            ProgressBarAan(XMLFilesInDataDir.Count);
-
-            foreach (FileInfo file in XMLFilesInDataDir)
-            {
-                string baknaam = Path.ChangeExtension(file.FullName, ".bak");
-
-                if (!File.Exists(baknaam))
-                {
-                    File.Copy(file.FullName, baknaam, true);
-                }
-                else
-                {
-                    FileInfo fi = new FileInfo(baknaam);
-                    if (fi.Length != file.Length)
-                    {
-                        File.Copy(file.FullName, baknaam, true);
-                    }
-                }
-                ProgressBarUpdate();
-            }
-            ProgressBarUit();
-        }
+       
         private void BeheerToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -1086,15 +946,7 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-        private void FlowHistorie_SizeChanged(object sender, EventArgs e)
-        {
-            // een max with
-            if (flowHistorie.Width > 250)
-            {
-                flowHistorie.Width = 250;
-                flowHistorie.Height += 30;
-            }
-        }
+        
         private void BoomKennisDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> BoomData = new List<string>
@@ -1248,20 +1100,7 @@ namespace KenisBank
                 _ = MessageBox.Show("Kan Link Lijst niet Laden.");
             }
         }
-        private static KennisPanel GetKennisPanel(int ID)
-        {
-            foreach (Panel a in mainForm.Controls.OfType<Panel>()) // zij en hoofd paneel
-            {
-                foreach (KennisPanel item in a.Controls.OfType<KennisPanel>())
-                {
-                    if (item.kId == ID)
-                    {
-                        return item;
-                    }
-                }
-            }
-            return null;
-        }
+        
         private void ButtonBoven_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
