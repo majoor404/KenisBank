@@ -148,57 +148,43 @@ namespace KenisBank
         private void SelecteerLaatstePaneel()
         {
             KleurGeselecteerdePanel(PaginaInhoud.InhoudPaginaMetRegels[PaginaInhoud.InhoudPaginaMetRegels.Count - 1].eigenaar_);
-            int beneden = panelMain.Height / PaginaInhoud.InhoudPaginaMetRegels.Count;
+            _ = panelMain.Height / PaginaInhoud.InhoudPaginaMetRegels.Count;
             panelMain.AutoScrollPosition = new Point(0, 50000);
         }
         private void SelecteerEerstePaneel()
         {
             buttonEditSelectie.Enabled = false;
-            if(PaginaInhoud.InhoudPaginaMetRegels.Count > 0)
+            if (PaginaInhoud.InhoudPaginaMetRegels.Count > 0)
+            {
                 KleurGeselecteerdePanel(PaginaInhoud.InhoudPaginaMetRegels[0].eigenaar_);
+            }
+
             panelMain.AutoScrollPosition = new Point(0, 0);
         }
-        private void MovePanel(int richting)
+        private void MovePanel(int oud, int nieuw)
         {
             if (!editModeAanToolStripMenuItem.Checked)
             {
                 return;
             }
 
-            int eigenaar = int.Parse(GekozenItem.Text);
-            int nieuw_index = -1;
-
-            for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+            Regel rg = new Regel
             {
-                if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
-                {
-                    nieuw_index = i + richting;
+                tekst_ = PaginaInhoud.InhoudPaginaMetRegels[oud].tekst_,
+                url_ = PaginaInhoud.InhoudPaginaMetRegels[oud].url_,
+                type_ = PaginaInhoud.InhoudPaginaMetRegels[oud].type_,
+                undo_ = type.Move,
+                index_ = oud,
+                eigenaar_ = nieuw
+            };
 
-                    if (nieuw_index < 0 || nieuw_index + 1 > PaginaInhoud.InhoudPaginaMetRegels.Count)
-                    {
-                        return;
-                    }
+            Regel gekozen = PaginaInhoud.InhoudPaginaMetRegels[oud];
+            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(oud);
+            PaginaInhoud.InhoudPaginaMetRegels.Insert(nieuw, gekozen);
 
-                    Regel rg = new Regel
-                    {
-                        tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
-                        url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
-                        type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
-                        undo_ = type.Move,
-                        index_ = nieuw_index,
-                        eigenaar_ = richting
-                    };
+            PaginaInhoud.ChangePagina.Add(rg);
 
-                    Regel gekozen = PaginaInhoud.InhoudPaginaMetRegels[i];
-                    PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                    PaginaInhoud.InhoudPaginaMetRegels.Insert(nieuw_index, gekozen);
-                    i = 1000;
-
-                    PaginaInhoud.ChangePagina.Add(rg);
-
-                    change_pagina = true;
-                }
-            }
+            change_pagina = true;
 
             if (BlokSchrijf)
             {
@@ -208,10 +194,10 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
 
-            int eig = PaginaInhoud.InhoudPaginaMetRegels[nieuw_index].eigenaar_;
+            int eig = PaginaInhoud.InhoudPaginaMetRegels[nieuw].eigenaar_;
             KleurGeselecteerdePanel(eig);
 
-            panelMain.AutoScrollPosition = new Point(0, nieuw_index * 20);
+            panelMain.AutoScrollPosition = new Point(0, nieuw * 20);
         }
 
         // ProgressBar

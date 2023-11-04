@@ -258,7 +258,11 @@ namespace KenisBank
                 return;
             }
 
-            MovePanel(-1);
+            int oud = int.Parse(GekozenItem.Text);
+            oud = GetIndexVanId(oud);
+            int nieuw = oud - 1;
+            if(nieuw > 0)
+                MovePanel(oud, nieuw);
         }
         private void ButtonMoveDown_Click(object sender, EventArgs e)
         {
@@ -267,7 +271,11 @@ namespace KenisBank
                 return;
             }
 
-            MovePanel(1);
+            int oud = int.Parse(GekozenItem.Text);
+            oud = GetIndexVanId(oud);
+            int nieuw = oud + 1;
+            if( nieuw < PaginaInhoud.InhoudPaginaMetRegels.Count)
+                MovePanel(oud, nieuw);
         }
         private void ButtonMoveUp5_Click(object sender, EventArgs e)
         {
@@ -276,13 +284,12 @@ namespace KenisBank
                 return;
             }
 
-            BlokSchrijf = true;
-            for (int i = 0; i < 9; i++)
-            {
-                MovePanel(-1);
-            }
-            BlokSchrijf = false;
-            MovePanel(-1);
+            int oud = int.Parse(GekozenItem.Text);
+            oud = GetIndexVanId(oud);
+            int nieuw = oud - 10 ;
+            if (nieuw < 0)
+                nieuw = 0;
+            MovePanel(oud, nieuw);
         }
         private void ButtonMoveDown5_Click(object sender, EventArgs e)
         {
@@ -291,13 +298,12 @@ namespace KenisBank
                 return;
             }
 
-            BlokSchrijf = true;
-            for (int i = 0; i < 9; i++)
-            {
-                MovePanel(1);
-            }
-            BlokSchrijf = false;
-            MovePanel(1);
+            int oud = int.Parse(GekozenItem.Text);
+            oud = GetIndexVanId(oud);
+            int nieuw = oud + 10;
+            if (nieuw > PaginaInhoud.InhoudPaginaMetRegels.Count)
+                nieuw = PaginaInhoud.InhoudPaginaMetRegels.Count;
+            MovePanel(oud, nieuw);
         }
         private void ButtonSaveCloseEdit_Click(object sender, EventArgs e)
         {
@@ -909,8 +915,8 @@ namespace KenisBank
 
             if (undo.undo_ == type.Move)
             {
-                PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(undo.index_);
-                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_ - undo.eigenaar_, undo);
+                PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(undo.eigenaar_);
+                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_, undo);
             }
 
             if (undo.undo_ == type.Toevoegen)
@@ -927,6 +933,7 @@ namespace KenisBank
             }
             // bouw Pagina
             SchermUpdate();
+            change_pagina = true;
         }
         public void BackupNu()
         {
@@ -946,6 +953,8 @@ namespace KenisBank
                     {
                         File.SetLastWriteTime("Data\\backup.time", DateTime.Now);
                         Backup();
+                        BoomKennisDataToolStripMenuItem_Click(this, null);
+                        MaakLinkLijst(this, null);
                     }
                 }
             }
@@ -1102,13 +1111,6 @@ namespace KenisBank
             try
             {
                 File.WriteAllLines("Data\\BoomData.txt", BoomData);
-                Process process = new Process();
-                process.StartInfo.FileName = "Data\\BoomData.txt";
-                try
-                {
-                    _ = process.Start();
-                }
-                catch { }
             }
             catch (IOException)
             {
@@ -1209,6 +1211,7 @@ namespace KenisBank
                                     PaginaInhoud.InhoudPaginaMetRegels[i].url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_.Substring(1);
                                     verander = true;
                                 }
+                                LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
                                 LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
                                 break;
                         }
@@ -1222,13 +1225,6 @@ namespace KenisBank
             try
             {
                 File.WriteAllLines("Data\\Url.txt", LijstUrl);
-                Process process = new Process();
-                process.StartInfo.FileName = "Data\\Url.txt";
-                try
-                {
-                    _ = process.Start();
-                }
-                catch { }
             }
             catch (IOException)
             {
@@ -1268,36 +1264,34 @@ namespace KenisBank
         }
         private void ButtonBoven_Click(object sender, EventArgs e)
         {
-            if (!editModeAanToolStripMenuItem.Checked)
+            if (!TestKlik())
             {
                 return;
             }
 
-            int Id = int.Parse(GekozenItem.Text);
-            int index = GetIndexVanId(Id);
+            int oud = int.Parse(GekozenItem.Text);
+            oud = GetIndexVanId(oud);
+            int nieuw = 0;
 
-            Regel temp = PaginaInhoud.InhoudPaginaMetRegels[index];
+            MovePanel(oud, nieuw);
 
-            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(index);
-            PaginaInhoud.InhoudPaginaMetRegels.Insert(0, temp);
             change_pagina = true;
             SchermUpdate();
             SelecteerEerstePaneel();
         }
         private void ButtonBeneden_Click(object sender, EventArgs e)
         {
-            if (!editModeAanToolStripMenuItem.Checked)
+            if (!TestKlik())
             {
                 return;
             }
 
-            int Id = int.Parse(GekozenItem.Text);
-            int index = GetIndexVanId(Id);
+            int oud = int.Parse(GekozenItem.Text);
+            oud = GetIndexVanId(oud);
+            int nieuw = PaginaInhoud.InhoudPaginaMetRegels.Count-1;
+            
+            MovePanel(oud, nieuw);
 
-            Regel temp = PaginaInhoud.InhoudPaginaMetRegels[index];
-
-            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(index);
-            PaginaInhoud.InhoudPaginaMetRegels.Insert(PaginaInhoud.InhoudPaginaMetRegels.Count, temp);
             change_pagina = true;
             SchermUpdate();
             SelecteerLaatstePaneel();
