@@ -920,6 +920,18 @@ namespace KenisBank
             }
             return true;
         }
+        private int GetIndexVanId(int Id)
+        {
+            for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+            {
+                if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == Id)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         // undo
         private void Undo_Click(object sender, EventArgs e)
         {
@@ -1303,6 +1315,42 @@ namespace KenisBank
                 }
             }
             return null;
+        }
+
+        private void ButtonBoven_Click(object sender, EventArgs e)
+        {
+            if (!editModeAanToolStripMenuItem.Checked)
+            {
+                return;
+            }
+
+            int Id = int.Parse(GekozenItem.Text);
+            int index = GetIndexVanId(Id);
+
+            Regel temp = PaginaInhoud.InhoudPaginaMetRegels[index];
+
+            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(index);
+            PaginaInhoud.InhoudPaginaMetRegels.Insert(0, temp);
+            SchermUpdate();
+            SelecteerEerstePaneel();
+        }
+
+        private void ButtonBeneden_Click(object sender, EventArgs e)
+        {
+            if (!editModeAanToolStripMenuItem.Checked)
+            {
+                return;
+            }
+
+            int Id = int.Parse(GekozenItem.Text);
+            int index = GetIndexVanId(Id);
+
+            Regel temp = PaginaInhoud.InhoudPaginaMetRegels[index];
+
+            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(index);
+            PaginaInhoud.InhoudPaginaMetRegels.Insert(PaginaInhoud.InhoudPaginaMetRegels.Count, temp);
+            SchermUpdate();
+            SelecteerLaatstePaneel();
         }
     }
 }

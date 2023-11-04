@@ -79,8 +79,10 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.ButtonBeneden = new System.Windows.Forms.Button();
             this.buttonMoveDown5 = new System.Windows.Forms.Button();
             this.buttonMoveDown = new System.Windows.Forms.Button();
+            this.ButtonBoven = new System.Windows.Forms.Button();
             this.buttonMoveUp5 = new System.Windows.Forms.Button();
             this.buttonMoveUp = new System.Windows.Forms.Button();
             this.panelInfo = new System.Windows.Forms.Panel();
@@ -416,8 +418,10 @@
             this.panelUpDown.Controls.Add(this.button3);
             this.panelUpDown.Controls.Add(this.button2);
             this.panelUpDown.Controls.Add(this.button1);
+            this.panelUpDown.Controls.Add(this.ButtonBeneden);
             this.panelUpDown.Controls.Add(this.buttonMoveDown5);
             this.panelUpDown.Controls.Add(this.buttonMoveDown);
+            this.panelUpDown.Controls.Add(this.ButtonBoven);
             this.panelUpDown.Controls.Add(this.buttonMoveUp5);
             this.panelUpDown.Controls.Add(this.buttonMoveUp);
             this.panelUpDown.Location = new System.Drawing.Point(876, 81);
@@ -600,43 +604,69 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.ToevoegenHoofdstukTextToolStripMenuItem_Click);
             // 
+            // ButtonBeneden
+            // 
+            this.ButtonBeneden.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonBeneden.Location = new System.Drawing.Point(9, 318);
+            this.ButtonBeneden.Name = "ButtonBeneden";
+            this.ButtonBeneden.Size = new System.Drawing.Size(142, 40);
+            this.ButtonBeneden.TabIndex = 1;
+            this.ButtonBeneden.Text = "Geheel Beneden";
+            this.ButtonBeneden.UseVisualStyleBackColor = true;
+            this.ButtonBeneden.Click += new System.EventHandler(this.ButtonBeneden_Click);
+            // 
             // buttonMoveDown5
             // 
-            this.buttonMoveDown5.Location = new System.Drawing.Point(9, 305);
+            this.buttonMoveDown5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonMoveDown5.Location = new System.Drawing.Point(9, 277);
             this.buttonMoveDown5.Name = "buttonMoveDown5";
-            this.buttonMoveDown5.Size = new System.Drawing.Size(142, 54);
+            this.buttonMoveDown5.Size = new System.Drawing.Size(142, 40);
             this.buttonMoveDown5.TabIndex = 1;
-            this.buttonMoveDown5.Text = "Down 10 Plekken";
+            this.buttonMoveDown5.Text = "Neer 10 Plekken";
             this.buttonMoveDown5.UseVisualStyleBackColor = true;
             this.buttonMoveDown5.Click += new System.EventHandler(this.ButtonMoveDown5_Click);
             // 
             // buttonMoveDown
             // 
-            this.buttonMoveDown.Location = new System.Drawing.Point(9, 239);
+            this.buttonMoveDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonMoveDown.Location = new System.Drawing.Point(9, 236);
             this.buttonMoveDown.Name = "buttonMoveDown";
-            this.buttonMoveDown.Size = new System.Drawing.Size(142, 54);
+            this.buttonMoveDown.Size = new System.Drawing.Size(142, 40);
             this.buttonMoveDown.TabIndex = 1;
-            this.buttonMoveDown.Text = "Down";
+            this.buttonMoveDown.Text = "Neer";
             this.buttonMoveDown.UseVisualStyleBackColor = true;
             this.buttonMoveDown.Click += new System.EventHandler(this.ButtonMoveDown_Click);
             // 
+            // ButtonBoven
+            // 
+            this.ButtonBoven.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonBoven.Location = new System.Drawing.Point(9, 113);
+            this.ButtonBoven.Name = "ButtonBoven";
+            this.ButtonBoven.Size = new System.Drawing.Size(142, 40);
+            this.ButtonBoven.TabIndex = 0;
+            this.ButtonBoven.Text = "Geheel Boven";
+            this.ButtonBoven.UseVisualStyleBackColor = true;
+            this.ButtonBoven.Click += new System.EventHandler(this.ButtonBoven_Click);
+            // 
             // buttonMoveUp5
             // 
-            this.buttonMoveUp5.Location = new System.Drawing.Point(9, 113);
+            this.buttonMoveUp5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonMoveUp5.Location = new System.Drawing.Point(9, 154);
             this.buttonMoveUp5.Name = "buttonMoveUp5";
-            this.buttonMoveUp5.Size = new System.Drawing.Size(142, 54);
+            this.buttonMoveUp5.Size = new System.Drawing.Size(142, 40);
             this.buttonMoveUp5.TabIndex = 0;
-            this.buttonMoveUp5.Text = "Up 10 Plekken";
+            this.buttonMoveUp5.Text = "Op 10 Plekken";
             this.buttonMoveUp5.UseVisualStyleBackColor = true;
             this.buttonMoveUp5.Click += new System.EventHandler(this.ButtonMoveUp5_Click);
             // 
             // buttonMoveUp
             // 
-            this.buttonMoveUp.Location = new System.Drawing.Point(9, 179);
+            this.buttonMoveUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonMoveUp.Location = new System.Drawing.Point(9, 195);
             this.buttonMoveUp.Name = "buttonMoveUp";
-            this.buttonMoveUp.Size = new System.Drawing.Size(142, 54);
+            this.buttonMoveUp.Size = new System.Drawing.Size(142, 40);
             this.buttonMoveUp.TabIndex = 0;
-            this.buttonMoveUp.Text = "Up";
+            this.buttonMoveUp.Text = "Op";
             this.buttonMoveUp.UseVisualStyleBackColor = true;
             this.buttonMoveUp.Click += new System.EventHandler(this.ButtonMoveUp_Click);
             // 
@@ -762,6 +792,8 @@
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.Label GekozenItem;
         public System.Windows.Forms.Panel panelUpDown;
+        private System.Windows.Forms.Button ButtonBeneden;
+        private System.Windows.Forms.Button ButtonBoven;
     }
 }
 
