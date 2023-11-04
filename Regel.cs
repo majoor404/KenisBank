@@ -32,7 +32,7 @@ namespace KenisBank
             tekst_ = tekst;
             type_ = T;
             url_ = url;
-            eigenaar_ = -1; // koppeling panel naar data veld
+            eigenaar_ = KennisMainForm.MaakID(); //  - 1; // koppeling panel naar data veld
         }
         public string tekst_ { set; get; }
         public type type_ { set; get; }

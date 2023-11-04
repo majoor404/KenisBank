@@ -120,7 +120,7 @@ namespace KenisBank
                     {
                         Regel rg = new Regel
                         {
-                            ID_ = MaakID(),
+                            //ID_ = MaakID(),
                             tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
                             url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
                             type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
@@ -181,7 +181,6 @@ namespace KenisBank
 
                     Regel rg = new Regel
                     {
-                        ID_ = MaakID(),
                         tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
                         url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
                         type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,

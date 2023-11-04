@@ -51,8 +51,7 @@ namespace KenisBank
 
             }
 
-            string dum = KennisMainForm.RandomString(10);
-            kId = dum.GetHashCode();
+            kId = KennisMainForm.MaakID();
             Tag = kId;
         }
 
