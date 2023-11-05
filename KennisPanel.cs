@@ -95,14 +95,14 @@ namespace KenisBank
             label.Text = kText;
 
             Controls.Add(label);
-            Refresh();
+            //Refresh();
         }
 
         private void MaakTekstBlok()
         {
             MaakNewPanel();
 
-            SuspendLayout();
+            //SuspendLayout();
 
             // split string at new line
             string[] result = kText.Split('\n');
@@ -121,7 +121,7 @@ namespace KenisBank
                 label.Text = str;
                 Controls.Add(label);
             }
-            ResumeLayout();
+            //ResumeLayout();
         }
 
         private void MaakLinkDir()
@@ -142,7 +142,7 @@ namespace KenisBank
             //label.MouseHover += new EventHandler(LinkHover);
 
             Controls.Add(label);
-            Refresh();
+            //Refresh();
         }
 
         private void MaakPaginaKnop()
@@ -170,7 +170,7 @@ namespace KenisBank
             but.Text = kText;
             but.Click += new EventHandler(kPaginaKlik);
             Controls.Add(but);
-            Refresh();
+            //Refresh();
         }
     }
 }

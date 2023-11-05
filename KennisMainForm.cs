@@ -95,7 +95,7 @@ namespace KenisBank
         private void ButtonEdit_Click(object sender, EventArgs e)
         {
             // ook in alle paginaas en zoek, wees , alleen een beheerder kan hier bij komen.
-            if ((labelPaginaInBeeld.Text.Length > 3) && (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek"))
+            if (editModeAanToolStripMenuItem.Checked && (labelPaginaInBeeld.Text.Length > 3) && (labelPaginaInBeeld.Text.Substring(0, 4) == "Zoek"))
             {
                 _ = MessageBox.Show("Zoek pagina kunt u niet aanpassen!");
                 editModeAanToolStripMenuItem.Checked = false;
@@ -270,8 +270,10 @@ namespace KenisBank
             int oud = int.Parse(GekozenItem.Text);
             oud = GetIndexVanId(oud);
             int nieuw = oud - 1;
-            if(nieuw > 0)
+            if (nieuw > 0)
+            {
                 MovePanel(oud, nieuw);
+            }
         }
         private void ButtonMoveDown_Click(object sender, EventArgs e)
         {
@@ -283,8 +285,10 @@ namespace KenisBank
             int oud = int.Parse(GekozenItem.Text);
             oud = GetIndexVanId(oud);
             int nieuw = oud + 1;
-            if( nieuw < PaginaInhoud.InhoudPaginaMetRegels.Count)
+            if (nieuw < PaginaInhoud.InhoudPaginaMetRegels.Count)
+            {
                 MovePanel(oud, nieuw);
+            }
         }
         private void ButtonMoveUp5_Click(object sender, EventArgs e)
         {
@@ -295,9 +299,12 @@ namespace KenisBank
 
             int oud = int.Parse(GekozenItem.Text);
             oud = GetIndexVanId(oud);
-            int nieuw = oud - 10 ;
+            int nieuw = oud - 10;
             if (nieuw < 0)
+            {
                 nieuw = 0;
+            }
+
             MovePanel(oud, nieuw);
         }
         private void ButtonMoveDown5_Click(object sender, EventArgs e)
@@ -311,7 +318,10 @@ namespace KenisBank
             oud = GetIndexVanId(oud);
             int nieuw = oud + 10;
             if (nieuw > PaginaInhoud.InhoudPaginaMetRegels.Count)
+            {
                 nieuw = PaginaInhoud.InhoudPaginaMetRegels.Count;
+            }
+
             MovePanel(oud, nieuw);
         }
         private void ButtonSaveCloseEdit_Click(object sender, EventArgs e)
@@ -486,29 +496,6 @@ namespace KenisBank
             //SchermUpdate();
             //_ = MessageBox.Show("Klaar import");
         }
-        private void AllePaginasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-                            .OrderByDescending(f => f.Name)
-                            .ToList();
-
-            PaginaInhoud.InhoudPaginaMetRegels.Clear();
-            ProgressBarAan(files.Count);
-
-            foreach (FileInfo file in files)
-            {
-                ProgressBarUpdate();
-
-                Regel regel = new Regel(Path.GetFileNameWithoutExtension(file.Name), type.PaginaNaam, "");
-
-                PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
-
-            }
-            SchermUpdate();
-            ProgressBarUit();
-            labelPaginaInBeeld.Text = "Alle paginas";
-
-        }
         private void VorigeVersiePaginaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // test of vorige versie bestaat
@@ -537,66 +524,64 @@ namespace KenisBank
 
             if (save == DialogResult.OK)
             {
-                List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-                            .OrderByDescending(f => f.Name)
-                            .ToList();
+                if (ZF.checkBoxIndex.Checked) // opnieuw index maken
+                {
+                    MaakLinkLijst(this, null);
+                }
 
-                ProgressBarAan(files.Count);
                 if (ZF.checkBoxPaginaTitel.Checked)
                 {
-                    foreach (FileInfo file in files)
+                    List<string> LijstPaginas = File.ReadAllLines("Data\\Paginas.txt").ToList();
+
+                    for (int i = 0; i < LijstPaginas.Count; i++)
                     {
-                        ProgressBarUpdate();
-                        if (ContainsCaseInsensitive(file.Name, ZF.textBoxZoek.Text))
+                        if (ContainsCaseInsensitive(LijstPaginas[i], ZF.textBoxZoek.Text))
                         {
-                            string paginanaam = Path.GetFileNameWithoutExtension(file.Name).Trim();
-                            if (!PaginaTitelMetTextGevonden.Contains(paginanaam))
-                            {
-                                PaginaTitelMetTextGevonden.Add(paginanaam);
-                            }
+                            Regel regel = new Regel(LijstPaginas[i], type.PaginaNaam, LijstPaginas[i]);
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new Regel("", type.Leeg, "");
+                            PaginaMetRegelsGevonden.Add(regel);
                         }
                     }
+                }
 
-                    for (int i = 0; i < PaginaTitelMetTextGevonden.Count(); i++)
+                List<string> LijstUrl = File.ReadAllLines("Data\\Url.txt").ToList();
+
+                for (int i = 0; i < LijstUrl.Count; i++)
+                {
+                    if (ContainsCaseInsensitive(LijstUrl[i], ZF.textBoxZoek.Text))
                     {
-                        Regel regel = new Regel(PaginaTitelMetTextGevonden[i], type.PaginaNaam, PaginaTitelMetTextGevonden[i])
+
+                        //if (!ZF.checkBoxIndex.Checked)
+                        //{
+                        string link;
+                        string url;
+                        if (i % 2 == 0)
                         {
-                            //ID_ = MaakID()
-                        };
+                            link = LijstUrl[i];
+                            url = LijstUrl[i + 1];
+                        }
+                        else
+                        {
+                            link = LijstUrl[i - 1];
+                            url = LijstUrl[i];
+                            i++;
+                        }
+
+                        Regel regel = new Regel($"Gevonden in {url}", type.TekstBlok, "");
+                        PaginaMetRegelsGevonden.Add(regel);
+                        regel = new Regel(link, type.LinkFile, url);
+                        PaginaMetRegelsGevonden.Add(regel);
+                        regel = new Regel("", type.Leeg, "");
                         PaginaMetRegelsGevonden.Add(regel);
                     }
                 }
-                ProgressBarUit();
 
-                ProgressBarAan(files.Count);
-                foreach (FileInfo file in files)
-                {
-                    ProgressBarUpdate();
-
-                    _ = PaginaInhoud.Laad(Path.GetFileNameWithoutExtension(file.Name));
-
-                    for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
-                    {
-                        if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkFile || PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.LinkDir)
-                        {
-                            if (ContainsCaseInsensitive(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, ZF.textBoxZoek.Text))
-                            {
-                                Regel regel = new Regel($"Gevonden op pagina {file.Name}", type.TekstBlok, "");
-                                PaginaMetRegelsGevonden.Add(regel);
-                                regel = new Regel(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_, PaginaInhoud.InhoudPaginaMetRegels[i].type_, PaginaInhoud.InhoudPaginaMetRegels[i].url_);
-                                PaginaMetRegelsGevonden.Add(regel);
-                                regel = new Regel("", type.Leeg, "");
-                                PaginaMetRegelsGevonden.Add(regel);
-                            }
-                        }
-                    }
-
-                }
                 // bouw Pagina
                 labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
                 PaginaInhoud.InhoudPaginaMetRegels = PaginaMetRegelsGevonden;
                 SchermUpdate();
-                ProgressBarUit();
+                change_pagina = false;
             }
         }
         private void ZoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
@@ -847,7 +832,7 @@ namespace KenisBank
 
             ProgressBarUit();
         }
-       
+
         private void BeheerToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -860,7 +845,6 @@ namespace KenisBank
                 paginaBackupTerugZettenToolStripMenuItem.Visible = true;
                 zoekNaarWeesPaginasToolStripMenuItem1.Visible = true;
                 zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Visible = true;
-                allePaginasToolStripMenuItem1.Visible = true;
                 editZijBlakToolStripMenuItem.Visible = true;
                 boomKennisDataToolStripMenuItem.Visible = true;
                 repareerToolStripMenuItem.Visible = true;
@@ -946,7 +930,7 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-        
+
         private void BoomKennisDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> BoomData = new List<string>
@@ -1028,17 +1012,19 @@ namespace KenisBank
         private void MaakLinkLijst(object sender, EventArgs e)
         {
             List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-            .OrderByDescending(f => f.Name)
+            .OrderBy(f => f.Name)
             .ToList();
 
             List<string> LijstUrl = new List<string>();
+            List<string> ListPaginas = new List<string>();
 
             foreach (FileInfo file in files)
             {
                 bool verander = false;
                 if (file.Name != "zijbalk.xml")
                 {
-                    _ = PaginaInhoud.Laad(Path.GetFileNameWithoutExtension(file.Name));
+                    string fileNaam = Path.GetFileNameWithoutExtension(file.Name);
+                    _ = PaginaInhoud.Laad(fileNaam);
 
                     // door file heenstappen
                     for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
@@ -1066,6 +1052,9 @@ namespace KenisBank
                                 LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
                                 LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
                                 break;
+                            case type.PaginaNaam:
+                                ListPaginas.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
+                                break;
                         }
                     }
                     if (verander)
@@ -1077,6 +1066,7 @@ namespace KenisBank
             try
             {
                 File.WriteAllLines("Data\\Url.txt", LijstUrl);
+                File.WriteAllLines("Data\\Paginas.txt", ListPaginas);
             }
             catch (IOException)
             {
@@ -1100,7 +1090,7 @@ namespace KenisBank
                 _ = MessageBox.Show("Kan Link Lijst niet Laden.");
             }
         }
-        
+
         private void ButtonBoven_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
@@ -1127,13 +1117,31 @@ namespace KenisBank
 
             int oud = int.Parse(GekozenItem.Text);
             oud = GetIndexVanId(oud);
-            int nieuw = PaginaInhoud.InhoudPaginaMetRegels.Count-1;
-            
+            int nieuw = PaginaInhoud.InhoudPaginaMetRegels.Count - 1;
+
             MovePanel(oud, nieuw);
 
             change_pagina = true;
             SchermUpdate();
             SelecteerLaatstePaneel();
+        }
+
+        private void allePaginasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = "Data\\Paginas.txt";
+                try
+                {
+                    _ = process.Start();
+                }
+                catch { }
+            }
+            catch (IOException)
+            {
+                _ = MessageBox.Show("Kan Paginas Lijst niet Laden.");
+            }
         }
     }
 }

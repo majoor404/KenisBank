@@ -52,13 +52,13 @@
             this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.allePaginasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beheerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beheerVrijgaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importAllePaginasOudeWikiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paginaBackupTerugZettenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekNaarWeesPaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allePaginasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.editZijBlakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.boomKennisDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repareerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -283,7 +283,8 @@
             // 
             this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem2,
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.allePaginasToolStripMenuItem});
             this.extraToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
             this.extraToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
@@ -303,6 +304,13 @@
             this.toolStripMenuItem1.Text = "Link Lijst";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.LinkLijstToolStripMenuItem_Click);
             // 
+            // allePaginasToolStripMenuItem
+            // 
+            this.allePaginasToolStripMenuItem.Name = "allePaginasToolStripMenuItem";
+            this.allePaginasToolStripMenuItem.Size = new System.Drawing.Size(214, 24);
+            this.allePaginasToolStripMenuItem.Text = "Alle Paginas";
+            this.allePaginasToolStripMenuItem.Click += new System.EventHandler(this.allePaginasToolStripMenuItem_Click);
+            // 
             // beheerToolStripMenuItem
             // 
             this.beheerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -311,7 +319,6 @@
             this.paginaBackupTerugZettenToolStripMenuItem,
             this.zoekNaarWeesPaginasToolStripMenuItem1,
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem,
-            this.allePaginasToolStripMenuItem1,
             this.editZijBlakToolStripMenuItem,
             this.boomKennisDataToolStripMenuItem,
             this.repareerToolStripMenuItem});
@@ -360,14 +367,6 @@
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Visible = false;
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem.Click += new System.EventHandler(this.zoekLinksDieNietMeerBestaanToolStripMenuItem_Click);
             // 
-            // allePaginasToolStripMenuItem1
-            // 
-            this.allePaginasToolStripMenuItem1.Name = "allePaginasToolStripMenuItem1";
-            this.allePaginasToolStripMenuItem1.Size = new System.Drawing.Size(325, 24);
-            this.allePaginasToolStripMenuItem1.Text = "Alle Pagina\'s";
-            this.allePaginasToolStripMenuItem1.Visible = false;
-            this.allePaginasToolStripMenuItem1.Click += new System.EventHandler(this.AllePaginasToolStripMenuItem_Click);
-            // 
             // editZijBlakToolStripMenuItem
             // 
             this.editZijBlakToolStripMenuItem.Name = "editZijBlakToolStripMenuItem";
@@ -388,7 +387,7 @@
             // 
             this.repareerToolStripMenuItem.Name = "repareerToolStripMenuItem";
             this.repareerToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
-            this.repareerToolStripMenuItem.Text = "Maak Link Lijst";
+            this.repareerToolStripMenuItem.Text = "Maak Link/Index Lijst";
             this.repareerToolStripMenuItem.Visible = false;
             this.repareerToolStripMenuItem.Click += new System.EventHandler(this.MaakLinkLijst);
             // 
@@ -776,7 +775,6 @@
         private System.Windows.Forms.ToolStripMenuItem beheerVrijgaveToolStripMenuItem;
         private System.Windows.Forms.Button buttonMoveDown5;
         private System.Windows.Forms.Button buttonMoveUp5;
-        private System.Windows.Forms.ToolStripMenuItem allePaginasToolStripMenuItem1;
         private System.Windows.Forms.Button PasteBut;
         private System.Windows.Forms.Button CopyBut;
         private System.Windows.Forms.Panel panelZij;
@@ -794,6 +792,7 @@
         public System.Windows.Forms.Panel panelUpDown;
         private System.Windows.Forms.Button ButtonBeneden;
         private System.Windows.Forms.Button ButtonBoven;
+        private System.Windows.Forms.ToolStripMenuItem allePaginasToolStripMenuItem;
     }
 }
 

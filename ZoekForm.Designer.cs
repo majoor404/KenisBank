@@ -32,6 +32,8 @@
             this.buttonZoek = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.checkBoxPaginaTitel = new System.Windows.Forms.CheckBox();
+            this.checkBoxIndex = new System.Windows.Forms.CheckBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxZoek
@@ -76,12 +78,36 @@
             this.checkBoxPaginaTitel.Text = "Zoek ook in pagina titels";
             this.checkBoxPaginaTitel.UseVisualStyleBackColor = true;
             // 
+            // checkBoxIndex
+            // 
+            this.checkBoxIndex.AutoSize = true;
+            this.checkBoxIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxIndex.Location = new System.Drawing.Point(29, 16);
+            this.checkBoxIndex.Name = "checkBoxIndex";
+            this.checkBoxIndex.Size = new System.Drawing.Size(164, 22);
+            this.checkBoxIndex.TabIndex = 4;
+            this.checkBoxIndex.Text = "Maak Index Opnieuw";
+            this.checkBoxIndex.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(199, 15);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(23, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "?";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // ZoekForm
             // 
             this.AcceptButton = this.buttonZoek;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(631, 186);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.checkBoxIndex);
             this.Controls.Add(this.checkBoxPaginaTitel);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonZoek);
@@ -99,5 +125,7 @@
         public System.Windows.Forms.TextBox textBoxZoek;
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.CheckBox checkBoxPaginaTitel;
+        private System.Windows.Forms.Button button2;
+        public System.Windows.Forms.CheckBox checkBoxIndex;
     }
 }
