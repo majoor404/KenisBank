@@ -519,31 +519,29 @@ namespace KenisBank
             ZoekForm ZF = new ZoekForm();
             DialogResult save = ZF.ShowDialog();
             PaginaMetRegelsGevonden.Clear();
-            List<string> PaginaTitelMetTextGevonden = new List<string>();
-            Regel b = new Regel();
+            _ = new List<string>();
+            _ = new Regel();
 
             if (save == DialogResult.OK)
             {
-                if (ZF.checkBoxIndex.Checked) // opnieuw index maken
+                if (ZF.checkBoxIndex.Checked || !File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
                 {
                     MaakLinkLijst(this, null);
                 }
 
-                if (ZF.checkBoxPaginaTitel.Checked)
-                {
-                    List<string> LijstPaginas = File.ReadAllLines("Data\\Paginas.txt").ToList();
+                List<string> LijstPaginas = File.ReadAllLines("Data\\Paginas.txt").ToList();
 
-                    for (int i = 0; i < LijstPaginas.Count; i++)
+                for (int i = 0; i < LijstPaginas.Count; i++)
+                {
+                    if (ContainsCaseInsensitive(LijstPaginas[i], ZF.textBoxZoek.Text))
                     {
-                        if (ContainsCaseInsensitive(LijstPaginas[i], ZF.textBoxZoek.Text))
-                        {
-                            Regel regel = new Regel(LijstPaginas[i], type.PaginaNaam, LijstPaginas[i]);
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new Regel("", type.Leeg, "");
-                            PaginaMetRegelsGevonden.Add(regel);
-                        }
+                        Regel regel = new Regel(LijstPaginas[i], type.PaginaNaam, LijstPaginas[i]);
+                        PaginaMetRegelsGevonden.Add(regel);
+                        regel = new Regel("", type.Leeg, "");
+                        PaginaMetRegelsGevonden.Add(regel);
                     }
                 }
+
 
                 List<string> LijstUrl = File.ReadAllLines("Data\\Url.txt").ToList();
 
@@ -930,7 +928,6 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-
         private void BoomKennisDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> BoomData = new List<string>
@@ -1090,7 +1087,6 @@ namespace KenisBank
                 _ = MessageBox.Show("Kan Link Lijst niet Laden.");
             }
         }
-
         private void ButtonBoven_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
@@ -1125,7 +1121,6 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-
         private void allePaginasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

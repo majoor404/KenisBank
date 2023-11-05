@@ -354,7 +354,6 @@ namespace KenisBank
             if (undo.undo_ == type.Toevoegen)
             {
                 // dus verwijderen
-
                 for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
                 {
                     if (PaginaInhoud.InhoudPaginaMetRegels[i].ID_ == undo.ID_)
@@ -393,7 +392,5 @@ namespace KenisBank
             _ = new System.Threading.ManualResetEvent(false).WaitOne(1);
 
         }
-
-
     }
 }
