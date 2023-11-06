@@ -93,8 +93,6 @@ namespace KenisBank
             {
                 string fi = VertaalNaarFileNaam(file);
                 string opslagnaam = $"Data\\{fi}.xml";
-                // backup
-                //MaakBackUpFile(fi);
 
                 // save
                 string xmlTekst = ToXML(InhoudPaginaMetRegels);

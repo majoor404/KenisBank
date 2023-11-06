@@ -436,11 +436,18 @@ namespace KenisBank
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
 
+                    // verander op elke pagina waar oudenaam voorkomt, deze in nieuwe naam
+                    VeranderPagineLinkOpElkePagina(oudenaam, pa.textBoxPaginaNaam.Text);
+
                     // zoek nu naam.xml op en zet om in nieuwe naam.
-                    oudenaam = PaginaInhoud.VertaalNaarFileNaam(oudenaam);
                     string nieuwnaam = PaginaInhoud.VertaalNaarFileNaam(pa.textBoxPaginaNaam.Text);
+                    oudenaam = PaginaInhoud.VertaalNaarFileNaam(oudenaam);
                     System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{nieuwnaam}.xml");
                     MaakLinkLijst(this, null);
+
+                    PaginaInhoud.Laad(labelPaginaInBeeld.Text);
+                    change_pagina = false;
+                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -1134,6 +1141,38 @@ namespace KenisBank
             catch (IOException)
             {
                 _ = MessageBox.Show("Kan Paginas Lijst niet Laden.");
+            }
+        }
+
+        // verander op elke pagina waar oudenaam voorkomt, deze in nieuwe naam
+        private void VeranderPagineLinkOpElkePagina(string oudenaam, string nieuwnaam)
+        {
+            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+            .OrderBy(f => f.Name)
+            .ToList();
+            
+            foreach (FileInfo file in files)
+            {
+                bool change = false;
+                string fileNaam = Path.GetFileNameWithoutExtension(file.Name);
+                _ = PaginaInhoud.Laad(fileNaam);
+                // door file heenstappen
+                for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+                {
+                    type Type = PaginaInhoud.InhoudPaginaMetRegels[i].type_;
+                    if (Type == type.PaginaNaam)
+                    {
+                        if (PaginaInhoud.InhoudPaginaMetRegels[i].tekst_ == oudenaam)
+                        {
+                            PaginaInhoud.InhoudPaginaMetRegels[i].tekst_ = nieuwnaam;
+                            change = true;
+                        }
+                    }
+                }
+                if (change)
+                {
+                    PaginaInhoud.Save(fileNaam);
+                }
             }
         }
     }
