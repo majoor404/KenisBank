@@ -354,7 +354,6 @@ namespace KenisBank
                     change_pagina = true;
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
-
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -375,6 +374,7 @@ namespace KenisBank
                     change_pagina = true;
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
+                    MaakLinkLijst(this, null);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -395,6 +395,7 @@ namespace KenisBank
                     change_pagina = true;
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
+                    MaakLinkLijst(this, null);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -439,6 +440,7 @@ namespace KenisBank
                     oudenaam = PaginaInhoud.VertaalNaarFileNaam(oudenaam);
                     string nieuwnaam = PaginaInhoud.VertaalNaarFileNaam(pa.textBoxPaginaNaam.Text);
                     System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{nieuwnaam}.xml");
+                    MaakLinkLijst(this, null);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -524,7 +526,7 @@ namespace KenisBank
 
             if (save == DialogResult.OK)
             {
-                if (ZF.checkBoxIndex.Checked || !File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
+                if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
                 {
                     MaakLinkLijst(this, null);
                 }
@@ -542,16 +544,12 @@ namespace KenisBank
                     }
                 }
 
-
                 List<string> LijstUrl = File.ReadAllLines("Data\\Url.txt").ToList();
 
                 for (int i = 0; i < LijstUrl.Count; i++)
                 {
                     if (ContainsCaseInsensitive(LijstUrl[i], ZF.textBoxZoek.Text))
                     {
-
-                        //if (!ZF.checkBoxIndex.Checked)
-                        //{
                         string link;
                         string url;
                         if (i % 2 == 0)
@@ -1032,22 +1030,22 @@ namespace KenisBank
                         {
                             case type.Leeg: break;
                             case type.LinkFile:
-
-                                string ext = Path.GetExtension(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
-                                if (ext == "")
+                                try
                                 {
-                                    // Dan is het een link naar een dir
-                                    PaginaInhoud.InhoudPaginaMetRegels[i].type_ = type.LinkDir;
-                                    verander = true;
-                                    break;
+                                    string ext = Path.GetExtension(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
+                                    if (ext == "")
+                                    {
+                                        // Dan is het een link naar een dir
+                                        PaginaInhoud.InhoudPaginaMetRegels[i].type_ = type.LinkDir;
+                                        verander = true;
+                                        break;
+                                    }
+                                    LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
+                                    LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
                                 }
-                                if (PaginaInhoud.InhoudPaginaMetRegels[i].url_.Substring(0, 2) == @"/Q")
-                                {
-                                    PaginaInhoud.InhoudPaginaMetRegels[i].url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_.Substring(1);
-                                    verander = true;
+                                catch {
+                                    MessageBox.Show($"Error in Index Maken\n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\n{PaginaInhoud.InhoudPaginaMetRegels[i].url_}");
                                 }
-                                LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
-                                LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
                                 break;
                             case type.PaginaNaam:
                                 ListPaginas.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);

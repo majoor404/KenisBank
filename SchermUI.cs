@@ -35,6 +35,7 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
+                MaakLinkLijst(this, null);
             }
             // bouw Pagina
             SchermUpdate();
@@ -59,6 +60,7 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(linkFile.textBox2.Text, type.LinkFile, linkFile.textBox1.Text);
+                MaakLinkLijst(this, null);
             }
             // bouw Pagina
             SchermUpdate();
@@ -83,6 +85,7 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(pagina.textBoxPaginaNaam.Text, type.PaginaNaam, "");
+                MaakLinkLijst(this, null);
             }
             // bouw Pagina
             SchermUpdate();
