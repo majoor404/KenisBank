@@ -88,11 +88,15 @@
             this.panelInfo = new System.Windows.Forms.Panel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.panelZij = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.panelLogo = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelUpDown.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.panelLogo.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -451,7 +455,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::KenisBank.Properties.Resources.logo;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(9, 14);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(100, 93);
@@ -695,16 +699,37 @@
             // panelZij
             // 
             this.panelZij.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelZij.Location = new System.Drawing.Point(13, 91);
+            this.panelZij.Location = new System.Drawing.Point(13, 250);
             this.panelZij.Name = "panelZij";
-            this.panelZij.Size = new System.Drawing.Size(231, 816);
+            this.panelZij.Size = new System.Drawing.Size(231, 657);
             this.panelZij.TabIndex = 5;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::KenisBank.Properties.Resources.logo;
+            this.pictureBox2.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(130, 135);
+            this.pictureBox2.TabIndex = 6;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.HomeToolStripMenuItem_Click);
+            // 
+            // panelLogo
+            // 
+            this.panelLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLogo.Controls.Add(this.pictureBox2);
+            this.panelLogo.Location = new System.Drawing.Point(13, 91);
+            this.panelLogo.Name = "panelLogo";
+            this.panelLogo.Size = new System.Drawing.Size(231, 143);
+            this.panelLogo.TabIndex = 6;
+            this.panelLogo.Click += new System.EventHandler(this.HomeToolStripMenuItem_Click);
             // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1454, 961);
+            this.Controls.Add(this.panelLogo);
             this.Controls.Add(this.flowHistorie);
             this.Controls.Add(this.panelZij);
             this.Controls.Add(this.panelUpDown);
@@ -727,6 +752,8 @@
             this.panelUpDown.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelInfo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.panelLogo.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -793,6 +820,8 @@
         private System.Windows.Forms.Button ButtonBeneden;
         private System.Windows.Forms.Button ButtonBoven;
         private System.Windows.Forms.ToolStripMenuItem allePaginasToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Panel panelLogo;
     }
 }
 

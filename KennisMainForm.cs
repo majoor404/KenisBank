@@ -76,7 +76,8 @@ namespace KenisBank
             Point hoek = panel1.Location;
             flowHistorie.Location = new Point(hoek.X + panel1.Width - flowHistorie.Width, flowHistorie.Location.Y);
             panelMain.Width = Width - panelZij.Width - flowHistorie.Width - 95;
-            flowHistorie.Height = panelMain.Height = panelZij.Height = Height - 180;
+            flowHistorie.Height = panelMain.Height = Height - 180;
+            panelZij.Height = panelMain.Height - panelLogo.Height - 16;
 
             progressBar.Location = new Point(hoek.X, progressBar.Location.Y);
             progressBar.Width = panel1.Width;
