@@ -348,13 +348,11 @@ namespace KenisBank
                 DialogResult save = hoofdstuk.ShowDialog();
                 if (save == DialogResult.OK)
                 {
-                    Regel regel = new Regel(hoofdstuk.textBox1.Text, type.Hoofdstuk, "")
-                    {
-                        // ID_ = MaakID()
-                    };
-                    change_pagina = true;
+                    Regel regel = new Regel(hoofdstuk.textBox1.Text, type.Hoofdstuk, "");
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
+                    change_pagina = false;
+                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -368,13 +366,11 @@ namespace KenisBank
 
                 if (save == DialogResult.OK)
                 {
-                    Regel regel = new Regel(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text)
-                    {
-                        //ID_ = MaakID()
-                    };
-                    change_pagina = true;
+                    Regel regel = new Regel(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
+                    change_pagina = false;
+                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
                     MaakLinkLijst(this, null);
                 }
                 // bouw Pagina
@@ -389,13 +385,11 @@ namespace KenisBank
 
                 if (save == DialogResult.OK)
                 {
-                    Regel regel = new Regel(linkfile.textBox2.Text, type.LinkFile, linkfile.textBox1.Text)
-                    {
-                        //ID_ = MaakID()
-                    };
-                    change_pagina = true;
+                    Regel regel = new Regel(linkfile.textBox2.Text, type.LinkFile, linkfile.textBox1.Text);
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
+                    change_pagina = false;
+                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
                     MaakLinkLijst(this, null);
                 }
                 // bouw Pagina
@@ -409,10 +403,7 @@ namespace KenisBank
 
                 if (save == DialogResult.OK)
                 {
-                    Regel regel = new Regel(tb.textBoxTextBlok.Text, type.TekstBlok, "")
-                    {
-                        //ID_ = MaakID()
-                    };
+                    Regel regel = new Regel(tb.textBoxTextBlok.Text, type.TekstBlok, "");
                     change_pagina = true;
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
@@ -429,13 +420,11 @@ namespace KenisBank
                 if (save == DialogResult.OK)
                 {
                     string oudenaam = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
-                    Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, "")
-                    {
-                        //ID_ = MaakID()
-                    };
+                    Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, "");
                     change_pagina = true;
                     PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
                     PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
+                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
 
                     // verander op elke pagina waar oudenaam voorkomt, deze in nieuwe naam
                     VeranderPagineLinkOpElkePagina(oudenaam, pa.textBoxPaginaNaam.Text);
@@ -1014,6 +1003,8 @@ namespace KenisBank
         }
         private void MaakLinkLijst(object sender, EventArgs e)
         {
+            string huidigePagina = labelPaginaInBeeld.Text;
+            
             List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
             .OrderBy(f => f.Name)
             .ToList();
@@ -1075,6 +1066,7 @@ namespace KenisBank
             {
                 _ = MessageBox.Show("info file save Error()");
             }
+            PaginaInhoud.Laad(huidigePagina);
         }
         private void LinkLijstToolStripMenuItem_Click(object sender, EventArgs e)
         {
