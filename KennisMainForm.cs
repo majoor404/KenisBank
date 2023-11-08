@@ -349,10 +349,7 @@ namespace KenisBank
                 if (save == DialogResult.OK)
                 {
                     Regel regel = new Regel(hoofdstuk.textBox1.Text, type.Hoofdstuk, "");
-                    PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                    PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
-                    change_pagina = false;
-                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
+                    UpdateRegel(i, regel);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -367,10 +364,7 @@ namespace KenisBank
                 if (save == DialogResult.OK)
                 {
                     Regel regel = new Regel(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
-                    PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                    PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
-                    change_pagina = false;
-                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
+                    UpdateRegel(i, regel);
                     MaakLinkLijst(this, null);
                 }
                 // bouw Pagina
@@ -386,10 +380,7 @@ namespace KenisBank
                 if (save == DialogResult.OK)
                 {
                     Regel regel = new Regel(linkfile.textBox2.Text, type.LinkFile, linkfile.textBox1.Text);
-                    PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                    PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
-                    change_pagina = false;
-                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
+                    UpdateRegel(i, regel);
                     MaakLinkLijst(this, null);
                 }
                 // bouw Pagina
@@ -405,8 +396,7 @@ namespace KenisBank
                 {
                     Regel regel = new Regel(tb.textBoxTextBlok.Text, type.TekstBlok, "");
                     change_pagina = true;
-                    PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                    PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
+                    UpdateRegel(i, regel);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -421,10 +411,7 @@ namespace KenisBank
                 {
                     string oudenaam = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
                     Regel regel = new Regel(pa.textBoxPaginaNaam.Text, type.PaginaNaam, "");
-                    change_pagina = true;
-                    PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
-                    PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
-                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
+                    UpdateRegel(i, regel);
 
                     // verander op elke pagina waar oudenaam voorkomt, deze in nieuwe naam
                     VeranderPagineLinkOpElkePagina(oudenaam, pa.textBoxPaginaNaam.Text);
@@ -435,13 +422,20 @@ namespace KenisBank
                     System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{nieuwnaam}.xml");
                     MaakLinkLijst(this, null);
 
-                    PaginaInhoud.Laad(labelPaginaInBeeld.Text);
-                    change_pagina = false;
-                    PaginaInhoud.Save(labelPaginaInBeeld.Text);
+                    //PaginaInhoud.Laad(labelPaginaInBeeld.Text);
+                    //change_pagina = false;
+                    //PaginaInhoud.Save(labelPaginaInBeeld.Text);
                 }
                 // bouw Pagina
                 SchermUpdate();
             }
+        }
+        private void UpdateRegel(int i, Regel regel)
+        {
+            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+            PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
+            change_pagina = false;
+            PaginaInhoud.Save(labelPaginaInBeeld.Text); 
         }
         private void VersieToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -613,7 +607,7 @@ namespace KenisBank
                 ProgressBarUpdate();
                 // check of filenaam een item bevat wat geen file is
                 string FileNaam = Path.GetFileNameWithoutExtension(file.Name);
-                if (!LinkNaarPaginaLijst.Contains(FileNaam) && FileNaam != "start")
+                if (!LinkNaarPaginaLijst.Contains(FileNaam) && FileNaam != "start" && FileNaam != "zijbalk")
                 {
                     Regel regel = new Regel(FileNaam, type.PaginaNaam, "");
                     PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
@@ -1048,6 +1042,10 @@ namespace KenisBank
                                 break;
                             case type.PaginaNaam:
                                 ListPaginas.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
+                                break;
+                            case type.LinkDir:
+                                LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
+                                LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
                                 break;
                         }
                     }
