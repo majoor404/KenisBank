@@ -1005,9 +1005,10 @@ namespace KenisBank
 
             List<string> LijstUrl = new List<string>();
             List<string> ListPaginas = new List<string>();
-
+            ProgressBarAan(files.Count);
             foreach (FileInfo file in files)
             {
+                ProgressBarUpdate();
                 bool verander = false;
                 if (file.Name != "zijbalk.xml")
                 {
@@ -1064,6 +1065,7 @@ namespace KenisBank
             {
                 _ = MessageBox.Show("info file save Error()");
             }
+            ProgressBarUit();
             PaginaInhoud.Laad(huidigePagina);
         }
         private void LinkLijstToolStripMenuItem_Click(object sender, EventArgs e)
