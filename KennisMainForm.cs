@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Melding;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -69,6 +70,9 @@ namespace KenisBank
             {
                 SchermUpdateZijBalk();
             }
+
+            FormMelding md = new FormMelding(FormMelding.Type.Info, "KennisBank", "R.Majoor");
+            md.Show();
         }
         private void KennisMainForm_Resize(object sender, EventArgs e)
         {
@@ -118,6 +122,8 @@ namespace KenisBank
 
                 panelUpDown.Visible = true;
                 panelUpDown.BringToFront();
+                FormMelding md = new FormMelding(FormMelding.Type.Edit, "KennisBank", "Edit Mode");
+                md.Show();
             }
             else
             {
@@ -337,6 +343,9 @@ namespace KenisBank
                 return;
             }
 
+         // bij edit maak ik index opnieuw, dus oude gaat dan weg en nieuwe in lijst.
+         // bij toevoegen item voeg ik alleen item toe aan index.
+
             int eigenaar = int.Parse(GekozenItem.Text);
             int i = GetIndexVanId(eigenaar);
 
@@ -421,10 +430,6 @@ namespace KenisBank
                     oudenaam = PaginaInhoud.VertaalNaarFileNaam(oudenaam);
                     System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{nieuwnaam}.xml");
                     MaakLinkLijst(this, null);
-
-                    //PaginaInhoud.Laad(labelPaginaInBeeld.Text);
-                    //change_pagina = false;
-                    //PaginaInhoud.Save(labelPaginaInBeeld.Text);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -1167,6 +1172,31 @@ namespace KenisBank
                     PaginaInhoud.Save(fileNaam);
                 }
             }
+        }
+
+        // bij toevoegen van item gewoon toevoegen aan index
+        // bij backup wordt lijst helemaal opnieuw gemaakt.
+        private void AddLinkLijst(type type_,  string text, string url)
+        {
+            List<string> Lijst = new List<string>();
+            switch (type_)
+            {
+                case type.PaginaNaam:
+                    Lijst = File.ReadAllLines("Data\\Paginas.txt").ToList();
+                    Lijst.Add(@text);
+                    Lijst.Add(@url);
+                    File.WriteAllLines("Data\\Paginas.txt", Lijst);
+                    break;
+                case type.LinkDir: 
+                case type.LinkFile:
+                    Lijst = File.ReadAllLines("Data\\Url.txt").ToList();
+                    Lijst.Add(@text);
+                    Lijst.Add(@url);
+                    File.WriteAllLines("Data\\Url.txt", Lijst);
+                    break;
+
+            }
+
         }
     }
 }

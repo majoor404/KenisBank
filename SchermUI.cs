@@ -35,8 +35,8 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
-                PaginaInhoud.Save(labelPaginaInBeeld.Text);
-                MaakLinkLijst(this, null);
+                change_pagina = true;
+                AddLinkLijst(type.LinkDir, linkdir.textBoxLinkText.Text, linkdir.textBoxDir.Text);
             }
             // bouw Pagina
             SchermUpdate();
@@ -49,7 +49,7 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(hoofdstuk.textBox1.Text, type.Hoofdstuk, "");
-                PaginaInhoud.Save(labelPaginaInBeeld.Text);
+                change_pagina=true;
             }
             // bouw Pagina
             SchermUpdate();
@@ -62,8 +62,8 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(linkFile.textBox2.Text, type.LinkFile, linkFile.textBox1.Text);
-                PaginaInhoud.Save(labelPaginaInBeeld.Text);
-                MaakLinkLijst(this, null);
+                change_pagina = true;
+                AddLinkLijst(type.LinkFile, linkFile.textBox2.Text, linkFile.textBox1.Text);
             }
             // bouw Pagina
             SchermUpdate();
@@ -89,8 +89,8 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(pagina.textBoxPaginaNaam.Text, type.PaginaNaam, "");
-                PaginaInhoud.Save(labelPaginaInBeeld.Text);
-                MaakLinkLijst(this, null);
+                change_pagina = true;
+                AddLinkLijst(type.PaginaNaam, pagina.textBoxPaginaNaam.Text, "");
             }
             // bouw Pagina
             SchermUpdate();

@@ -94,6 +94,12 @@
     <Compile Include="LinkFile.Designer.cs">
       <DependentUpon>LinkFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Melding.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Melding.designer.cs">
+      <DependentUpon>Melding.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pagina.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +151,9 @@
     <EmbeddedResource Include="LinkFile.resx">
       <DependentUpon>LinkFile.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Melding.resx">
+      <DependentUpon>Melding.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Pagina.resx">
       <DependentUpon>Pagina.cs</DependentUpon>
     </EmbeddedResource>
@@ -185,6 +194,13 @@
     <None Include="IMG_1457.JPG" />
     <None Include="select.bmp" />
     <None Include="Resources\logo.png" />
+    <None Include="Resources\calendar.png" />
+    <None Include="Resources\caution.png" />
+    <None Include="Resources\finish.png" />
+    <None Include="Resources\info.png" />
+    <None Include="Resources\notes.png" />
+    <None Include="Resources\pencil.png" />
+    <None Include="Resources\usb.png" />
     <Content Include="solution.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

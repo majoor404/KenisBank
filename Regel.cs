@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Melding;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -97,6 +98,9 @@ namespace KenisBank
                 // save
                 string xmlTekst = ToXML(InhoudPaginaMetRegels);
                 File.WriteAllText(opslagnaam, xmlTekst);
+
+                FormMelding md = new FormMelding(FormMelding.Type.Save, "KennisBank", "Opslaan..");
+                md.Show();
             }
             catch { }
         }
