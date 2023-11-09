@@ -157,7 +157,8 @@ namespace KenisBank
         {
             if (mainForm.editModeAanToolStripMenuItem.Checked)
             {
-                _ = MessageBox.Show("Eerst uit edit mode om link te volgen.");
+                KleurGeselecteerdePanel(kId);
+                //_ = MessageBox.Show("Eerst uit edit mode om link te volgen.");
                 return;
             }
 
@@ -180,7 +181,8 @@ namespace KenisBank
         {
             if (mainForm.editModeAanToolStripMenuItem.Checked)
             {
-                _ = MessageBox.Show("Eerst uit edit mode om naar andere pagina te gaan.");
+                KleurGeselecteerdePanel(kId);
+                //_ = MessageBox.Show("Eerst uit edit mode om naar andere pagina te gaan.");
                 return;
             }
 
@@ -222,7 +224,7 @@ namespace KenisBank
                     item.BorderStyle = BorderStyle.None;
                     if (item.kId == kId)
                     {
-                        item.BackColor = Color.Aqua;
+                        item.BackColor = Color.FromArgb(202, 229, 149);// Aqua;
                         item.BorderStyle = BorderStyle.FixedSingle;
                         mainForm.buttonEditSelectie.Enabled = true;
                     }
@@ -277,7 +279,7 @@ namespace KenisBank
             int oud = int.Parse(GekozenItem.Text);
             oud = GetIndexVanId(oud);
             int nieuw = oud - 1;
-            if (nieuw > 0)
+            if (nieuw > -1)
             {
                 MovePanel(oud, nieuw);
             }
@@ -1002,6 +1004,9 @@ namespace KenisBank
         }
         private void MaakLinkLijst(object sender, EventArgs e)
         {
+            FormMelding md = new FormMelding(FormMelding.Type.Info, "KennisBank", "Maak gehele index..");
+            md.Show();
+
             string huidigePagina = labelPaginaInBeeld.Text;
             
             List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
@@ -1145,6 +1150,9 @@ namespace KenisBank
         // verander op elke pagina waar oudenaam voorkomt, deze in nieuwe naam
         private void VeranderPagineLinkOpElkePagina(string oudenaam, string nieuwnaam)
         {
+            FormMelding md = new FormMelding(FormMelding.Type.Info, "KennisBank", "verander pagina op elke pagina.");
+            md.Show();
+
             List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
             .OrderBy(f => f.Name)
             .ToList();

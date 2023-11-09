@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Melding;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -305,7 +306,11 @@ namespace KenisBank
         }
         private void Backup()
         {
-            _ = MessageBox.Show("Even Backup van pagina's");
+            MessageBox.Show("Backup");
+            FormMelding md = new FormMelding(FormMelding.Type.Err, "KennisBank", "Backup maken..");
+            md.Refresh();
+            md.Show();
+
             // lijst met all pagina's opgeslagen.
             List<FileInfo> XMLFilesInDataDir = new DirectoryInfo("Data").EnumerateFiles("*.xml")
                         .OrderByDescending(f => f.Name)
@@ -395,6 +400,7 @@ namespace KenisBank
         }
         private void ProgressBarUpdate()
         {
+            Application.DoEvents();
             progressBar.PerformStep();
             progressBar.Refresh();
             _ = new System.Threading.ManualResetEvent(false).WaitOne(1);

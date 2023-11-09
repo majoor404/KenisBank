@@ -81,7 +81,6 @@ namespace KenisBank
             KennisMainForm.PaginaKlik(kId);
         }
 
-
         private void MaakHoofdStuk()
         {
             MaakNewPanel();
@@ -133,8 +132,8 @@ namespace KenisBank
             Point org = new Point(label.Location.X, label.Location.Y);
             org.X += 30;
             label.Location = org;
-
-            label.Width = kPanel.Width - 100;
+            label.AutoSize= true;
+            //label.Width = kPanel.Width - 100;
             label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
             label.Text = kText;
             label.BorderStyle = BorderStyle.None;
