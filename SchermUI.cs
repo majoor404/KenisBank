@@ -99,13 +99,6 @@ namespace KenisBank
         }
 
         // hulp roetines
-        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // bouw Pagina
-            SchermUpdate();
-            _ = PaginaZijBalk.Laad("zijbalk");
-            SchermUpdateZijBalk();
-        }
         private void DeleteItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
@@ -306,7 +299,6 @@ namespace KenisBank
         }
         private void Backup()
         {
-            MessageBox.Show("Backup");
             FormMelding md = new FormMelding(FormMelding.Type.Err, "KennisBank", "Backup maken..");
             md.Refresh();
             md.Show();

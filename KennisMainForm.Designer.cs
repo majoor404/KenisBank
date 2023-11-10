@@ -36,7 +36,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.terugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editPaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editModeAanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -148,7 +147,6 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.terugToolStripMenuItem,
             this.homeToolStripMenuItem,
-            this.refreshToolStripMenuItem,
             this.zoekToolStripMenuItem,
             this.editPaginaToolStripMenuItem,
             this.extraToolStripMenuItem,
@@ -175,14 +173,6 @@
             this.homeToolStripMenuItem.Size = new System.Drawing.Size(100, 24);
             this.homeToolStripMenuItem.Text = "Start Pagina";
             this.homeToolStripMenuItem.Click += new System.EventHandler(this.HomeToolStripMenuItem_Click);
-            // 
-            // refreshToolStripMenuItem
-            // 
-            this.refreshToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(70, 24);
-            this.refreshToolStripMenuItem.Text = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.RefreshToolStripMenuItem_Click);
             // 
             // zoekToolStripMenuItem
             // 
@@ -471,7 +461,7 @@
             this.buttonSaveCloseEdit.Name = "buttonSaveCloseEdit";
             this.buttonSaveCloseEdit.Size = new System.Drawing.Size(388, 43);
             this.buttonSaveCloseEdit.TabIndex = 10;
-            this.buttonSaveCloseEdit.Text = "Close Edit";
+            this.buttonSaveCloseEdit.Text = "Close Edit / Save";
             this.buttonSaveCloseEdit.UseVisualStyleBackColor = true;
             this.buttonSaveCloseEdit.Click += new System.EventHandler(this.ButtonSaveCloseEdit_Click);
             // 
@@ -770,7 +760,6 @@
         private System.Windows.Forms.ToolStripMenuItem toevoegenLinkNaarFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenLinkNaarDirToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenTekstBlokToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteItemToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenLinkNaarNieuwePaginaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem homeToolStripMenuItem;

@@ -1206,5 +1206,10 @@ namespace KenisBank
             }
 
         }
+
+        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
