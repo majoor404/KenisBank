@@ -287,7 +287,7 @@ namespace KenisBank
                 {
                     DateTime laatste_keer = File.GetLastWriteTime("Data\\backup.time");
 
-                    if (laatste_keer.Day != DateTime.Now.Day && DateTime.Now.Hour > 1)
+                    if (laatste_keer.Day != DateTime.Now.Day && DateTime.Now.Hour > 1 && DateTime.Now.Minute > StartMinBackup)
                     {
                         File.SetLastWriteTime("Data\\backup.time", DateTime.Now);
                         Backup();

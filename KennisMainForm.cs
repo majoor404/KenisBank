@@ -33,6 +33,8 @@ namespace KenisBank
         public Regel CopyRegel = null;
         private static int diep = 0;
 
+        private static readonly int StartMinBackup = random.Next(30);
+
         public static KennisMainForm mainForm;
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
@@ -167,14 +169,14 @@ namespace KenisBank
             {
                 LinkLabel a = (LinkLabel)item.Controls[0];
                 a.LinkVisited = true;
-                Process process = new Process();
-                process.StartInfo.FileName = item.kUrl;
-                try
-                {
-                    _ = process.Start();
-                }
-                catch { }
-
+                Start(item.kUrl);
+                //Process process = new Process();
+                //process.StartInfo.FileName = item.kUrl;
+                //try
+                //{
+                //    _ = process.Start();
+                //}
+                //catch { }
             }
         }
         public static void PaginaKlik(int kId)
@@ -345,8 +347,8 @@ namespace KenisBank
                 return;
             }
 
-         // bij edit maak ik index opnieuw, dus oude gaat dan weg en nieuwe in lijst.
-         // bij toevoegen item voeg ik alleen item toe aan index.
+            // bij edit maak ik index opnieuw, dus oude gaat dan weg en nieuwe in lijst.
+            // bij toevoegen item voeg ik alleen item toe aan index.
 
             int eigenaar = int.Parse(GekozenItem.Text);
             int i = GetIndexVanId(eigenaar);
@@ -442,7 +444,7 @@ namespace KenisBank
             PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
             PaginaInhoud.InhoudPaginaMetRegels.Insert(i, regel);
             change_pagina = false;
-            PaginaInhoud.Save(labelPaginaInBeeld.Text); 
+            PaginaInhoud.Save(labelPaginaInBeeld.Text);
         }
         private void VersieToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -697,6 +699,7 @@ namespace KenisBank
             try
             {
                 File.WriteAllLines("Data\\NietWerkendeLinks.txt", LijstMetLinksDieNietBestaan);
+
                 Process process = new Process();
                 process.StartInfo.FileName = "Data\\NietWerkendeLinks.txt";
                 try
@@ -1008,7 +1011,7 @@ namespace KenisBank
             md.Show();
 
             string huidigePagina = labelPaginaInBeeld.Text;
-            
+
             List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
             .OrderBy(f => f.Name)
             .ToList();
@@ -1047,7 +1050,8 @@ namespace KenisBank
                                     LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
                                     LijstUrl.Add(PaginaInhoud.InhoudPaginaMetRegels[i].url_);
                                 }
-                                catch {
+                                catch
+                                {
                                     MessageBox.Show($"Error in Index Maken\n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\n{PaginaInhoud.InhoudPaginaMetRegels[i].url_}");
                                 }
                                 break;
@@ -1156,7 +1160,7 @@ namespace KenisBank
             List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
             .OrderBy(f => f.Name)
             .ToList();
-            
+
             foreach (FileInfo file in files)
             {
                 bool change = false;
@@ -1184,7 +1188,7 @@ namespace KenisBank
 
         // bij toevoegen van item gewoon toevoegen aan index
         // bij backup wordt lijst helemaal opnieuw gemaakt.
-        private void AddLinkLijst(type type_,  string text, string url)
+        private void AddLinkLijst(type type_, string text, string url)
         {
             List<string> Lijst = new List<string>();
             switch (type_)
@@ -1195,7 +1199,7 @@ namespace KenisBank
                     Lijst.Add(@url);
                     File.WriteAllLines("Data\\Paginas.txt", Lijst);
                     break;
-                case type.LinkDir: 
+                case type.LinkDir:
                 case type.LinkFile:
                     Lijst = File.ReadAllLines("Data\\Url.txt").ToList();
                     Lijst.Add(@text);
@@ -1207,9 +1211,50 @@ namespace KenisBank
 
         }
 
-        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        private static void Start(string fileEnPath)
         {
+            string path = string.Empty;
+            string file = string.Empty;
+            try
+            {
+                if (Directory.Exists(fileEnPath))
+                {
+                    path = fileEnPath;
+                    file = fileEnPath;
+                }
+                
+                if (File.Exists(fileEnPath))
+                {
+                    path = Path.GetDirectoryName(fileEnPath);
+                    file = Path.GetFileName(fileEnPath);
+                }
 
+                if(path == string.Empty)
+                {
+                    MessageBox.Show($"Link {fileEnPath} bestaat niet");
+                    return;
+                }
+
+                ProcessStartInfo _processStartInfo = new ProcessStartInfo
+                {
+                    WorkingDirectory = path,
+                    FileName = file
+                };
+
+                //_processStartInfo.Arguments = "test.txt";
+
+                //_processStartInfo.CreateNoWindow = true;
+
+                try
+                {
+                    Process myProcess = Process.Start(_processStartInfo);
+                }
+                catch { }
+            }
+            catch (IOException)
+            {
+                _ = MessageBox.Show("Kan Paginas Lijst niet Laden.");
+            }
         }
     }
 }
