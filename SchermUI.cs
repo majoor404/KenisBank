@@ -50,7 +50,7 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(hoofdstuk.textBox1.Text, type.Hoofdstuk, "");
-                change_pagina=true;
+                change_pagina = true;
             }
             // bouw Pagina
             SchermUpdate();
@@ -279,24 +279,41 @@ namespace KenisBank
             {
                 if (!File.Exists("Data\\backup.time"))
                 {
-                    using (File.Create("Data\\backup.time"))
-                    { };
                     Backup();
+                    ZetBackupDatumInFile();
                 }
                 else // hier kijken of er een nieuwe dag is
                 {
-                    DateTime laatste_keer = File.GetLastWriteTime("Data\\backup.time");
+                    List<string> laatste_dag = File.ReadAllLines("Data\\backup.time").ToList();
 
-                    if (laatste_keer.Day != DateTime.Now.Day && DateTime.Now.Hour > 1 && DateTime.Now.Minute > StartMinBackup)
+                    if (laatste_dag.Count < 1)
                     {
-                        File.SetLastWriteTime("Data\\backup.time", DateTime.Now);
-                        Backup();
-                        BoomKennisDataToolStripMenuItem_Click(this, null);
-                        MaakLinkLijst(this, null);
+                        ZetBackupDatumInFile();
+                    }
+
+                    if (!int.TryParse(laatste_dag[0], out int ILaatsteDag))  // als niet bekend waarneer backup gedaan is, backup
+                    {
+                        if (ILaatsteDag != DateTime.Now.Day)    // als vandaag al backup, niet nog een keer
+                        {
+                            ZetBackupDatumInFile();
+                            Backup();
+                            BoomKennisDataToolStripMenuItem_Click(this, null);
+                            MaakLinkLijst(this, null);
+                        }
                     }
                 }
             }
         }
+
+        private static void ZetBackupDatumInFile()
+        {
+            List<string> laatste_dag = new List<string>
+            {
+                DateTime.Now.Day.ToString()
+            };
+            File.WriteAllLines("Data\\backup.time", laatste_dag);
+        }
+
         private void Backup()
         {
             FormMelding md = new FormMelding(FormMelding.Type.Err, "KennisBank", "Backup maken..");

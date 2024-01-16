@@ -170,13 +170,6 @@ namespace KenisBank
                 LinkLabel a = (LinkLabel)item.Controls[0];
                 a.LinkVisited = true;
                 Start(item.kUrl);
-                //Process process = new Process();
-                //process.StartInfo.FileName = item.kUrl;
-                //try
-                //{
-                //    _ = process.Start();
-                //}
-                //catch { }
             }
         }
         public static void PaginaKlik(int kId)
