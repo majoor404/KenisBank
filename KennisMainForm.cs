@@ -73,6 +73,11 @@ namespace KenisBank
                 SchermUpdateZijBalk();
             }
 
+            if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
+            {
+                MaakLinkLijst(this, null);
+            }
+
             FormMelding md = new FormMelding(FormMelding.Type.Info, "KennisBank", "R.Majoor");
             md.Show();
         }
