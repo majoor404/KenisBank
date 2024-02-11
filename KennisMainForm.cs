@@ -1254,5 +1254,27 @@ namespace KenisBank
                 _ = MessageBox.Show("Kan Paginas Lijst niet Laden.");
             }
         }
+
+        private void editModeToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            editModeAanToolStripMenuItem.Checked = !editModeAanToolStripMenuItem.Checked;
+            editModeToolStripMenuItem.Checked = editModeAanToolStripMenuItem.Checked;
+            ButtonEdit_Click(this, null);
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void zoekToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ZoekNaarToolStripMenuItem_Click(this, null);
+        }
     }
 }
