@@ -33,7 +33,7 @@ namespace KenisBank
         public Regel CopyRegel = null;
         private static int diep = 0;
 
-        private static readonly int StartMinBackup = random.Next(30);
+        //private static readonly int StartMinBackup = random.Next(30);
 
         public static KennisMainForm mainForm;
 
@@ -830,11 +830,10 @@ namespace KenisBank
 
         private void BeheerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             InputStringForm IPS = new InputStringForm();
 
             DialogResult dialogResult = IPS.ShowDialog();
-            if (dialogResult == DialogResult.OK && IPS.textBox1.Text == "majoor404")
+            if (dialogResult == DialogResult.OK && IPS.textBox1.Text == DateTime.Now.ToString("ddMM"))
             {
                 importAllePaginasOudeWikiToolStripMenuItem.Visible = true;
                 paginaBackupTerugZettenToolStripMenuItem.Visible = true;
@@ -1267,14 +1266,17 @@ namespace KenisBank
             Close();
         }
 
-        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
-
         private void zoekToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ZoekNaarToolStripMenuItem_Click(this, null);
+        }
+
+        private void backupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ZetBackupDatumInFile();
+            Backup();
+            BoomKennisDataToolStripMenuItem_Click(this, null);
+            MaakLinkLijst(this, null);
         }
     }
 }

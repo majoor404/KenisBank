@@ -66,6 +66,7 @@
             this.editZijBlakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.boomKennisDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repareerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.GekozenItem = new System.Windows.Forms.Label();
@@ -143,20 +144,20 @@
             this.zoekToolStripMenuItem1,
             this.closeToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 98);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(148, 76);
             // 
             // editModeToolStripMenuItem
             // 
             this.editModeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editModeToolStripMenuItem.Name = "editModeToolStripMenuItem";
-            this.editModeToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.editModeToolStripMenuItem.Size = new System.Drawing.Size(147, 24);
             this.editModeToolStripMenuItem.Text = "Edit Mode";
             this.editModeToolStripMenuItem.Click += new System.EventHandler(this.editModeToolStripMenuItem_Click_1);
             // 
             // zoekToolStripMenuItem1
             // 
             this.zoekToolStripMenuItem1.Name = "zoekToolStripMenuItem1";
-            this.zoekToolStripMenuItem1.Size = new System.Drawing.Size(180, 24);
+            this.zoekToolStripMenuItem1.Size = new System.Drawing.Size(147, 24);
             this.zoekToolStripMenuItem1.Text = "Zoek";
             this.zoekToolStripMenuItem1.Click += new System.EventHandler(this.zoekToolStripMenuItem1_Click);
             // 
@@ -164,7 +165,7 @@
             // 
             this.closeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 24);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -355,7 +356,8 @@
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem,
             this.editZijBlakToolStripMenuItem,
             this.boomKennisDataToolStripMenuItem,
-            this.repareerToolStripMenuItem});
+            this.repareerToolStripMenuItem,
+            this.backupToolStripMenuItem});
             this.beheerToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.beheerToolStripMenuItem.Name = "beheerToolStripMenuItem";
             this.beheerToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
@@ -424,6 +426,13 @@
             this.repareerToolStripMenuItem.Text = "Maak Link/Index Lijst";
             this.repareerToolStripMenuItem.Visible = false;
             this.repareerToolStripMenuItem.Click += new System.EventHandler(this.MaakLinkLijst);
+            // 
+            // backupToolStripMenuItem
+            // 
+            this.backupToolStripMenuItem.Name = "backupToolStripMenuItem";
+            this.backupToolStripMenuItem.Size = new System.Drawing.Size(325, 24);
+            this.backupToolStripMenuItem.Text = "Maak Backup";
+            this.backupToolStripMenuItem.Click += new System.EventHandler(this.backupToolStripMenuItem_Click);
             // 
             // versieToolStripMenuItem
             // 
@@ -856,6 +865,7 @@
         private System.Windows.Forms.ToolStripMenuItem editModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zoekToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
     }
 }
 

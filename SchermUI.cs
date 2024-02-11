@@ -299,6 +299,9 @@ namespace KenisBank
                             Backup();
                             BoomKennisDataToolStripMenuItem_Click(this, null);
                             MaakLinkLijst(this, null);
+
+                            FormMelding md = new FormMelding(FormMelding.Type.Klaar, "KennisBank", "Klaar backup.");
+                            md.Show();
                         }
                     }
                 }
