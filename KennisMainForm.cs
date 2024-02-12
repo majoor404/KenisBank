@@ -111,11 +111,13 @@ namespace KenisBank
             {
                 _ = MessageBox.Show("Zoek pagina kunt u niet aanpassen!");
                 editModeAanToolStripMenuItem.Checked = false;
+                editModeToolStripMenuItem.Checked = editModeAanToolStripMenuItem.Checked;
                 return;
             }
 
             addItemToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
             saveHuidigePaginaToolStripMenuItem.Enabled = buttonSaveCloseEdit.Enabled = editModeAanToolStripMenuItem.Checked;
+            editModeToolStripMenuItem.Checked = editModeAanToolStripMenuItem.Checked;
 
             if (editModeAanToolStripMenuItem.Checked)
             {
