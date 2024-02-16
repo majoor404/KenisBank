@@ -6,7 +6,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using File = System.IO.File;
 
 /*
@@ -1214,8 +1216,17 @@ namespace KenisBank
         {
             string path = string.Empty;
             string file = string.Empty;
+            
             try
             {
+                // bij bv http:// of https://
+                if (fileEnPath.Length > 5 && fileEnPath.Substring(0, 4) == "http")
+                {
+                    //string browser = "msedge.exe";
+                    Process.Start("explorer"/*browser*/, fileEnPath); // altijd default brouwser
+                    return;
+                }
+                
                 if (Directory.Exists(fileEnPath))
                 {
                     path = fileEnPath;
