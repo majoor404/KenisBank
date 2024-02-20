@@ -404,7 +404,10 @@ namespace KenisBank
             if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.TekstBlok)
             {
                 TekstBlok tb = new TekstBlok();
-                tb.textBoxTextBlok.Text = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
+                string regels = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
+                string[] lines = regels.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                tb.textBoxTextBlok.Lines = lines;
+                
                 DialogResult save = tb.ShowDialog();
 
                 if (save == DialogResult.OK)
