@@ -36,6 +36,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowHistorie = new System.Windows.Forms.FlowLayoutPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -142,30 +143,39 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editModeToolStripMenuItem,
             this.zoekToolStripMenuItem1,
+            this.copyToolStripMenuItem,
             this.closeToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(148, 76);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(280, 100);
             // 
             // editModeToolStripMenuItem
             // 
             this.editModeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editModeToolStripMenuItem.Name = "editModeToolStripMenuItem";
-            this.editModeToolStripMenuItem.Size = new System.Drawing.Size(147, 24);
+            this.editModeToolStripMenuItem.Size = new System.Drawing.Size(279, 24);
             this.editModeToolStripMenuItem.Text = "Edit Mode";
             this.editModeToolStripMenuItem.Click += new System.EventHandler(this.editModeToolStripMenuItem_Click_1);
             // 
             // zoekToolStripMenuItem1
             // 
             this.zoekToolStripMenuItem1.Name = "zoekToolStripMenuItem1";
-            this.zoekToolStripMenuItem1.Size = new System.Drawing.Size(147, 24);
+            this.zoekToolStripMenuItem1.Size = new System.Drawing.Size(279, 24);
             this.zoekToolStripMenuItem1.Text = "Zoek";
             this.zoekToolStripMenuItem1.Click += new System.EventHandler(this.zoekToolStripMenuItem1_Click);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Enabled = false;
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(279, 24);
+            this.copyToolStripMenuItem.Text = "Copy TekstBlok naar klembord";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(147, 24);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(279, 24);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -866,6 +876,7 @@
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zoekToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
     }
 }
 

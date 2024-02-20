@@ -62,8 +62,10 @@ namespace KenisBank
             AutoSize = true;
 
             Click += new EventHandler(kKlik);
+            
             kPanel.Controls.Add(this);
             kPanel.Controls.SetChildIndex(this, 0);
+            
         }
 
         private void kKlik(object sender, EventArgs e)

@@ -6,9 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using File = System.IO.File;
 
 /*
@@ -120,6 +118,7 @@ namespace KenisBank
             addItemToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
             saveHuidigePaginaToolStripMenuItem.Enabled = buttonSaveCloseEdit.Enabled = editModeAanToolStripMenuItem.Checked;
             editModeToolStripMenuItem.Checked = editModeAanToolStripMenuItem.Checked;
+            copyToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
 
             if (editModeAanToolStripMenuItem.Checked)
             {
@@ -407,7 +406,7 @@ namespace KenisBank
                 string regels = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
                 string[] lines = regels.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
                 tb.textBoxTextBlok.Lines = lines;
-                
+
                 DialogResult save = tb.ShowDialog();
 
                 if (save == DialogResult.OK)
@@ -1056,7 +1055,7 @@ namespace KenisBank
                                 }
                                 catch
                                 {
-                                    MessageBox.Show($"Error in Index Maken\n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\n{PaginaInhoud.InhoudPaginaMetRegels[i].url_}");
+                                    _ = MessageBox.Show($"Error in Index Maken\n{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}\n{PaginaInhoud.InhoudPaginaMetRegels[i].url_}");
                                 }
                                 break;
                             case type.PaginaNaam:
@@ -1084,7 +1083,7 @@ namespace KenisBank
                 _ = MessageBox.Show("info file save Error()");
             }
             ProgressBarUit();
-            PaginaInhoud.Laad(huidigePagina);
+            _ = PaginaInhoud.Laad(huidigePagina);
         }
         private void LinkLijstToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1194,7 +1193,8 @@ namespace KenisBank
         // bij backup wordt lijst helemaal opnieuw gemaakt.
         private void AddLinkLijst(type type_, string text, string url)
         {
-            List<string> Lijst = new List<string>();
+            _ = new List<string>();
+            List<string> Lijst;
             switch (type_)
             {
                 case type.PaginaNaam:
@@ -1219,32 +1219,32 @@ namespace KenisBank
         {
             string path = string.Empty;
             string file = string.Empty;
-            
+
             try
             {
                 // bij bv http:// of https://
                 if (fileEnPath.Length > 5 && fileEnPath.Substring(0, 4) == "http")
                 {
                     //string browser = "msedge.exe";
-                    Process.Start("explorer"/*browser*/, fileEnPath); // altijd default brouwser
+                    _ = Process.Start("explorer"/*browser*/, fileEnPath); // altijd default brouwser
                     return;
                 }
-                
+
                 if (Directory.Exists(fileEnPath))
                 {
                     path = fileEnPath;
                     file = fileEnPath;
                 }
-                
+
                 if (File.Exists(fileEnPath))
                 {
                     path = Path.GetDirectoryName(fileEnPath);
                     file = Path.GetFileName(fileEnPath);
                 }
 
-                if(path == string.Empty)
+                if (path == string.Empty)
                 {
-                    MessageBox.Show($"Link {fileEnPath} bestaat niet");
+                    _ = MessageBox.Show($"Link {fileEnPath} bestaat niet");
                     return;
                 }
 
@@ -1293,6 +1293,24 @@ namespace KenisBank
             Backup();
             BoomKennisDataToolStripMenuItem_Click(this, null);
             MaakLinkLijst(this, null);
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // zoek regel welke geselecteerd
+            if (!TestKlik())
+            {
+                return;
+            }
+
+            int eigenaar = int.Parse(GekozenItem.Text);
+            int i = GetIndexVanId(eigenaar);
+            
+            if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.TekstBlok)
+            {
+                string regels = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
+                Clipboard.SetText(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
+            }
         }
     }
 }
