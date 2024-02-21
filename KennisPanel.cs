@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Reflection.Emit;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using static System.Windows.Forms.LinkLabel;
 
@@ -27,45 +29,54 @@ namespace KenisBank
             kText = Text;
             kUrl = Url;
 
+            kId = KennisMainForm.MaakID();
+            Tag = kId;
+
             switch (kType)
             {
                 case type.Hoofdstuk:
-                    MaakHoofdStuk();
+                    MaakHoofdStuk(kId);
                     break;
                 case type.TekstBlok:
-                    MaakTekstBlok();
+                    MaakTekstBlok(kId);
                     break;
                 case type.LinkDir:
-                    MaakLinkDir();
+                    MaakLinkDir(kId);
                     break;
                 case type.LinkFile:
-                    MaakLinkDir();
+                    MaakLinkDir(kId);
                     break;
                 case type.PaginaNaam:
-                    MaakPaginaKnop();
+                    MaakPaginaKnop(kId);
                     break;
                 case type.Leeg:
                     kText = string.Empty;
-                    MaakTekstBlok();
+                    MaakTekstBlok(kId);
                     break;
-
             }
-
-            kId = KennisMainForm.MaakID();
-            Tag = kId;
         }
 
-        private void MaakNewPanel()
+        private void MaakNewPanel(int kId)
         {
             Dock = DockStyle.Top;
             BorderStyle = BorderStyle.None;
             AutoSize = true;
 
             Click += new EventHandler(kKlik);
+
             
             kPanel.Controls.Add(this);
             kPanel.Controls.SetChildIndex(this, 0);
-            
+            this.Tag = kId;
+            this.MouseHover += MouseHoverPanel;
+
+        }
+
+        private void MouseHoverPanel(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Panel lb = (System.Windows.Forms.Panel)sender;
+            Int32 tag = (Int32)lb.Tag;
+            KennisMainForm.mainForm.LBItem.Text = tag.ToString();
         }
 
         private void kKlik(object sender, EventArgs e)
@@ -83,9 +94,9 @@ namespace KenisBank
             KennisMainForm.PaginaKlik(kId);
         }
 
-        private void MaakHoofdStuk()
+        private void MaakHoofdStuk(int kId)
         {
-            MaakNewPanel();
+            MaakNewPanel(kId);
 
             System.Windows.Forms.Label label = new System.Windows.Forms.Label();
             Point org = new Point(label.Location.X, label.Location.Y);
@@ -94,14 +105,23 @@ namespace KenisBank
             label.AutoSize = true;
             label.Font = new Font("Microsoft Sans Serif", 18, FontStyle.Bold);
             label.Text = kText;
+            label.Tag = kId;
+            label.MouseHover += MouseHoverLabelofText;
 
             Controls.Add(label);
             //Refresh();
         }
 
-        private void MaakTekstBlok()
+        private void MouseHoverLabelofText(object sender, EventArgs e)
         {
-            MaakNewPanel();
+            System.Windows.Forms.Label lb = (System.Windows.Forms.Label)sender;
+            Int32 tag = (Int32)lb.Tag;
+            KennisMainForm.mainForm.LBItem.Text = tag.ToString();
+        }
+
+        private void MaakTekstBlok(int kId)
+        {
+            MaakNewPanel(kId);
 
             //SuspendLayout();
 
@@ -120,14 +140,16 @@ namespace KenisBank
                 label.MaximumSize = new Size(kPanel.Width - 60, 0);
                 label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
                 label.Text = str;
+                label.Tag = kId;
+                label.MouseHover += MouseHoverLabelofText;
                 Controls.Add(label);
             }
             //ResumeLayout();
         }
 
-        private void MaakLinkDir()
+        private void MaakLinkDir(int kId)
         {
-            MaakNewPanel();
+            MaakNewPanel(kId);
 
             System.Windows.Forms.LinkLabel label = new System.Windows.Forms.LinkLabel();
 
@@ -140,15 +162,15 @@ namespace KenisBank
             label.Text = kText;
             label.BorderStyle = BorderStyle.None;
             label.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(kLinkKlik);
-            //label.MouseHover += new EventHandler(LinkHover);
-
+            label.Tag= kId;
+            label.MouseHover += MouseHoverLabelofText;
             Controls.Add(label);
             //Refresh();
         }
 
-        private void MaakPaginaKnop()
+        private void MaakPaginaKnop(int kId)
         {
-            MaakNewPanel();
+            MaakNewPanel(kId);
 
             System.Windows.Forms.Button but = new System.Windows.Forms.Button();
 
@@ -170,8 +192,17 @@ namespace KenisBank
             but.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
             but.Text = kText;
             but.Click += new EventHandler(kPaginaKlik);
+            but.Tag = kId;
+            but.MouseHover += MouseHoverButton;
             Controls.Add(but);
             //Refresh();
+        }
+
+        private void MouseHoverButton(object sender, EventArgs e)
+        {
+            Button lb = (Button)sender;
+            Int32 tag = (Int32)lb.Tag;
+            KennisMainForm.mainForm.LBItem.Text = tag.ToString();
         }
     }
 }

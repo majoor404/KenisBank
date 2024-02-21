@@ -1,4 +1,5 @@
 ﻿using Melding;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,15 +7,20 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 using File = System.IO.File;
 
 /*
- * in roetine  BouwPaginaOp maak ik een hash van de InfoPagina.Regel
- * Deze hash plaats ik in panel.tag die dan gemaakt word voor die InfoPagina.Regel
+ * in roetine SchermUpdate worden de kennispanelen gemaakt, hier krijgt elk panel een kID
+ * Deze kId plaats ik in panel.tag die dan gemaakt word voor die InfoPagina.Regel
  * hierna plaats ik de zelfde hash dan in de betrevende InfoPagina.Regel
  * 
  * Hierdoor is tijdens runtime NA opbouwen pagina panel en regel gekoppeld.
+ * 
+ * In PaginaInhoud is een <list>InhoudPaginaMetRegels , wat een list is van Type Regel
+ * Regel is een regel in XML file
+ * 
  */
 
 namespace KenisBank
@@ -122,7 +128,7 @@ namespace KenisBank
 
             if (editModeAanToolStripMenuItem.Checked)
             {
-                editPaginaToolStripMenuItem.BackColor = Color.FromArgb(204, 231, 150);
+                editPaginaToolStripMenuItem.BackColor = Color.FromArgb(189, 189, 189);
                 change_pagina = false;
                 SelecteerEerstePaneel();
 
@@ -227,7 +233,7 @@ namespace KenisBank
                     item.BorderStyle = BorderStyle.None;
                     if (item.kId == kId)
                     {
-                        item.BackColor = Color.FromArgb(202, 229, 149);// Aqua;
+                        item.BackColor = Color.FromArgb(189, 189, 189);// Aqua;
                         item.BorderStyle = BorderStyle.FixedSingle;
                         mainForm.buttonEditSelectie.Enabled = true;
                     }
@@ -733,8 +739,8 @@ namespace KenisBank
             for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
             {
                 ProgressBarUpdate();
-                string dum = RandomString(10);
-                _ = dum.GetHashCode();
+                //string dum = RandomString(10);
+                //_ = dum.GetHashCode();
 
                 if (PaginaInhoud.InhoudPaginaMetRegels[i].type_ == type.Hoofdstuk)
                 {
@@ -1225,8 +1231,9 @@ namespace KenisBank
                 // bij bv http:// of https://
                 if (fileEnPath.Length > 5 && fileEnPath.Substring(0, 4) == "http")
                 {
+                    //string test = GetBrowser();
                     //string browser = "msedge.exe";
-                    _ = Process.Start("explorer"/*browser*/, fileEnPath); // altijd default brouwser
+                    _ = Process.Start("explorer", fileEnPath); // altijd default brouwser
                     return;
                 }
 
@@ -1311,6 +1318,55 @@ namespace KenisBank
                 string regels = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
                 Clipboard.SetText(PaginaInhoud.InhoudPaginaMetRegels[i].tekst_);
             }
+        }
+
+        private void LBItem_TextChanged(object sender, EventArgs e)
+        {
+            if (mainForm.editModeAanToolStripMenuItem.Checked)
+            {
+                foreach (KennisPanel item in mainForm.panelMain.Controls.OfType<KennisPanel>())
+                {
+                    item.BackColor = mainForm.panelMain.BackColor;
+                    item.BorderStyle = BorderStyle.None;
+                    if (item.kId.ToString() == KennisMainForm.mainForm.LBItem.Text)
+                    {
+                        item.BorderStyle = BorderStyle.FixedSingle;
+                        mainForm.buttonEditSelectie.Enabled = true;
+                    }
+
+                }
+            }
+            mainForm.GekozenItem.Text = KennisMainForm.mainForm.LBItem.Text;
+        }
+
+        private static string GetBrowser()
+        {
+            string name = string.Empty;
+            RegistryKey regKey = null;
+
+            try
+            {
+                var regDefault = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.htm\\UserChoice", false);
+                var stringDefault = regDefault.GetValue("ProgId");
+
+                regKey = Registry.ClassesRoot.OpenSubKey(stringDefault + "\\shell\\open\\command", false);
+                name = regKey.GetValue(null).ToString().ToLower().Replace("" + (char)34, "");
+
+                if (!name.EndsWith("exe"))
+                    name = name.Substring(0, name.LastIndexOf(".exe") + 4);
+
+            }
+            catch (Exception ex)
+            {
+                //name = string.Format("ERROR: An exception of type: {0} occurred in method: {1} in the following module: {2}", ex.GetType(), ex.TargetSite, this.GetType());
+            }
+            finally
+            {
+                if (regKey != null)
+                    regKey.Close();
+            }
+
+            return name;
         }
     }
 }

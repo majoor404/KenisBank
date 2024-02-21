@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace KenisBank
@@ -121,7 +118,7 @@ namespace KenisBank
                 }
             }
 
-            resultaat.Trim();
+            _ = resultaat.Trim();
 
             resultaat = resultaat.Replace(@" ", "_");
             resultaat = resultaat.Replace("\"", "");
@@ -136,7 +133,7 @@ namespace KenisBank
             resultaat = resultaat.ToLower();
 
             return resultaat;
-            
+
         }
         private string ToXML<T>(T obj)
         {
