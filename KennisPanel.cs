@@ -76,7 +76,7 @@ namespace KenisBank
         {
             System.Windows.Forms.Panel lb = (System.Windows.Forms.Panel)sender;
             Int32 tag = (Int32)lb.Tag;
-            KennisMainForm.mainForm.LBItem.Text = tag.ToString();
+            KennisMainForm.mainForm.DummyBut.Text = tag.ToString();
         }
 
         private void kKlik(object sender, EventArgs e)
@@ -116,7 +116,7 @@ namespace KenisBank
         {
             System.Windows.Forms.Label lb = (System.Windows.Forms.Label)sender;
             Int32 tag = (Int32)lb.Tag;
-            KennisMainForm.mainForm.LBItem.Text = tag.ToString();
+            KennisMainForm.mainForm.DummyBut.Text = tag.ToString();
         }
 
         private void MaakTekstBlok(int kId)
@@ -202,7 +202,7 @@ namespace KenisBank
         {
             Button lb = (Button)sender;
             Int32 tag = (Int32)lb.Tag;
-            KennisMainForm.mainForm.LBItem.Text = tag.ToString();
+            KennisMainForm.mainForm.DummyBut.Text = tag.ToString();
         }
     }
 }

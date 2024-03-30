@@ -185,6 +185,8 @@ namespace KenisBank
                 a.LinkVisited = true;
                 Start(item.kUrl);
             }
+
+            mainForm.DummyBut.Focus(); // zodat focus weg gaat van panelmain, ivm raar scrollen.
         }
         public static void PaginaKlik(int kId)
         {
@@ -1320,7 +1322,26 @@ namespace KenisBank
             }
         }
 
-        private void LBItem_TextChanged(object sender, EventArgs e)
+        //private void LBItem_TextChanged(object sender, EventArgs e)
+        //{
+        //    if (mainForm.editModeAanToolStripMenuItem.Checked)
+        //    {
+        //        foreach (KennisPanel item in mainForm.panelMain.Controls.OfType<KennisPanel>())
+        //        {
+        //            item.BackColor = mainForm.panelMain.BackColor;
+        //            item.BorderStyle = BorderStyle.None;
+        //            if (item.kId.ToString() == KennisMainForm.mainForm.LBItem.Text)
+        //            {
+        //                item.BorderStyle = BorderStyle.FixedSingle;
+        //                mainForm.buttonEditSelectie.Enabled = true;
+        //            }
+
+        //        }
+        //    }
+        //    mainForm.GekozenItem.Text = KennisMainForm.mainForm.LBItem.Text;
+        //}
+
+        private void DummyBut_TextChanged(object sender, EventArgs e)
         {
             if (mainForm.editModeAanToolStripMenuItem.Checked)
             {
@@ -1328,7 +1349,7 @@ namespace KenisBank
                 {
                     item.BackColor = mainForm.panelMain.BackColor;
                     item.BorderStyle = BorderStyle.None;
-                    if (item.kId.ToString() == KennisMainForm.mainForm.LBItem.Text)
+                    if (item.kId.ToString() == KennisMainForm.mainForm.DummyBut.Text)
                     {
                         item.BorderStyle = BorderStyle.FixedSingle;
                         mainForm.buttonEditSelectie.Enabled = true;
@@ -1336,7 +1357,12 @@ namespace KenisBank
 
                 }
             }
-            mainForm.GekozenItem.Text = KennisMainForm.mainForm.LBItem.Text;
+            mainForm.GekozenItem.Text = KennisMainForm.mainForm.DummyBut.Text;
+        }
+
+        private void DummyBut_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("De tekst van deze button wordt gebruikt voor tracking van panel ID");
         }
 
         //private static string GetBrowser()

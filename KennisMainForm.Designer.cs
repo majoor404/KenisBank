@@ -96,7 +96,7 @@
             this.panelZij = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panelLogo = new System.Windows.Forms.Panel();
-            this.LBItem = new System.Windows.Forms.Label();
+            this.DummyBut = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -774,22 +774,24 @@
             this.panelLogo.TabIndex = 6;
             this.panelLogo.Click += new System.EventHandler(this.HomeToolStripMenuItem_Click);
             // 
-            // LBItem
+            // DummyBut
             // 
-            this.LBItem.AutoSize = true;
-            this.LBItem.Location = new System.Drawing.Point(1372, 9);
-            this.LBItem.Name = "LBItem";
-            this.LBItem.Size = new System.Drawing.Size(56, 13);
-            this.LBItem.TabIndex = 7;
-            this.LBItem.Text = "Label Item";
-            this.LBItem.TextChanged += new System.EventHandler(this.LBItem_TextChanged);
+            this.DummyBut.FlatAppearance.BorderSize = 0;
+            this.DummyBut.Location = new System.Drawing.Point(1364, 5);
+            this.DummyBut.Name = "DummyBut";
+            this.DummyBut.Size = new System.Drawing.Size(83, 20);
+            this.DummyBut.TabIndex = 8;
+            this.DummyBut.Text = "ID Panel";
+            this.DummyBut.UseVisualStyleBackColor = true;
+            this.DummyBut.TextChanged += new System.EventHandler(this.DummyBut_TextChanged);
+            this.DummyBut.Click += new System.EventHandler(this.DummyBut_Click);
             // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1454, 961);
-            this.Controls.Add(this.LBItem);
+            this.Controls.Add(this.DummyBut);
             this.Controls.Add(this.panelLogo);
             this.Controls.Add(this.flowHistorie);
             this.Controls.Add(this.panelZij);
@@ -889,7 +891,7 @@
         private System.Windows.Forms.ToolStripMenuItem zoekToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
-        public System.Windows.Forms.Label LBItem;
+        public System.Windows.Forms.Button DummyBut;
     }
 }
 
