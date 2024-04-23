@@ -49,17 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aanpassen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Aanpassen.Designer.cs">
+      <DependentUpon>Aanpassen.cs</DependentUpon>
+    </Compile>
     <Compile Include="About.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="About.designer.cs">
       <DependentUpon>About.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BackupTerug.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BackupTerug.Designer.cs">
-      <DependentUpon>BackupTerug.cs</DependentUpon>
     </Compile>
     <Compile Include="Hoofdstuk.cs">
       <SubType>Form</SubType>
@@ -130,11 +130,11 @@
     <Compile Include="ZoekForm.Designer.cs">
       <DependentUpon>ZoekForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Aanpassen.resx">
+      <DependentUpon>Aanpassen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BackupTerug.resx">
-      <DependentUpon>BackupTerug.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Hoofdstuk.resx">
       <DependentUpon>Hoofdstuk.cs</DependentUpon>

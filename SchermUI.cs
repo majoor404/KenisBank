@@ -1,9 +1,11 @@
 ﻿using Melding;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace KenisBank
@@ -331,26 +333,50 @@ namespace KenisBank
 
             foreach (FileInfo file in XMLFilesInDataDir)
             {
-                string baknaam = Path.ChangeExtension(file.FullName, ".bak");
-
-                if (!File.Exists(baknaam))
-                {
-                    File.Copy(file.FullName, baknaam, true);
-                }
-                else
-                {
-                    FileInfo fi = new FileInfo(baknaam);
-                    if (fi.Length != file.Length)
-                    {
-                        File.Copy(file.FullName, baknaam, true);
-                    }
-                }
+                string s = DateTime.Now.ToString("MM-dd-yyyy HH-mm");
+                string BackupNaam = Directory.GetCurrentDirectory() + $"\\Backup\\{file.Name} {s}";
+                
+                BackUpFile(file.FullName, BackupNaam);
+                
                 ProgressBarUpdate();
             }
             ProgressBarUit();
         }
 
-        // undo
+        private void BackUpFile(string Filename, string BackupNaam)
+        {
+            string AllenFileNaam = Path.GetFileName(Filename);
+            string PathVanBackup = Path.GetDirectoryName(BackupNaam);
+            string laatsteBackup = BackupNaam;
+            try
+            {
+                string zoek = $"{AllenFileNaam}*";
+                // verwijder oude backups
+                List<FileInfo> files = new DirectoryInfo(PathVanBackup)
+                        .EnumerateFiles(zoek)
+                        //.Skip(3)  // als aantal < 3 wordt lijst dus leeg
+                        .OrderByDescending(f => f.CreationTime)
+                        .ToList();
+
+                if (files.Count < 5) {
+                    File.Copy(Filename, BackupNaam, true);
+                }
+                else
+                {
+                    laatsteBackup = files[0].FullName; // bovenste is laatste
+                    files = files.Skip(5).ToList(); // bewaar er 5
+                    files.ForEach(f => f.Delete()); // delete andere
+                    DateTime fl = File.GetLastWriteTime(laatsteBackup);
+                    DateTime fn = File.GetLastWriteTime(Filename);
+                    if (fl != fn)
+                    {
+                        File.Copy(Filename, BackupNaam, true);
+                    }
+                }
+            }
+            catch { };
+        }
+        
         private void Undo_Click(object sender, EventArgs e)
         {
             if (PaginaInhoud.ChangePagina.Count < 1)
