@@ -108,7 +108,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Regel.cs" />
+    <Compile Include="RegelInXML.cs" />
     <Compile Include="SchermUI.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace KenisBank
@@ -22,10 +23,10 @@ namespace KenisBank
     }
 
     [Serializable]
-    public class Regel
+    public class RegelInXML // is een regel (record) in XML file
     {
-        public Regel() { }
-        public Regel(string tekst, type T, string url)
+        public RegelInXML() { }
+        public RegelInXML(string tekst, type T, string url)
         {
             tekst_ = tekst;
             type_ = T;
@@ -41,16 +42,35 @@ namespace KenisBank
         public int ID_ { set; get; }    // uniek nummer voor undo actie's
 
 
-        public List<Regel> InhoudPaginaMetRegels = new List<Regel>();
-        public List<Regel> ChangePagina = new List<Regel>();
+        public List<RegelInXML> LijstMetRegels = new List<RegelInXML>();
+        public List<RegelInXML> LijstChangePaginaRegels = new List<RegelInXML>();
 
         public bool Laad(string file)
         {
             try
             {
-                string xmlTekst = File.ReadAllText($"Data\\{file}.xml");
-                InhoudPaginaMetRegels.Clear();
-                InhoudPaginaMetRegels = FromXML<List<Regel>>(xmlTekst);
+                string fileNaam = $"Data\\{file}.xml";
+                string xmlTekst = File.ReadAllText(fileNaam);
+
+                if(xmlTekst.Length > 0 && xmlTekst.Contains("<Regel>")) 
+                {
+                    // omzetten na nieuwe class naam
+                    string patroon = @"<Regel>";
+                    string gewijzigdexmlText = Regex.Replace(xmlTekst, patroon, "<RegelInXML>", RegexOptions.IgnoreCase);
+                    patroon = @"</Regel>";
+                    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "</RegelInXML>", RegexOptions.IgnoreCase);
+                    patroon = @"<ArrayOfRegel";
+                    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "<ArrayOfRegelInXML", RegexOptions.IgnoreCase);
+                    patroon = @"</ArrayOfRegel>";
+                    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "</ArrayOfRegelInXML>", RegexOptions.IgnoreCase);
+                    
+                    xmlTekst = gewijzigdexmlText;
+
+                    File.WriteAllText(fileNaam, xmlTekst);
+                }
+
+                LijstMetRegels.Clear();
+                LijstMetRegels = FromXML<List<RegelInXML>>(xmlTekst);
                 return true;
             }
             catch
@@ -65,7 +85,7 @@ namespace KenisBank
                 string edit = $"Laatste edit door : {Environment.UserName} op {DateTime.Now}";
                 bool al_edit_veld_aanwezig = false;
                 // toevoegen EditInfo
-                foreach (Regel regel in InhoudPaginaMetRegels)
+                foreach (RegelInXML regel in LijstMetRegels)
                 {
                     if (regel.type_ == type.EditInfo)
                     {
@@ -78,13 +98,13 @@ namespace KenisBank
                 // eerste keer lege pagina dan aanmaken
                 if (!al_edit_veld_aanwezig)
                 {
-                    Regel r = new Regel
+                    RegelInXML r = new RegelInXML
                     {
                         type_ = type.EditInfo,
                         tekst_ = edit,
                         url_ = ""
                     };
-                    InhoudPaginaMetRegels.Add(r);
+                    LijstMetRegels.Add(r);
                 }
             }
             try
@@ -93,7 +113,7 @@ namespace KenisBank
                 string opslagnaam = $"Data\\{fi}.xml";
 
                 // save
-                string xmlTekst = ToXML(InhoudPaginaMetRegels);
+                string xmlTekst = ToXML(LijstMetRegels);
                 File.WriteAllText(opslagnaam, xmlTekst);
 
                 FormMelding md = new FormMelding(FormMelding.Type.Save, "KennisBank", "Opslaan..");

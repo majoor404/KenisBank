@@ -16,18 +16,18 @@ namespace KenisBank
         public void Toevoegen(string text, type type, string url)
         {
             text = text.Trim();
-            Regel regel = new Regel(text, type, url)
+            RegelInXML regel = new RegelInXML(text, type, url)
             {
                 ID_ = MaakID()
             };
-            PaginaInhoud.InhoudPaginaMetRegels.Add(regel);
+            MainPagina.LijstMetRegels.Add(regel);
 
-            Regel rg = new Regel(text, type, url)
+            RegelInXML rg = new RegelInXML(text, type, url)
             {
                 ID_ = regel.ID_,
                 undo_ = type.Toevoegen
             };
-            PaginaInhoud.ChangePagina.Add(rg);
+            MainPagina.LijstChangePaginaRegels.Add(rg);
 
             change_pagina = true;
         }
@@ -79,7 +79,7 @@ namespace KenisBank
             if (save == DialogResult.OK)
             {
                 Toevoegen(tekstblok.textBoxTextBlok.Text, type.TekstBlok, "");
-                PaginaInhoud.Save(labelPaginaInBeeld.Text);
+                MainPagina.Save(labelPaginaInBeeld.Text);
             }
             // bouw Pagina
             SchermUpdate();
@@ -110,31 +110,31 @@ namespace KenisBank
 
             int eigenaar = int.Parse(GekozenItem.Text);
 
-            for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+            for (int i = 0; i < MainPagina.LijstMetRegels.Count; i++)
             {
-                if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == eigenaar)
+                if (MainPagina.LijstMetRegels[i].eigenaar_ == eigenaar)
                 {
                     //als wees pagina gewoon xml verwijderen
                     if (labelPaginaInBeeld.Text.Length > 3 && labelPaginaInBeeld.Text.Substring(0, 4) == "Wees")
                     {
-                        string file_naam = $"Data\\{PaginaInhoud.InhoudPaginaMetRegels[i].tekst_}.xml";
+                        string file_naam = $"Data\\{MainPagina.LijstMetRegels[i].tekst_}.xml";
                         File.Delete(file_naam);
-                        PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                        MainPagina.LijstMetRegels.RemoveAt(i);
                         change_pagina = false;
                     }
                     else
                     {
-                        Regel rg = new Regel
+                        RegelInXML rg = new RegelInXML
                         {
                             //ID_ = MaakID(),
-                            tekst_ = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_,
-                            url_ = PaginaInhoud.InhoudPaginaMetRegels[i].url_,
-                            type_ = PaginaInhoud.InhoudPaginaMetRegels[i].type_,
+                            tekst_ = MainPagina.LijstMetRegels[i].tekst_,
+                            url_ = MainPagina.LijstMetRegels[i].url_,
+                            type_ = MainPagina.LijstMetRegels[i].type_,
                             undo_ = type.Delete,
                             index_ = i
                         };
-                        PaginaInhoud.ChangePagina.Add(rg);
-                        PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                        MainPagina.LijstChangePaginaRegels.Add(rg);
+                        MainPagina.LijstMetRegels.RemoveAt(i);
                         change_pagina = true;
                     }
                 }
@@ -153,16 +153,16 @@ namespace KenisBank
         }
         private void SelecteerLaatstePaneel()
         {
-            KleurGeselecteerdePanel(PaginaInhoud.InhoudPaginaMetRegels[PaginaInhoud.InhoudPaginaMetRegels.Count - 1].eigenaar_);
-            _ = panelMain.Height / PaginaInhoud.InhoudPaginaMetRegels.Count;
+            KleurGeselecteerdePanel(MainPagina.LijstMetRegels[MainPagina.LijstMetRegels.Count - 1].eigenaar_);
+            _ = panelMain.Height / MainPagina.LijstMetRegels.Count;
             panelMain.AutoScrollPosition = new Point(0, 50000);
         }
         private void SelecteerEerstePaneel()
         {
             buttonEditSelectie.Enabled = false;
-            if (PaginaInhoud.InhoudPaginaMetRegels.Count > 0)
+            if (MainPagina.LijstMetRegels.Count > 0)
             {
-                KleurGeselecteerdePanel(PaginaInhoud.InhoudPaginaMetRegels[0].eigenaar_);
+                KleurGeselecteerdePanel(MainPagina.LijstMetRegels[0].eigenaar_);
             }
 
             panelMain.AutoScrollPosition = new Point(0, 0);
@@ -174,21 +174,21 @@ namespace KenisBank
                 return;
             }
 
-            Regel rg = new Regel
+            RegelInXML rg = new RegelInXML
             {
-                tekst_ = PaginaInhoud.InhoudPaginaMetRegels[oud].tekst_,
-                url_ = PaginaInhoud.InhoudPaginaMetRegels[oud].url_,
-                type_ = PaginaInhoud.InhoudPaginaMetRegels[oud].type_,
+                tekst_ = MainPagina.LijstMetRegels[oud].tekst_,
+                url_ = MainPagina.LijstMetRegels[oud].url_,
+                type_ = MainPagina.LijstMetRegels[oud].type_,
                 undo_ = type.Move,
                 index_ = oud,
                 eigenaar_ = nieuw
             };
 
-            Regel gekozen = PaginaInhoud.InhoudPaginaMetRegels[oud];
-            PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(oud);
-            PaginaInhoud.InhoudPaginaMetRegels.Insert(nieuw, gekozen);
+            RegelInXML gekozen = MainPagina.LijstMetRegels[oud];
+            MainPagina.LijstMetRegels.RemoveAt(oud);
+            MainPagina.LijstMetRegels.Insert(nieuw, gekozen);
 
-            PaginaInhoud.ChangePagina.Add(rg);
+            MainPagina.LijstChangePaginaRegels.Add(rg);
 
             change_pagina = true;
 
@@ -200,7 +200,7 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
 
-            int eig = PaginaInhoud.InhoudPaginaMetRegels[nieuw].eigenaar_;
+            int eig = MainPagina.LijstMetRegels[nieuw].eigenaar_;
             KleurGeselecteerdePanel(eig);
 
             panelMain.AutoScrollPosition = new Point(0, nieuw * 20);
@@ -250,9 +250,9 @@ namespace KenisBank
         }
         private int GetIndexVanId(int Id)
         {
-            for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+            for (int i = 0; i < MainPagina.LijstMetRegels.Count; i++)
             {
-                if (PaginaInhoud.InhoudPaginaMetRegels[i].eigenaar_ == Id)
+                if (MainPagina.LijstMetRegels[i].eigenaar_ == Id)
                 {
                     return i;
                 }
@@ -379,37 +379,37 @@ namespace KenisBank
         
         private void Undo_Click(object sender, EventArgs e)
         {
-            if (PaginaInhoud.ChangePagina.Count < 1)
+            if (MainPagina.LijstChangePaginaRegels.Count < 1)
             {
                 return;
             }
             // get laatste actie
-            Regel undo = PaginaInhoud.ChangePagina[PaginaInhoud.ChangePagina.Count - 1];
+            RegelInXML undo = MainPagina.LijstChangePaginaRegels[MainPagina.LijstChangePaginaRegels.Count - 1];
             // verwijder deze uit lijst
-            PaginaInhoud.ChangePagina.RemoveAt(PaginaInhoud.ChangePagina.Count - 1);
+            MainPagina.LijstChangePaginaRegels.RemoveAt(MainPagina.LijstChangePaginaRegels.Count - 1);
             change_pagina = true;
 
             // voor contra actie uit
             if (undo.undo_ == type.Delete)
             {
                 // dus toevoegen
-                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_, undo);
+                MainPagina.LijstMetRegels.Insert(undo.index_, undo);
             }
 
             if (undo.undo_ == type.Move)
             {
-                PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(undo.eigenaar_);
-                PaginaInhoud.InhoudPaginaMetRegels.Insert(undo.index_, undo);
+                MainPagina.LijstMetRegels.RemoveAt(undo.eigenaar_);
+                MainPagina.LijstMetRegels.Insert(undo.index_, undo);
             }
 
             if (undo.undo_ == type.Toevoegen)
             {
                 // dus verwijderen
-                for (int i = 0; i < PaginaInhoud.InhoudPaginaMetRegels.Count; i++)
+                for (int i = 0; i < MainPagina.LijstMetRegels.Count; i++)
                 {
-                    if (PaginaInhoud.InhoudPaginaMetRegels[i].ID_ == undo.ID_)
+                    if (MainPagina.LijstMetRegels[i].ID_ == undo.ID_)
                     {
-                        PaginaInhoud.InhoudPaginaMetRegels.RemoveAt(i);
+                        MainPagina.LijstMetRegels.RemoveAt(i);
                     }
                 }
             }
