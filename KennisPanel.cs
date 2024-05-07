@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Reflection.Emit;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
-using static System.Windows.Forms.LinkLabel;
 
 namespace KenisBank
 {
@@ -64,18 +61,18 @@ namespace KenisBank
 
             Click += new EventHandler(kKlik);
 
-            
+
             kPanel.Controls.Add(this);
             kPanel.Controls.SetChildIndex(this, 0);
-            this.Tag = kId;
-            this.MouseHover += MouseHoverPanel;
+            Tag = kId;
+            MouseHover += MouseHoverPanel;
 
         }
 
         private void MouseHoverPanel(object sender, EventArgs e)
         {
             System.Windows.Forms.Panel lb = (System.Windows.Forms.Panel)sender;
-            Int32 tag = (Int32)lb.Tag;
+            int tag = (int)lb.Tag;
             KennisMainForm.mainForm.DummyBut.Text = tag.ToString();
         }
 
@@ -115,7 +112,7 @@ namespace KenisBank
         private void MouseHoverLabelofText(object sender, EventArgs e)
         {
             System.Windows.Forms.Label lb = (System.Windows.Forms.Label)sender;
-            Int32 tag = (Int32)lb.Tag;
+            int tag = (int)lb.Tag;
             KennisMainForm.mainForm.DummyBut.Text = tag.ToString();
         }
 
@@ -156,13 +153,13 @@ namespace KenisBank
             Point org = new Point(label.Location.X, label.Location.Y);
             org.X += 30;
             label.Location = org;
-            label.AutoSize= true;
+            label.AutoSize = true;
             //label.Width = kPanel.Width - 100;
             label.Font = new Font("Microsoft Sans Serif", 11, FontStyle.Regular);
             label.Text = kText;
             label.BorderStyle = BorderStyle.None;
             label.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(kLinkKlik);
-            label.Tag= kId;
+            label.Tag = kId;
             label.MouseHover += MouseHoverLabelofText;
             Controls.Add(label);
             //Refresh();
@@ -201,7 +198,7 @@ namespace KenisBank
         private void MouseHoverButton(object sender, EventArgs e)
         {
             Button lb = (Button)sender;
-            Int32 tag = (Int32)lb.Tag;
+            int tag = (int)lb.Tag;
             KennisMainForm.mainForm.DummyBut.Text = tag.ToString();
         }
     }

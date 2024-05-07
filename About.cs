@@ -27,6 +27,6 @@ namespace KenisBank
             catch { };
         }
 
-        
+
     }
 }

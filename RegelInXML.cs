@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace KenisBank
@@ -52,7 +53,7 @@ namespace KenisBank
                 string fileNaam = $"Data\\{file}.xml";
                 string xmlTekst = File.ReadAllText(fileNaam);
 
-                if(xmlTekst.Length > 0 && xmlTekst.Contains("<Regel>")) 
+                if (xmlTekst.Length > 0 && xmlTekst.Contains("<Regel>"))
                 {
                     // omzetten na nieuwe class naam
                     string patroon = @"<Regel>";
@@ -63,10 +64,12 @@ namespace KenisBank
                     gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "<ArrayOfRegelInXML", RegexOptions.IgnoreCase);
                     patroon = @"</ArrayOfRegel>";
                     gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "</ArrayOfRegelInXML>", RegexOptions.IgnoreCase);
-                    
+
                     xmlTekst = gewijzigdexmlText;
 
                     File.WriteAllText(fileNaam, xmlTekst);
+
+                    Wait(600); // als er veel verzoeken achter elkaar komen.
                 }
 
                 LijstMetRegels.Clear();
@@ -170,6 +173,29 @@ namespace KenisBank
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(T));
                 return (T)serializer.Deserialize(stringReader);
+            }
+        }
+        public void Wait(int milliseconds)
+        {
+            Timer timer1 = new System.Windows.Forms.Timer();
+            if (milliseconds == 0 || milliseconds < 0)
+            {
+                return;
+            }
+
+            timer1.Interval = milliseconds;
+            timer1.Enabled = true;
+            timer1.Start();
+
+            timer1.Tick += (s, e) =>
+            {
+                timer1.Enabled = false;
+                timer1.Stop();
+            };
+
+            while (timer1.Enabled)
+            {
+                Application.DoEvents();
             }
         }
     }

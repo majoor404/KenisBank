@@ -1,11 +1,9 @@
 ﻿using Melding;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace KenisBank
@@ -335,9 +333,9 @@ namespace KenisBank
             {
                 string s = DateTime.Now.ToString("MM-dd-yyyy HH-mm");
                 string BackupNaam = Directory.GetCurrentDirectory() + $"\\Backup\\{file.Name} {s}";
-                
+
                 BackUpFile(file.FullName, BackupNaam);
-                
+
                 ProgressBarUpdate();
             }
             ProgressBarUit();
@@ -358,7 +356,8 @@ namespace KenisBank
                         .OrderByDescending(f => f.CreationTime)
                         .ToList();
 
-                if (files.Count < 5) {
+                if (files.Count < 5)
+                {
                     File.Copy(Filename, BackupNaam, true);
                 }
                 else
@@ -376,7 +375,7 @@ namespace KenisBank
             }
             catch { };
         }
-        
+
         private void Undo_Click(object sender, EventArgs e)
         {
             if (MainPagina.LijstChangePaginaRegels.Count < 1)

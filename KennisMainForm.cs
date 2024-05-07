@@ -360,7 +360,7 @@ namespace KenisBank
 
             if (i < 0)
             {
-                MessageBox.Show("i<0");
+                _ = MessageBox.Show("i<0");
                 return;
             }
 
@@ -704,8 +704,10 @@ namespace KenisBank
 
             ProgressBarUit();
 
-            if(afbreken)    // link lijst is aangepast
+            if (afbreken)    // link lijst is aangepast
+            {
                 MaakLinkLijst(this, null);
+            }
 
             if (!afbreken)
             {
@@ -1430,7 +1432,7 @@ namespace KenisBank
                 OpenPaginaInBeeld("start");
                 return true;
             }
-            if(ant == DialogResult.Ignore)
+            if (ant == DialogResult.Ignore)
             {
                 return true; // afbreken
             }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Melding
@@ -13,8 +11,8 @@ namespace Melding
         private int close;
         private statusForm status;
 
-        private enum statusForm { start, show, eind};
-        public enum Type { Info, Cal, Err, Klaar, Edit, Save , Note};
+        private enum statusForm { start, show, eind };
+        public enum Type { Info, Cal, Err, Klaar, Edit, Save, Note };
 
         public FormMelding(Type type, string regel1, string regel2)
         {
@@ -79,34 +77,36 @@ namespace Melding
         {
             Application.DoEvents();
             if (status == statusForm.start)
+            {
+                meldingY -= 4;
+                Location = new Point(meldingX, meldingY);
+                Refresh();
+                if (meldingY < schermhoog - Height - 10)
                 {
-                    meldingY -= 4;
-                    Location = new Point(meldingX, meldingY);
-                    this.Refresh();
-                    if (meldingY < schermhoog - Height - 10)
-                    {
-                        status = statusForm.show;
-                        close = 110;
-                    }
+                    status = statusForm.show;
+                    close = 110;
                 }
-                if (status == statusForm.show)
+            }
+            if (status == statusForm.show)
+            {
+                close--;
+                if (close < 0)
                 {
-                    close--;
-                    if (close < 0)
-                        status = statusForm.eind;
+                    status = statusForm.eind;
                 }
-                if (status == statusForm.eind)
+            }
+            if (status == statusForm.eind)
+            {
+                meldingY += 4;
+                Location = new Point(meldingX, meldingY);
+                Refresh();
+                if (meldingY > schermhoog)
                 {
-                    meldingY += 4;
-                    Location = new Point(meldingX, meldingY);
-                    this.Refresh();
-                    if (meldingY > schermhoog)
-                    {
-                        timer.Enabled = false;
-                        Close();
-                        System.GC.Collect();
-                    }
+                    timer.Enabled = false;
+                    Close();
+                    System.GC.Collect();
                 }
+            }
         }
 
         private void FormMelding_Shown(object sender, EventArgs e)
