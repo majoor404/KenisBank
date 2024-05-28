@@ -42,7 +42,6 @@ namespace KenisBank
         public int index_ { set; get; }
         public int ID_ { set; get; }    // uniek nummer voor undo actie's
 
-
         public List<RegelInXML> LijstMetRegels = new List<RegelInXML>();
         public List<RegelInXML> LijstChangePaginaRegels = new List<RegelInXML>();
 

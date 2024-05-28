@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace KenisBank
@@ -15,6 +16,13 @@ namespace KenisBank
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = "c:\\";
+
+                if (textBox1.Text.Length > 0)
+                {
+                    // start dir van oude link ivm wijzigen
+                    openFileDialog.InitialDirectory = Path.GetDirectoryName(textBox1.Text);
+                }
+                
                 openFileDialog.Filter = "All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;

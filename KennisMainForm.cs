@@ -5,8 +5,12 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using File = System.IO.File;
 
 /*
@@ -31,6 +35,8 @@ namespace KenisBank
         public bool change_pagina = false;
         private static readonly Random random = new Random();
         private readonly List<RegelInXML> PaginaMetRegelsGevonden = new List<RegelInXML>();
+
+        public List<Index> IndexLijst = new List<Index>();
 
         public string PrevPagina = string.Empty;
         public bool BlokSchrijf = false;  // bij 5 plekken omhoog of omlaag niet schrijven tussendoor.
@@ -75,10 +81,15 @@ namespace KenisBank
                 SchermUpdateZijBalk();
             }
 
-            if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
+            if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
             {
                 MaakLinkLijst(this, null);
             }
+
+            //if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
+            //{
+            //    MaakLinkLijst(this, null);
+            //}
 
             FormMelding md = new FormMelding(FormMelding.Type.Info, "KennisBank", "R.Majoor");
             md.Show();
@@ -104,7 +115,6 @@ namespace KenisBank
                 flowHistorie.Height += 30;
             }
         }
-
         // interact met gebruiker
         private void ButtonEdit_Click(object sender, EventArgs e)
         {
@@ -525,50 +535,34 @@ namespace KenisBank
 
             if (save == DialogResult.OK)
             {
-                if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
+                //if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
+                //{
+                //    MaakLinkLijst(this, null);
+                //}
+                
+                if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
                 {
                     MaakLinkLijst(this, null);
                 }
 
-                List<string> LijstPaginas = File.ReadAllLines("Data\\Paginas.txt").ToList();
+                IndexLaad();
 
-                for (int i = 0; i < LijstPaginas.Count; i++)
+                foreach(Index a in IndexLijst)
                 {
-                    if (ContainsCaseInsensitive(LijstPaginas[i], ZF.textBoxZoek.Text))
+                    if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text))
                     {
-                        RegelInXML regel = new RegelInXML(LijstPaginas[i], type.PaginaNaam, LijstPaginas[i]);
-                        PaginaMetRegelsGevonden.Add(regel);
-                        regel = new RegelInXML("", type.Leeg, "");
-                        PaginaMetRegelsGevonden.Add(regel);
-                    }
-                }
-
-                List<string> LijstUrl = File.ReadAllLines("Data\\Url.txt").ToList();
-
-                for (int i = 0; i < LijstUrl.Count; i++)
-                {
-                    if (ContainsCaseInsensitive(LijstUrl[i], ZF.textBoxZoek.Text))
-                    {
-                        string link;
-                        string url;
-                        if (i % 2 == 0)
+                        if (a.url != "")
                         {
-                            link = LijstUrl[i];
-                            url = LijstUrl[i + 1];
+                            // zoek tekst in tekst
+                            RegelInXML regel = new RegelInXML($"Op pagina {a.pagina}", type.TekstBlok, "");
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new RegelInXML(a.text, type.TekstBlok, "");
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new RegelInXML(a.url, type.LinkFile, a.url);
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new RegelInXML("", type.Leeg, "");
+                            PaginaMetRegelsGevonden.Add(regel);
                         }
-                        else
-                        {
-                            link = LijstUrl[i - 1];
-                            url = LijstUrl[i];
-                            i++;
-                        }
-
-                        RegelInXML regel = new RegelInXML($"Gevonden in {url}", type.TekstBlok, "");
-                        PaginaMetRegelsGevonden.Add(regel);
-                        regel = new RegelInXML(link, type.LinkFile, url);
-                        PaginaMetRegelsGevonden.Add(regel);
-                        regel = new RegelInXML("", type.Leeg, "");
-                        PaginaMetRegelsGevonden.Add(regel);
                     }
                 }
 
@@ -579,6 +573,30 @@ namespace KenisBank
                 change_pagina = false;
             }
         }
+
+        private void IndexLaad()
+        {
+            IndexLijst.Clear();
+            try
+            {
+                string fileNaam = $"Data\\Index.xml";
+                string xmlTekst = File.ReadAllText(fileNaam);
+                IndexLijst = FromXML<List<Index>>(xmlTekst);
+            }
+            catch
+            {
+            }
+        }
+
+        private static T FromXML<T>(string xml)
+        {
+            using (StringReader stringReader = new StringReader(xml))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(T));
+                return (T)serializer.Deserialize(stringReader);
+            }
+        }
+
         private void ZoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // lijst met all pagina's opgeslagen.
@@ -668,7 +686,11 @@ namespace KenisBank
                             {
                                 if (!Directory.Exists(MainPagina.LijstMetRegels[i].url_))
                                 {
-                                    afbreken = VraagAanpassing(file.Name, MainPagina.LijstMetRegels[i].tekst_);
+                                    // link kan ook een url naar intranet zijn.
+                                    if (!IsValidHttpLink(MainPagina.LijstMetRegels[i].url_))
+                                    {
+                                        afbreken = VraagAanpassing(file.Name, MainPagina.LijstMetRegels[i]);
+                                    }
                                 }
                             }
                         }
@@ -676,14 +698,18 @@ namespace KenisBank
                         {
                             if (!Directory.Exists(MainPagina.LijstMetRegels[i].url_))
                             {
-                                afbreken = VraagAanpassing(file.Name, MainPagina.LijstMetRegels[i].tekst_);
+                                // link kan ook een url naar intranet zijn.
+                                if (!IsValidHttpLink(MainPagina.LijstMetRegels[i].url_))
+                                {
+                                    afbreken = VraagAanpassing(file.Name, MainPagina.LijstMetRegels[i]);
+                                }
                             }
                         }
                         else if (MainPagina.LijstMetRegels[i].type_ == type.PaginaNaam)
                         {
                             if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
                             {
-                                afbreken = VraagAanpassing(file.Name, MainPagina.LijstMetRegels[i].tekst_);
+                                afbreken = VraagAanpassing(file.Name, MainPagina.LijstMetRegels[i]);
                             }
                         }
                         if (afbreken)
@@ -701,6 +727,8 @@ namespace KenisBank
                     break;
                 }
             }
+
+            refreshToolStripMenuItem_Click(this, null);
 
             ProgressBarUit();
 
@@ -828,20 +856,6 @@ namespace KenisBank
 
             ProgressBarUit();
         }
-
-        private void BeheerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            InputStringForm IPS = new InputStringForm();
-
-            DialogResult dialogResult = IPS.ShowDialog();
-            if (dialogResult == DialogResult.OK && IPS.textBox1.Text == DateTime.Now.ToString("ddMM"))
-            {
-                importAllePaginasOudeWikiToolStripMenuItem.Visible = true;
-                editZijBlakToolStripMenuItem.Visible = true;
-                boomKennisDataToolStripMenuItem.Visible = true;
-                repareerToolStripMenuItem.Visible = true;
-            }
-        }
         private void CopyBut_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
@@ -938,6 +952,7 @@ namespace KenisBank
             try
             {
                 File.WriteAllLines("Data\\BoomData.txt", BoomData);
+                _ = MessageBox.Show("Klaar");
             }
             catch (IOException)
             {
@@ -1011,8 +1026,6 @@ namespace KenisBank
             .OrderBy(f => f.Name)
             .ToList();
 
-            List<string> LijstUrl = new List<string>();
-            List<string> ListPaginas = new List<string>();
             ProgressBarAan(files.Count);
             foreach (FileInfo file in files)
             {
@@ -1032,30 +1045,9 @@ namespace KenisBank
                         {
                             case type.Leeg: break;
                             case type.LinkFile:
-                                try
-                                {
-                                    string ext = Path.GetExtension(MainPagina.LijstMetRegels[i].url_);
-                                    if (ext == "")
-                                    {
-                                        // Dan is het een link naar een dir
-                                        MainPagina.LijstMetRegels[i].type_ = type.LinkDir;
-                                        verander = true;
-                                        break;
-                                    }
-                                    LijstUrl.Add(MainPagina.LijstMetRegels[i].tekst_);
-                                    LijstUrl.Add(MainPagina.LijstMetRegels[i].url_);
-                                }
-                                catch
-                                {
-                                    _ = MessageBox.Show($"Error in Index Maken\n{MainPagina.LijstMetRegels[i].tekst_}\n{MainPagina.LijstMetRegels[i].url_}");
-                                }
-                                break;
                             case type.PaginaNaam:
-                                ListPaginas.Add(MainPagina.LijstMetRegels[i].tekst_);
-                                break;
                             case type.LinkDir:
-                                LijstUrl.Add(MainPagina.LijstMetRegels[i].tekst_);
-                                LijstUrl.Add(MainPagina.LijstMetRegels[i].url_);
+                                IndexLijst.Add(new Index(fileNaam, MainPagina.LijstMetRegels[i].tekst_, MainPagina.LijstMetRegels[i].url_, MainPagina.LijstMetRegels[i].type_));
                                 break;
                         }
                     }
@@ -1067,31 +1059,41 @@ namespace KenisBank
             }
             try
             {
-                File.WriteAllLines("Data\\Url.txt", LijstUrl);
-                File.WriteAllLines("Data\\Paginas.txt", ListPaginas);
+                IndexSave();
             }
             catch (IOException)
             {
-                _ = MessageBox.Show("info file save Error()");
+                _ = MessageBox.Show("Data\\Index.xml save Error()");
             }
             ProgressBarUit();
             _ = MainPagina.Laad(huidigePagina);
         }
-        private void LinkLijstToolStripMenuItem_Click(object sender, EventArgs e)
+        private void IndexSave()
         {
             try
             {
-                Process process = new Process();
-                process.StartInfo.FileName = "Data\\Url.txt";
-                try
+                string opslagnaam = $"Data\\Index.xml";
+                string indexTekst = ToXML(IndexLijst);
+                
+                if(File.Exists(opslagnaam))
                 {
-                    _ = process.Start();
+                    File.Delete(opslagnaam);
                 }
-                catch { }
+                
+                File.WriteAllText(opslagnaam, indexTekst);
+
+                FormMelding md = new FormMelding(FormMelding.Type.Save, "KennisBank", "Opslaan..");
+                md.Show();
             }
-            catch (IOException)
+            catch { }
+        }
+        private string ToXML<T>(T obj)
+        {
+            using (StringWriter stringWriter = new StringWriter(new StringBuilder()))
             {
-                _ = MessageBox.Show("Kan Link Lijst niet Laden.");
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+                xmlSerializer.Serialize(stringWriter, obj);
+                return stringWriter.ToString();
             }
         }
         private void ButtonBoven_Click(object sender, EventArgs e)
@@ -1128,24 +1130,6 @@ namespace KenisBank
             SchermUpdate();
             SelecteerLaatstePaneel();
         }
-        private void allePaginasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Process process = new Process();
-                process.StartInfo.FileName = "Data\\Paginas.txt";
-                try
-                {
-                    _ = process.Start();
-                }
-                catch { }
-            }
-            catch (IOException)
-            {
-                _ = MessageBox.Show("Kan Paginas Lijst niet Laden.");
-            }
-        }
-
         // verander op elke pagina waar oudenaam voorkomt, deze in nieuwe naam
         private void VeranderPagineLinkOpElkePagina(string oudenaam, string nieuwnaam)
         {
@@ -1183,30 +1167,13 @@ namespace KenisBank
 
         // bij toevoegen van item gewoon toevoegen aan index
         // bij backup wordt lijst helemaal opnieuw gemaakt.
-        private void AddLinkLijst(type type_, string text, string url)
+        private void AddLinkLijst(string pagina, type type_, string text, string url)
         {
-            _ = new List<string>();
-            List<string> Lijst;
-            switch (type_)
-            {
-                case type.PaginaNaam:
-                    Lijst = File.ReadAllLines("Data\\Paginas.txt").ToList();
-                    Lijst.Add(@text);
-                    Lijst.Add(@url);
-                    File.WriteAllLines("Data\\Paginas.txt", Lijst);
-                    break;
-                case type.LinkDir:
-                case type.LinkFile:
-                    Lijst = File.ReadAllLines("Data\\Url.txt").ToList();
-                    Lijst.Add(@text);
-                    Lijst.Add(@url);
-                    File.WriteAllLines("Data\\Url.txt", Lijst);
-                    break;
-
-            }
+            IndexLaad();
+            IndexLijst.Add(new Index(pagina, text, url, type_));
+            IndexSave();
 
         }
-
         private static void Start(string fileEnPath)
         {
             string path = string.Empty;
@@ -1379,11 +1346,12 @@ namespace KenisBank
         //    return name;
         //}
 
-        private bool VraagAanpassing(string file_Name, string Regel)
+        private bool VraagAanpassing(string file_Name, RegelInXML a/* string Regel, string url*/)
         {
             Aanpassen aanpassen = new Aanpassen();
             aanpassen.PaginaLabel.Text = file_Name;
-            aanpassen.LinkLabel.Text = Regel;
+            aanpassen.LinkLabel.Text = a.tekst_;
+            aanpassen.UrlLabel.Text = a.url_;
             DialogResult ant = aanpassen.ShowDialog();
 
             string File = Path.GetFileNameWithoutExtension(file_Name);
@@ -1400,7 +1368,7 @@ namespace KenisBank
                 _ = MainPagina.Laad(File);
                 for (int i = MainPagina.LijstMetRegels.Count - 1; i > 0; i--)
                 {
-                    if (MainPagina.LijstMetRegels[i].tekst_ == Regel)
+                    if (MainPagina.LijstMetRegels[i].tekst_ == a.tekst_)
                     {
                         MainPagina.LijstMetRegels.RemoveAt(i);
                     }
@@ -1415,7 +1383,7 @@ namespace KenisBank
                 _ = MainPagina.Laad(File);
                 for (int i = MainPagina.LijstMetRegels.Count - 1; i > 0; i--)
                 {
-                    if (MainPagina.LijstMetRegels[i].tekst_ == Regel)
+                    if (MainPagina.LijstMetRegels[i].tekst_ == a.tekst_)
                     {
                         LinkFile linkFile = new LinkFile();
                         linkFile.textBox2.Text = MainPagina.LijstMetRegels[i].tekst_;
@@ -1445,6 +1413,56 @@ namespace KenisBank
             labelPaginaInBeeld.Text = File;
             mainForm.HistoryBalkAdd(mainForm.labelPaginaInBeeld.Text);
             mainForm.SchermUpdate();
+        }
+
+        private bool IsValidHttpLink(string url)
+        {
+            try
+            {
+                Uri uri = new Uri(url);
+
+                // als start met file:// dan geen intranet pagina
+                if (uri.Scheme == "file")
+                {
+                    return false;
+                }
+
+                try
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Method = "GET";
+
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    {
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                catch (WebException)
+                {
+                    return false;
+                }
+            }
+            catch (UriFormatException)
+            {
+                return false;
+            }
+            return false;
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editModeAanToolStripMenuItem.Checked = false;
+            ButtonEdit_Click(this, null);
+
+            _ = MainPagina.Laad(labelPaginaInBeeld.Text);
+
+            // bouw Pagina
+            SchermUpdate();
+            _ = PaginaZijBalk.Laad("zijbalk");
+            SchermUpdateZijBalk();
         }
     }
 }

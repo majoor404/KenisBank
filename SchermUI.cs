@@ -37,7 +37,7 @@ namespace KenisBank
             {
                 Toevoegen(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
                 change_pagina = true;
-                AddLinkLijst(type.LinkDir, linkdir.textBoxLinkText.Text, linkdir.textBoxDir.Text);
+                AddLinkLijst(labelPaginaInBeeld.Text, type.LinkDir, linkdir.textBoxLinkText.Text, linkdir.textBoxDir.Text);
             }
             // bouw Pagina
             SchermUpdate();
@@ -64,7 +64,7 @@ namespace KenisBank
             {
                 Toevoegen(linkFile.textBox2.Text, type.LinkFile, linkFile.textBox1.Text);
                 change_pagina = true;
-                AddLinkLijst(type.LinkFile, linkFile.textBox2.Text, linkFile.textBox1.Text);
+                AddLinkLijst(labelPaginaInBeeld.Text, type.LinkFile, linkFile.textBox2.Text, linkFile.textBox1.Text);
             }
             // bouw Pagina
             SchermUpdate();
@@ -91,7 +91,7 @@ namespace KenisBank
             {
                 Toevoegen(pagina.textBoxPaginaNaam.Text, type.PaginaNaam, "");
                 change_pagina = true;
-                AddLinkLijst(type.PaginaNaam, pagina.textBoxPaginaNaam.Text, "");
+                AddLinkLijst(labelPaginaInBeeld.Text, type.PaginaNaam, pagina.textBoxPaginaNaam.Text, "");
             }
             // bouw Pagina
             SchermUpdate();

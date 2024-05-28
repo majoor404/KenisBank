@@ -38,6 +38,8 @@
             this.ButtonPasLinkAan = new System.Windows.Forms.Button();
             this.ButNext = new System.Windows.Forms.Button();
             this.ButtonAfbreken = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.UrlLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -105,7 +107,7 @@
             // 
             this.ButtonVerwijderLink.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.ButtonVerwijderLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonVerwijderLink.Location = new System.Drawing.Point(231, 190);
+            this.ButtonVerwijderLink.Location = new System.Drawing.Point(265, 190);
             this.ButtonVerwijderLink.Name = "ButtonVerwijderLink";
             this.ButtonVerwijderLink.Size = new System.Drawing.Size(150, 58);
             this.ButtonVerwijderLink.TabIndex = 1;
@@ -116,7 +118,7 @@
             // 
             this.ButtonPasLinkAan.DialogResult = System.Windows.Forms.DialogResult.Retry;
             this.ButtonPasLinkAan.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonPasLinkAan.Location = new System.Drawing.Point(431, 190);
+            this.ButtonPasLinkAan.Location = new System.Drawing.Point(502, 190);
             this.ButtonPasLinkAan.Name = "ButtonPasLinkAan";
             this.ButtonPasLinkAan.Size = new System.Drawing.Size(150, 58);
             this.ButtonPasLinkAan.TabIndex = 1;
@@ -127,7 +129,7 @@
             // 
             this.ButNext.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ButNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButNext.Location = new System.Drawing.Point(329, 271);
+            this.ButNext.Location = new System.Drawing.Point(976, 190);
             this.ButNext.Name = "ButNext";
             this.ButNext.Size = new System.Drawing.Size(150, 58);
             this.ButNext.TabIndex = 1;
@@ -138,25 +140,47 @@
             // 
             this.ButtonAfbreken.DialogResult = System.Windows.Forms.DialogResult.Ignore;
             this.ButtonAfbreken.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonAfbreken.Location = new System.Drawing.Point(119, 271);
+            this.ButtonAfbreken.Location = new System.Drawing.Point(739, 190);
             this.ButtonAfbreken.Name = "ButtonAfbreken";
             this.ButtonAfbreken.Size = new System.Drawing.Size(150, 58);
             this.ButtonAfbreken.TabIndex = 1;
             this.ButtonAfbreken.Text = "Afbreken";
             this.ButtonAfbreken.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(21, 106);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(50, 18);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "URL : ";
+            // 
+            // UrlLabel
+            // 
+            this.UrlLabel.AutoSize = true;
+            this.UrlLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UrlLabel.Location = new System.Drawing.Point(116, 106);
+            this.UrlLabel.Name = "UrlLabel";
+            this.UrlLabel.Size = new System.Drawing.Size(85, 18);
+            this.UrlLabel.TabIndex = 0;
+            this.UrlLabel.Text = "Staat Link : ";
+            // 
             // Aanpassen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(623, 354);
+            this.ClientSize = new System.Drawing.Size(1160, 275);
             this.Controls.Add(this.ButtonAfbreken);
             this.Controls.Add(this.ButNext);
             this.Controls.Add(this.ButtonPasLinkAan);
             this.Controls.Add(this.ButtonVerwijderLink);
             this.Controls.Add(this.ButOpenPagina);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.UrlLabel);
             this.Controls.Add(this.LinkLabel);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.PaginaLabel);
             this.Controls.Add(this.label1);
@@ -180,5 +204,7 @@
         private System.Windows.Forms.Button ButtonPasLinkAan;
         private System.Windows.Forms.Button ButNext;
         private System.Windows.Forms.Button ButtonAfbreken;
+        private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.Label UrlLabel;
     }
 }
