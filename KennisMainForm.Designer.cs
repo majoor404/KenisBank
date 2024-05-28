@@ -56,13 +56,11 @@
             this.saveHuidigePaginaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.weesPaginasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.backupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editZijBlakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.boomKennisDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.repareerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.IndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelUpDown = new System.Windows.Forms.Panel();
             this.GekozenItem = new System.Windows.Forms.Label();
@@ -331,66 +329,50 @@
             // extraToolStripMenuItem
             // 
             this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
             this.weesPaginasToolStripMenuItem,
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1,
             this.backupToolStripMenuItem,
             this.editZijBlakToolStripMenuItem,
-            this.boomKennisDataToolStripMenuItem,
-            this.repareerToolStripMenuItem});
+            this.IndexToolStripMenuItem});
             this.extraToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
             this.extraToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.extraToolStripMenuItem.Text = "Extra";
             // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(258, 24);
-            this.toolStripMenuItem2.Text = "Opbouw KennisBank";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.OpbouwKennisBankToolStripMenuItem_Click);
-            // 
             // weesPaginasToolStripMenuItem
             // 
             this.weesPaginasToolStripMenuItem.Name = "weesPaginasToolStripMenuItem";
-            this.weesPaginasToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
+            this.weesPaginasToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
             this.weesPaginasToolStripMenuItem.Text = "Wees Pagina\'s";
             this.weesPaginasToolStripMenuItem.Click += new System.EventHandler(this.ZoekNaarWeesPaginasToolStripMenuItem_Click);
             // 
             // zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1
             // 
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1.Name = "zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1";
-            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1.Size = new System.Drawing.Size(258, 24);
-            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1.Text = "Links die niet meer bestaan";
+            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1.Size = new System.Drawing.Size(295, 24);
+            this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1.Text = "Zoek Links die niet meer bestaan";
             this.zoekNaarLinksDieNietMeerBestaanToolStripMenuItem1.Click += new System.EventHandler(this.zoekLinksDieNietMeerBestaanToolStripMenuItem_Click);
             // 
             // backupToolStripMenuItem
             // 
             this.backupToolStripMenuItem.Name = "backupToolStripMenuItem";
-            this.backupToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
+            this.backupToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
             this.backupToolStripMenuItem.Text = "Maak Backup";
             this.backupToolStripMenuItem.Click += new System.EventHandler(this.backupToolStripMenuItem_Click);
             // 
             // editZijBlakToolStripMenuItem
             // 
             this.editZijBlakToolStripMenuItem.Name = "editZijBlakToolStripMenuItem";
-            this.editZijBlakToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
+            this.editZijBlakToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
             this.editZijBlakToolStripMenuItem.Text = "Edit ZijBlak";
             this.editZijBlakToolStripMenuItem.Click += new System.EventHandler(this.EditZijBlakToolStripMenuItem_Click);
             // 
-            // boomKennisDataToolStripMenuItem
+            // IndexToolStripMenuItem
             // 
-            this.boomKennisDataToolStripMenuItem.Name = "boomKennisDataToolStripMenuItem";
-            this.boomKennisDataToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
-            this.boomKennisDataToolStripMenuItem.Text = "Maak Boom KennisData";
-            this.boomKennisDataToolStripMenuItem.Click += new System.EventHandler(this.BoomKennisDataToolStripMenuItem_Click);
-            // 
-            // repareerToolStripMenuItem
-            // 
-            this.repareerToolStripMenuItem.Name = "repareerToolStripMenuItem";
-            this.repareerToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
-            this.repareerToolStripMenuItem.Text = "Maak Link/Index Lijst";
-            this.repareerToolStripMenuItem.Click += new System.EventHandler(this.MaakLinkLijst);
+            this.IndexToolStripMenuItem.Name = "IndexToolStripMenuItem";
+            this.IndexToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
+            this.IndexToolStripMenuItem.Text = "Maak Index";
+            this.IndexToolStripMenuItem.Click += new System.EventHandler(this.MaakIndex);
             // 
             // versieToolStripMenuItem
             // 
@@ -811,7 +793,6 @@
         private System.Windows.Forms.Panel panelZij;
         private System.Windows.Forms.FlowLayoutPanel flowHistorie;
         private System.Windows.Forms.ToolStripMenuItem extraToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.PictureBox pictureBox1;
         public System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.Label label1;
@@ -832,8 +813,7 @@
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editZijBlakToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem boomKennisDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem repareerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem IndexToolStripMenuItem;
     }
 }
 

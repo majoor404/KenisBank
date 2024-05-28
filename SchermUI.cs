@@ -297,9 +297,8 @@ namespace KenisBank
                         {
                             ZetBackupDatumInFile();
                             Backup();
-                            BoomKennisDataToolStripMenuItem_Click(this, null);
-                            MaakLinkLijst(this, null);
-
+                            //BoomKennisDataToolStripMenuItem_Click(this, null);
+                            MaakIndex(this, null);
                             FormMelding md = new FormMelding(FormMelding.Type.Klaar, "KennisBank", "Klaar backup.");
                             md.Show();
                         }

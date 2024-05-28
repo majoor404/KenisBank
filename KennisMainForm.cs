@@ -83,7 +83,7 @@ namespace KenisBank
 
             if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
             {
-                MaakLinkLijst(this, null);
+                MaakIndex(this, null);
             }
 
             //if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
@@ -399,7 +399,7 @@ namespace KenisBank
                 {
                     RegelInXML regel = new RegelInXML(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
                     UpdateRegel(i, regel);
-                    MaakLinkLijst(this, null);
+                    MaakIndex(this, null);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -415,7 +415,7 @@ namespace KenisBank
                 {
                     RegelInXML regel = new RegelInXML(linkfile.textBox2.Text, type.LinkFile, linkfile.textBox1.Text);
                     UpdateRegel(i, regel);
-                    MaakLinkLijst(this, null);
+                    MaakIndex(this, null);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -457,7 +457,7 @@ namespace KenisBank
                     string nieuwnaam = MainPagina.VertaalNaarFileNaam(pa.textBoxPaginaNaam.Text);
                     oudenaam = MainPagina.VertaalNaarFileNaam(oudenaam);
                     System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{nieuwnaam}.xml");
-                    MaakLinkLijst(this, null);
+                    MaakIndex(this, null);
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -542,7 +542,7 @@ namespace KenisBank
                 
                 if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
                 {
-                    MaakLinkLijst(this, null);
+                    MaakIndex(this, null);
                 }
 
                 IndexLaad();
@@ -734,7 +734,7 @@ namespace KenisBank
 
             if (afbreken)    // link lijst is aangepast
             {
-                MaakLinkLijst(this, null);
+                MaakIndex(this, null);
             }
 
             if (!afbreken)
@@ -936,86 +936,86 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-        private void BoomKennisDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            List<string> BoomData = new List<string>
-                {
-                    "Start"
-                };
+        //private void BoomKennisDataToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    List<string> BoomData = new List<string>
+        //        {
+        //            "Start"
+        //        };
 
-            string VorigePagina = "Start";
-            int VorigeIndex = 0;
-            diep = 0;
+        //    string VorigePagina = "Start";
+        //    int VorigeIndex = 0;
+        //    diep = 0;
 
-            _ = BoomDataVerzamel("Start", BoomData, VorigeIndex, VorigePagina);
+        //    _ = BoomDataVerzamel("Start", BoomData, VorigeIndex, VorigePagina);
 
-            try
-            {
-                File.WriteAllLines("Data\\BoomData.txt", BoomData);
-                _ = MessageBox.Show("Klaar");
-            }
-            catch (IOException)
-            {
-                _ = MessageBox.Show("info file save Error()");
-            }
-        }
-        private bool BoomDataVerzamel(string ZoekPagina, List<string> BoomData, int VorigeIndex, string VorigePagina)
-        {
-            string pagina = MainPagina.VertaalNaarFileNaam(ZoekPagina);
-            if (!MainPagina.Laad(pagina))
-            {
-                _ = MessageBox.Show($"Kon pagina {ZoekPagina} niet laden, staat op vorige pagina {VorigePagina}");
-                //Process.GetCurrentProcess().Kill();
-            }
+        //    try
+        //    {
+        //        File.WriteAllLines("Data\\BoomData.txt", BoomData);
+        //        _ = MessageBox.Show("Klaar");
+        //    }
+        //    catch (IOException)
+        //    {
+        //        _ = MessageBox.Show("info file save Error()");
+        //    }
+        //}
+        //private bool BoomDataVerzamel(string ZoekPagina, List<string> BoomData, int VorigeIndex, string VorigePagina)
+        //{
+        //    string pagina = MainPagina.VertaalNaarFileNaam(ZoekPagina);
+        //    if (!MainPagina.Laad(pagina))
+        //    {
+        //        _ = MessageBox.Show($"Kon pagina {ZoekPagina} niet laden, staat op vorige pagina {VorigePagina}");
+        //        //Process.GetCurrentProcess().Kill();
+        //    }
 
-            for (int index = VorigeIndex; index < MainPagina.LijstMetRegels.Count; index++)
-            {
-                if (MainPagina.LijstMetRegels[index].type_ == type.PaginaNaam)
-                {
-                    string GevondenPagina = MainPagina.LijstMetRegels[index].tekst_;
-                    string inspring = "-";
-                    for (int i = 0; i < diep; i++)
-                    {
-                        inspring += "--";
-                    }
-                    BoomData.Add($"{inspring} {GevondenPagina}");
-                    diep++;
-                    VorigeIndex = index;
-                    string bewaarVorigePagina = pagina;
-                    // nieuwe pagina, dus begin op index 0
-                    if (!BoomDataVerzamel(GevondenPagina, BoomData, 0, ZoekPagina))
-                    {
-                        index = VorigeIndex;
-                        pagina = MainPagina.VertaalNaarFileNaam(bewaarVorigePagina);
-                        if (!MainPagina.Laad(pagina))
-                        {
-                            _ = MessageBox.Show($"Kon pagina {ZoekPagina} niet laden");
-                        }
+        //    for (int index = VorigeIndex; index < MainPagina.LijstMetRegels.Count; index++)
+        //    {
+        //        if (MainPagina.LijstMetRegels[index].type_ == type.PaginaNaam)
+        //        {
+        //            string GevondenPagina = MainPagina.LijstMetRegels[index].tekst_;
+        //            string inspring = "-";
+        //            for (int i = 0; i < diep; i++)
+        //            {
+        //                inspring += "--";
+        //            }
+        //            BoomData.Add($"{inspring} {GevondenPagina}");
+        //            diep++;
+        //            VorigeIndex = index;
+        //            string bewaarVorigePagina = pagina;
+        //            // nieuwe pagina, dus begin op index 0
+        //            if (!BoomDataVerzamel(GevondenPagina, BoomData, 0, ZoekPagina))
+        //            {
+        //                index = VorigeIndex;
+        //                pagina = MainPagina.VertaalNaarFileNaam(bewaarVorigePagina);
+        //                if (!MainPagina.Laad(pagina))
+        //                {
+        //                    _ = MessageBox.Show($"Kon pagina {ZoekPagina} niet laden");
+        //                }
 
-                        diep--;
-                    }
-                }
-            }
-            return false;
-        }
-        private void OpbouwKennisBankToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Process process = new Process();
-                process.StartInfo.FileName = "Data\\BoomData.txt";
-                try
-                {
-                    _ = process.Start();
-                }
-                catch { }
-            }
-            catch (IOException)
-            {
-                _ = MessageBox.Show("Opbouw Kennisbank niet aanwezig.");
-            }
-        }
-        private void MaakLinkLijst(object sender, EventArgs e)
+        //                diep--;
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
+        //private void OpbouwKennisBankToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        Process process = new Process();
+        //        process.StartInfo.FileName = "Data\\BoomData.txt";
+        //        try
+        //        {
+        //            _ = process.Start();
+        //        }
+        //        catch { }
+        //    }
+        //    catch (IOException)
+        //    {
+        //        _ = MessageBox.Show("Opbouw Kennisbank niet aanwezig.");
+        //    }
+        //}
+        private void MaakIndex(object sender, EventArgs e)
         {
             FormMelding md = new FormMelding(FormMelding.Type.Info, "KennisBank", "Maak gehele index..");
             md.Show();
@@ -1251,8 +1251,8 @@ namespace KenisBank
         {
             ZetBackupDatumInFile();
             Backup();
-            BoomKennisDataToolStripMenuItem_Click(this, null);
-            MaakLinkLijst(this, null);
+            //BoomKennisDataToolStripMenuItem_Click(this, null);
+            MaakIndex(this, null);
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
