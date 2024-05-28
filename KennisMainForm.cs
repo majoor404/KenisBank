@@ -41,7 +41,7 @@ namespace KenisBank
         public string PrevPagina = string.Empty;
         public bool BlokSchrijf = false;  // bij 5 plekken omhoog of omlaag niet schrijven tussendoor.
         public RegelInXML CopyRegel = null;
-        private static int diep = 0;
+        //private static int diep = 0;
 
         public static KennisMainForm mainForm;
 
@@ -680,8 +680,11 @@ namespace KenisBank
                     {
                         //bij import vanuit oude wiki is link naar dir gelijk aan link naar file.
                         // dus check of het geen file en geen dir is voordat ik verwijder
+                        
                         if (MainPagina.LijstMetRegels[i].type_ == type.LinkFile)
                         {
+                            //if(MainPagina.LijstMetRegels[i].url_.Substring(0,4) == "http")
+                                //MessageBox.Show($"{MainPagina.LijstMetRegels[i].type_} -- {MainPagina.LijstMetRegels[i].url_}");
                             if (!File.Exists(MainPagina.LijstMetRegels[i].url_))
                             {
                                 if (!Directory.Exists(MainPagina.LijstMetRegels[i].url_))
@@ -696,6 +699,7 @@ namespace KenisBank
                         }
                         else if (MainPagina.LijstMetRegels[i].type_ == type.LinkDir)
                         {
+                            //MessageBox.Show($"{MainPagina.LijstMetRegels[i].type_} -- {MainPagina.LijstMetRegels[i].url_}");
                             if (!Directory.Exists(MainPagina.LijstMetRegels[i].url_))
                             {
                                 // link kan ook een url naar intranet zijn.
@@ -707,6 +711,7 @@ namespace KenisBank
                         }
                         else if (MainPagina.LijstMetRegels[i].type_ == type.PaginaNaam)
                         {
+                            //MessageBox.Show($"{MainPagina.LijstMetRegels[i].type_} -- {MainPagina.LijstMetRegels[i].url_}");
                             if (!File.Exists($"Data\\{Path.GetFileNameWithoutExtension(file.Name)}.xml"))
                             {
                                 afbreken = VraagAanpassing(file.Name, MainPagina.LijstMetRegels[i]);
@@ -1442,6 +1447,7 @@ namespace KenisBank
                 }
                 catch (WebException)
                 {
+                    MessageBox.Show($"Error WebException, kan niet testen of webpagina wel of niet bestaat/online is.");
                     return false;
                 }
             }
