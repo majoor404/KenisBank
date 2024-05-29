@@ -40,7 +40,8 @@ namespace KenisBank
         public string PrevPagina = string.Empty;
         public bool BlokSchrijf = false;  // bij 5 plekken omhoog of omlaag niet schrijven tussendoor.
         public RegelInXML CopyRegel = null;
-        //private static int diep = 0;
+
+        public static string LastZoekTerm = string.Empty;
 
         public static KennisMainForm mainForm;
 
@@ -527,6 +528,12 @@ namespace KenisBank
         private void ZoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ZoekForm ZF = new ZoekForm();
+
+            if (!string.IsNullOrEmpty(LastZoekTerm))
+            {
+                ZF.textBoxZoek.Text = LastZoekTerm;
+            }
+
             DialogResult save = ZF.ShowDialog();
             PaginaMetRegelsGevonden.Clear();
             _ = new List<string>();
@@ -534,47 +541,56 @@ namespace KenisBank
 
             if (save == DialogResult.OK)
             {
-                //if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
-                //{
-                //    MaakLinkLijst(this, null);
-                //}
-
-                if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
+                if (LastZoekTerm == ZF.textBoxZoek.Text)
                 {
-                    MaakIndex(this, null);
+                    // laad vorige zoek file
+                    labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
+                    _ = MainPagina.Laad("Zoek");
+                    SchermUpdate();
+                    change_pagina = false;
                 }
-
-                IndexLaad();
-
-                foreach (Index a in IndexLijst)
+                else
                 {
-                    if (a.type1 == type.PaginaNaam && ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text))
+                    LastZoekTerm = ZF.textBoxZoek.Text;
+
+                    if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
                     {
-                        RegelInXML regel = new RegelInXML(a.pagina, type.PaginaNaam, "");
-                        PaginaMetRegelsGevonden.Add(regel);
+                        MaakIndex(this, null);
                     }
-                    else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text))
+
+                    IndexLaad();
+
+                    foreach (Index a in IndexLijst)
                     {
-                        if (a.url != "")
+                        if (a.type1 == type.PaginaNaam && ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text))
                         {
-                            // zoek tekst in tekst
-                            RegelInXML regel = new RegelInXML($"Op pagina {a.pagina}", type.TekstBlok, "");
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new RegelInXML(a.text, type.TekstBlok, "");
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new RegelInXML(a.url, type.LinkFile, a.url);
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new RegelInXML("", type.Leeg, "");
+                            RegelInXML regel = new RegelInXML(a.text, type.PaginaNaam, "");
                             PaginaMetRegelsGevonden.Add(regel);
                         }
+                        else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text))
+                        {
+                            if (a.url != "")
+                            {
+                                // zoek tekst in tekst
+                                RegelInXML regel = new RegelInXML($"Op pagina {a.pagina}", type.TekstBlok, "");
+                                PaginaMetRegelsGevonden.Add(regel);
+                                regel = new RegelInXML(a.text, type.TekstBlok, "");
+                                PaginaMetRegelsGevonden.Add(regel);
+                                regel = new RegelInXML(a.url, type.LinkFile, a.url);
+                                PaginaMetRegelsGevonden.Add(regel);
+                                regel = new RegelInXML("", type.Leeg, "");
+                                PaginaMetRegelsGevonden.Add(regel);
+                            }
+                        }
                     }
-                }
 
-                // bouw Pagina
-                labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
-                MainPagina.LijstMetRegels = PaginaMetRegelsGevonden;
-                SchermUpdate();
-                change_pagina = false;
+                    // bouw Pagina
+                    labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
+                    MainPagina.LijstMetRegels = PaginaMetRegelsGevonden;
+                    SchermUpdate();
+                    MainPagina.Save("Zoek");
+                    change_pagina = false;
+                }
             }
         }
 
@@ -591,7 +607,6 @@ namespace KenisBank
             {
             }
         }
-
         private static T FromXML<T>(string xml)
         {
             using (StringReader stringReader = new StringReader(xml))
@@ -600,7 +615,6 @@ namespace KenisBank
                 return (T)serializer.Deserialize(stringReader);
             }
         }
-
         private void ZoekNaarWeesPaginasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // lijst met all pagina's opgeslagen.
