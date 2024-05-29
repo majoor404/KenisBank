@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using File = System.IO.File;
@@ -539,7 +538,7 @@ namespace KenisBank
                 //{
                 //    MaakLinkLijst(this, null);
                 //}
-                
+
                 if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
                 {
                     MaakIndex(this, null);
@@ -547,9 +546,14 @@ namespace KenisBank
 
                 IndexLaad();
 
-                foreach(Index a in IndexLijst)
+                foreach (Index a in IndexLijst)
                 {
-                    if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text))
+                    if (a.type1 == type.PaginaNaam && ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text))
+                    {
+                        RegelInXML regel = new RegelInXML(a.pagina, type.PaginaNaam, "");
+                        PaginaMetRegelsGevonden.Add(regel);
+                    }
+                    else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text))
                     {
                         if (a.url != "")
                         {
@@ -680,11 +684,11 @@ namespace KenisBank
                     {
                         //bij import vanuit oude wiki is link naar dir gelijk aan link naar file.
                         // dus check of het geen file en geen dir is voordat ik verwijder
-                        
+
                         if (MainPagina.LijstMetRegels[i].type_ == type.LinkFile)
                         {
                             //if(MainPagina.LijstMetRegels[i].url_.Substring(0,4) == "http")
-                                //MessageBox.Show($"{MainPagina.LijstMetRegels[i].type_} -- {MainPagina.LijstMetRegels[i].url_}");
+                            //MessageBox.Show($"{MainPagina.LijstMetRegels[i].type_} -- {MainPagina.LijstMetRegels[i].url_}");
                             if (!File.Exists(MainPagina.LijstMetRegels[i].url_))
                             {
                                 if (!Directory.Exists(MainPagina.LijstMetRegels[i].url_))
@@ -1079,12 +1083,12 @@ namespace KenisBank
             {
                 string opslagnaam = $"Data\\Index.xml";
                 string indexTekst = ToXML(IndexLijst);
-                
-                if(File.Exists(opslagnaam))
+
+                if (File.Exists(opslagnaam))
                 {
                     File.Delete(opslagnaam);
                 }
-                
+
                 File.WriteAllText(opslagnaam, indexTekst);
 
                 FormMelding md = new FormMelding(FormMelding.Type.Save, "KennisBank", "Opslaan..");
@@ -1447,7 +1451,7 @@ namespace KenisBank
                 }
                 catch (WebException)
                 {
-                    MessageBox.Show($"Error WebException, kan niet testen of webpagina wel of niet bestaat/online is.");
+                    _ = MessageBox.Show($"Error WebException, kan niet testen of webpagina wel of niet bestaat/online is.");
                     return false;
                 }
             }
