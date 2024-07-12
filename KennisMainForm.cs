@@ -32,7 +32,7 @@ namespace KenisBank
         public RegelInXML PaginaZijBalk = new RegelInXML();
 
         public bool change_pagina = false;
-        private static readonly Random random = new Random();
+        //private static readonly Random random = new Random();
         private readonly List<RegelInXML> PaginaMetRegelsGevonden = new List<RegelInXML>();
 
         public List<Index> IndexLijst = new List<Index>();
@@ -541,16 +541,16 @@ namespace KenisBank
 
             if (save == DialogResult.OK)
             {
-                if (LastZoekTerm == ZF.textBoxZoek.Text)
-                {
-                    // laad vorige zoek file
-                    labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
-                    _ = MainPagina.Laad("Zoek");
-                    SchermUpdate();
-                    change_pagina = false;
-                }
-                else
-                {
+                //if (LastZoekTerm == ZF.textBoxZoek.Text)
+                //{
+                //    // laad vorige zoek file
+                //    labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
+                //    _ = MainPagina.Laad("Zoek");
+                //    SchermUpdate();
+                //    change_pagina = false;
+                //}
+                //else
+                //{
                     LastZoekTerm = ZF.textBoxZoek.Text;
 
                     if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
@@ -588,9 +588,9 @@ namespace KenisBank
                     labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
                     MainPagina.LijstMetRegels = PaginaMetRegelsGevonden;
                     SchermUpdate();
-                    MainPagina.Save("Zoek");
+                    //MainPagina.Save("Zoek");
                     change_pagina = false;
-                }
+                //}
             }
         }
 

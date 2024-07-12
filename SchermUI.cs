@@ -203,12 +203,13 @@ namespace KenisBank
 
             panelMain.AutoScrollPosition = new Point(0, nieuw * 20);
         }
-        public static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+        
+        //public static string RandomString(int length)
+        //{
+        //    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        //    return new string(Enumerable.Repeat(chars, length)
+        //      .Select(s => s[random.Next(s.Length)]).ToArray());
+        //}
         public bool ContainsCaseInsensitive(string source, string substring)
         {
             return source?.IndexOf(substring, StringComparison.OrdinalIgnoreCase) > -1;
@@ -233,8 +234,9 @@ namespace KenisBank
         }
         public static int MaakID()
         {
-            string dum = RandomString(10);
-            return dum.GetHashCode();
+            return Guid.NewGuid().GetHashCode();
+            //string dum = RandomString(10);
+            //return dum.GetHashCode();
         }
         public bool TestKlik()
         {
