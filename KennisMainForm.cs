@@ -55,6 +55,8 @@ namespace KenisBank
         }
         private void KennisMainForm_Shown(object sender, EventArgs e)
         {
+            WaarBenMeeBezigLabel.Visible = false;
+
             // zet panelen netjes
             KennisMainForm_Resize(this, null);
             // laad Start.xml
@@ -622,6 +624,8 @@ namespace KenisBank
                             .OrderByDescending(f => f.Name)
                             .ToList();
 
+            WaarBenMeeBezigLabel.Visible = true;
+            WaarBenMeeBezigLabel.Text = "Maak lijst met links naar pagina's";
             ProgressBarAan(XMLFilesInDataDir.Count);
             // maak lijst met de linken naar pagina's
             List<string> LinkNaarPaginaLijst = new List<string>();
@@ -645,6 +649,7 @@ namespace KenisBank
             }
             ProgressBarUit();
             MainPagina.LijstMetRegels.Clear();
+            WaarBenMeeBezigLabel.Text = "Check of pagina een naam bevat welke geen opgeslagen file is.";
             ProgressBarAan(XMLFilesInDataDir.Count);
 
             foreach (FileInfo file in XMLFilesInDataDir)
@@ -661,6 +666,8 @@ namespace KenisBank
             labelPaginaInBeeld.Text = $"Wees Pagina's";
             SchermUpdate();
             ProgressBarUit();
+            WaarBenMeeBezigLabel.Visible = false;
+            WaarBenMeeBezigLabel.Text = "";
         }
         private void TerugToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -683,6 +690,9 @@ namespace KenisBank
                         .ToList();
 
             bool afbreken = false;
+
+            WaarBenMeeBezigLabel.Visible = true;
+            WaarBenMeeBezigLabel.Text = "Doorzoek alle Pagina's en Links daarop.";
 
             ProgressBarAan(files.Count);
             foreach (FileInfo file in files)
@@ -753,6 +763,8 @@ namespace KenisBank
 
             refreshToolStripMenuItem_Click(this, null);
 
+            WaarBenMeeBezigLabel.Visible = false;
+            WaarBenMeeBezigLabel.Text = "";
             ProgressBarUit();
 
             if (afbreken)    // link lijst is aangepast
@@ -773,6 +785,9 @@ namespace KenisBank
             //labelInfo.Text = "";
             int MakerInfoIndex = -1;
             ProgressBarAan(MainPagina.LijstMetRegels.Count);
+            
+            WaarBenMeeBezigLabel.Visible = true;
+            WaarBenMeeBezigLabel.Text = "Bouw Pagina Op.";
 
             _ = LockWindowUpdate(panelMain.Handle);
 
@@ -827,6 +842,8 @@ namespace KenisBank
 
             _ = LockWindowUpdate(IntPtr.Zero);
 
+            WaarBenMeeBezigLabel.Visible = false;
+            WaarBenMeeBezigLabel.Text = "";
             ProgressBarUit();
 
             KennisMainForm_Resize(this, null);
@@ -835,6 +852,9 @@ namespace KenisBank
         {
             // delete oude
             panelZij.Controls.Clear();
+
+            WaarBenMeeBezigLabel.Visible = false;
+            WaarBenMeeBezigLabel.Text = "Bouw Zijbalk Op";
 
             ProgressBarAan(PaginaZijBalk.LijstMetRegels.Count);
 
@@ -877,6 +897,8 @@ namespace KenisBank
             }
             _ = LockWindowUpdate(IntPtr.Zero);
 
+            WaarBenMeeBezigLabel.Visible = false;
+            WaarBenMeeBezigLabel.Text = "Bouw Zijbalk Op";
             ProgressBarUit();
         }
         private void CopyBut_Click(object sender, EventArgs e)
@@ -1049,6 +1071,9 @@ namespace KenisBank
             .OrderBy(f => f.Name)
             .ToList();
 
+            WaarBenMeeBezigLabel.Visible = true;
+            WaarBenMeeBezigLabel.Text = "Maak Index voor snel zoeken";
+            
             ProgressBarAan(files.Count);
             foreach (FileInfo file in files)
             {
@@ -1088,6 +1113,10 @@ namespace KenisBank
             {
                 _ = MessageBox.Show("Data\\Index.xml save Error()");
             }
+            
+            WaarBenMeeBezigLabel.Visible = false;
+            WaarBenMeeBezigLabel.Text = "";
+            
             ProgressBarUit();
             _ = MainPagina.Laad(huidigePagina);
         }

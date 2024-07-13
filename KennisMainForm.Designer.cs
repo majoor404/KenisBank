@@ -90,6 +90,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panelLogo = new System.Windows.Forms.Panel();
             this.DummyBut = new System.Windows.Forms.Button();
+            this.WaarBenMeeBezigLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -656,6 +657,7 @@
             // 
             this.panelInfo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelInfo.Controls.Add(this.WaarBenMeeBezigLabel);
             this.panelInfo.Controls.Add(this.progressBar);
             this.panelInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelInfo.Location = new System.Drawing.Point(0, 928);
@@ -715,6 +717,16 @@
             this.DummyBut.TextChanged += new System.EventHandler(this.DummyBut_TextChanged);
             this.DummyBut.Click += new System.EventHandler(this.DummyBut_Click);
             // 
+            // WaarBenMeeBezigLabel
+            // 
+            this.WaarBenMeeBezigLabel.AutoSize = true;
+            this.WaarBenMeeBezigLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WaarBenMeeBezigLabel.Location = new System.Drawing.Point(13, 6);
+            this.WaarBenMeeBezigLabel.Name = "WaarBenMeeBezigLabel";
+            this.WaarBenMeeBezigLabel.Size = new System.Drawing.Size(171, 18);
+            this.WaarBenMeeBezigLabel.TabIndex = 2;
+            this.WaarBenMeeBezigLabel.Text = "WaarBenMeeBezigLabel";
+            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -745,6 +757,7 @@
             this.panelUpDown.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelInfo.ResumeLayout(false);
+            this.panelInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panelLogo.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -814,6 +827,7 @@
         private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editZijBlakToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem IndexToolStripMenuItem;
+        private System.Windows.Forms.Label WaarBenMeeBezigLabel;
     }
 }
 

@@ -328,6 +328,10 @@ namespace KenisBank
             List<FileInfo> XMLFilesInDataDir = new DirectoryInfo("Data").EnumerateFiles("*.xml")
                         .OrderByDescending(f => f.Name)
                         .ToList();
+
+            WaarBenMeeBezigLabel.Visible = true;
+            WaarBenMeeBezigLabel.Text = "Backup Pagina's die veranderd zijn.";
+
             ProgressBarAan(XMLFilesInDataDir.Count);
 
             foreach (FileInfo file in XMLFilesInDataDir)
@@ -339,6 +343,10 @@ namespace KenisBank
 
                 ProgressBarUpdate();
             }
+            
+            WaarBenMeeBezigLabel.Visible = false;
+            WaarBenMeeBezigLabel.Text = "";
+            
             ProgressBarUit();
         }
 
