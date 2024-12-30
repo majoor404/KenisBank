@@ -85,12 +85,12 @@
             this.buttonMoveUp5 = new System.Windows.Forms.Button();
             this.buttonMoveUp = new System.Windows.Forms.Button();
             this.panelInfo = new System.Windows.Forms.Panel();
+            this.WaarBenMeeBezigLabel = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.panelZij = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panelLogo = new System.Windows.Forms.Panel();
             this.DummyBut = new System.Windows.Forms.Button();
-            this.WaarBenMeeBezigLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -665,6 +665,16 @@
             this.panelInfo.Size = new System.Drawing.Size(1454, 33);
             this.panelInfo.TabIndex = 4;
             // 
+            // WaarBenMeeBezigLabel
+            // 
+            this.WaarBenMeeBezigLabel.AutoSize = true;
+            this.WaarBenMeeBezigLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WaarBenMeeBezigLabel.Location = new System.Drawing.Point(13, 6);
+            this.WaarBenMeeBezigLabel.Name = "WaarBenMeeBezigLabel";
+            this.WaarBenMeeBezigLabel.Size = new System.Drawing.Size(171, 18);
+            this.WaarBenMeeBezigLabel.TabIndex = 2;
+            this.WaarBenMeeBezigLabel.Text = "WaarBenMeeBezigLabel";
+            // 
             // progressBar
             // 
             this.progressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(231)))), ((int)(((byte)(150)))));
@@ -717,16 +727,6 @@
             this.DummyBut.TextChanged += new System.EventHandler(this.DummyBut_TextChanged);
             this.DummyBut.Click += new System.EventHandler(this.DummyBut_Click);
             // 
-            // WaarBenMeeBezigLabel
-            // 
-            this.WaarBenMeeBezigLabel.AutoSize = true;
-            this.WaarBenMeeBezigLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WaarBenMeeBezigLabel.Location = new System.Drawing.Point(13, 6);
-            this.WaarBenMeeBezigLabel.Name = "WaarBenMeeBezigLabel";
-            this.WaarBenMeeBezigLabel.Size = new System.Drawing.Size(171, 18);
-            this.WaarBenMeeBezigLabel.TabIndex = 2;
-            this.WaarBenMeeBezigLabel.Text = "WaarBenMeeBezigLabel";
-            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -770,7 +770,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem editPaginaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editModeAanToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addItemToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenHoofdstukTextToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toevoegenLinkNaarFileToolStripMenuItem;
@@ -828,6 +827,7 @@
         private System.Windows.Forms.ToolStripMenuItem editZijBlakToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem IndexToolStripMenuItem;
         private System.Windows.Forms.Label WaarBenMeeBezigLabel;
+        public System.Windows.Forms.ToolStripMenuItem editModeAanToolStripMenuItem;
     }
 }
 

@@ -81,8 +81,9 @@ namespace KenisBank
             KennisMainForm.KleurGeselecteerdePanel(kId);
         }
 
-        private void kLinkKlik(object sender, EventArgs e)
+        private void kLinkKlik(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            if(e.Button == MouseButtons.Right) {return;}
             KennisMainForm.Label_LinkKlik(kId);
         }
 
