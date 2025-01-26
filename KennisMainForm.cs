@@ -132,7 +132,6 @@ namespace KenisBank
             addItemToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
             saveHuidigePaginaToolStripMenuItem.Enabled = buttonSaveCloseEdit.Enabled = editModeAanToolStripMenuItem.Checked;
             editModeToolStripMenuItem.Checked = editModeAanToolStripMenuItem.Checked;
-            copyToolStripMenuItem.Enabled = editModeAanToolStripMenuItem.Checked;
 
             if (editModeAanToolStripMenuItem.Checked)
             {
@@ -1322,6 +1321,10 @@ namespace KenisBank
             {
                 //string regels = PaginaInhoud.InhoudPaginaMetRegels[i].tekst_;
                 Clipboard.SetText(MainPagina.LijstMetRegels[i].tekst_);
+            }
+            else
+            {
+                MessageBox.Show("Je kan alleen tekst blokken copyeren!");
             }
         }
 

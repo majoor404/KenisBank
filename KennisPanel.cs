@@ -66,7 +66,6 @@ namespace KenisBank
             kPanel.Controls.SetChildIndex(this, 0);
             Tag = kId;
             MouseHover += MouseHoverPanel;
-
         }
 
         private void MouseHoverPanel(object sender, EventArgs e)
@@ -74,6 +73,7 @@ namespace KenisBank
             System.Windows.Forms.Panel lb = (System.Windows.Forms.Panel)sender;
             int tag = (int)lb.Tag;
             KennisMainForm.mainForm.DummyBut.Text = tag.ToString();
+            
         }
 
         private void kKlik(object sender, EventArgs e)

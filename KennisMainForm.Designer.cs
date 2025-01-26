@@ -160,7 +160,6 @@
             // 
             // copyToolStripMenuItem
             // 
-            this.copyToolStripMenuItem.Enabled = false;
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.Size = new System.Drawing.Size(279, 24);
             this.copyToolStripMenuItem.Text = "Copy TekstBlok naar klembord";
