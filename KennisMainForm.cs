@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using static System.Windows.Forms.LinkLabel;
 using File = System.IO.File;
 
 /*
@@ -175,7 +176,6 @@ namespace KenisBank
                 }
             }
         }
-
         public static void Label_LinkKlik(int kId)
         {
             if (mainForm.editModeAanToolStripMenuItem.Checked)
@@ -239,11 +239,11 @@ namespace KenisBank
                 foreach (KennisPanel item in mainForm.panelMain.Controls.OfType<KennisPanel>())
                 {
                     item.BackColor = mainForm.panelMain.BackColor;
-                    item.BorderStyle = BorderStyle.None;
+                    //item.BorderStyle = BorderStyle.None;
                     if (item.kId == kId)
                     {
-                        item.BackColor = Color.FromArgb(189, 189, 189);// Aqua;
-                        item.BorderStyle = BorderStyle.FixedSingle;
+                        item.BackColor = Color.FromArgb(189, 189, 189);
+                        //item.BorderStyle = BorderStyle.FixedSingle;
                         mainForm.buttonEditSelectie.Enabled = true;
                     }
 
@@ -552,49 +552,48 @@ namespace KenisBank
                 //}
                 //else
                 //{
-                    LastZoekTerm = ZF.textBoxZoek.Text;
+                LastZoekTerm = ZF.textBoxZoek.Text;
 
-                    if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
+                if (!File.Exists("Data\\Index.xml")) // opnieuw index maken
+                {
+                    MaakIndex(this, null);
+                }
+
+                IndexLaad();
+
+                foreach (Index a in IndexLijst)
+                {
+                    if (a.type1 == type.PaginaNaam && ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text))
                     {
-                        MaakIndex(this, null);
+                        RegelInXML regel = new RegelInXML(a.text, type.PaginaNaam, "");
+                        PaginaMetRegelsGevonden.Add(regel);
                     }
-
-                    IndexLaad();
-
-                    foreach (Index a in IndexLijst)
+                    else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text))
                     {
-                        if (a.type1 == type.PaginaNaam && ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text))
+                        if (a.url != "")
                         {
-                            RegelInXML regel = new RegelInXML(a.text, type.PaginaNaam, "");
+                            // zoek tekst in tekst
+                            RegelInXML regel = new RegelInXML($"Op pagina {a.pagina}", type.TekstBlok, "");
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new RegelInXML(a.text, type.TekstBlok, "");
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new RegelInXML(a.url, type.LinkFile, a.url);
+                            PaginaMetRegelsGevonden.Add(regel);
+                            regel = new RegelInXML("", type.Leeg, "");
                             PaginaMetRegelsGevonden.Add(regel);
                         }
-                        else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text))
-                        {
-                            if (a.url != "")
-                            {
-                                // zoek tekst in tekst
-                                RegelInXML regel = new RegelInXML($"Op pagina {a.pagina}", type.TekstBlok, "");
-                                PaginaMetRegelsGevonden.Add(regel);
-                                regel = new RegelInXML(a.text, type.TekstBlok, "");
-                                PaginaMetRegelsGevonden.Add(regel);
-                                regel = new RegelInXML(a.url, type.LinkFile, a.url);
-                                PaginaMetRegelsGevonden.Add(regel);
-                                regel = new RegelInXML("", type.Leeg, "");
-                                PaginaMetRegelsGevonden.Add(regel);
-                            }
-                        }
                     }
+                }
 
-                    // bouw Pagina
-                    labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
-                    MainPagina.LijstMetRegels = PaginaMetRegelsGevonden;
-                    SchermUpdate();
-                    //MainPagina.Save("Zoek");
-                    change_pagina = false;
+                // bouw Pagina
+                labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
+                MainPagina.LijstMetRegels = PaginaMetRegelsGevonden;
+                SchermUpdate();
+                //MainPagina.Save("Zoek");
+                change_pagina = false;
                 //}
             }
         }
-
         private void IndexLaad()
         {
             IndexLijst.Clear();
@@ -784,7 +783,7 @@ namespace KenisBank
             //labelInfo.Text = "";
             int MakerInfoIndex = -1;
             ProgressBarAan(MainPagina.LijstMetRegels.Count);
-            
+
             WaarBenMeeBezigLabel.Visible = true;
             WaarBenMeeBezigLabel.Text = "Bouw Pagina Op.";
 
@@ -793,8 +792,6 @@ namespace KenisBank
             for (int i = 0; i < MainPagina.LijstMetRegels.Count; i++)
             {
                 ProgressBarUpdate();
-                //string dum = RandomString(10);
-                //_ = dum.GetHashCode();
 
                 if (MainPagina.LijstMetRegels[i].type_ == type.Hoofdstuk)
                 {
@@ -980,85 +977,6 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-        //private void BoomKennisDataToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    List<string> BoomData = new List<string>
-        //        {
-        //            "Start"
-        //        };
-
-        //    string VorigePagina = "Start";
-        //    int VorigeIndex = 0;
-        //    diep = 0;
-
-        //    _ = BoomDataVerzamel("Start", BoomData, VorigeIndex, VorigePagina);
-
-        //    try
-        //    {
-        //        File.WriteAllLines("Data\\BoomData.txt", BoomData);
-        //        _ = MessageBox.Show("Klaar");
-        //    }
-        //    catch (IOException)
-        //    {
-        //        _ = MessageBox.Show("info file save Error()");
-        //    }
-        //}
-        //private bool BoomDataVerzamel(string ZoekPagina, List<string> BoomData, int VorigeIndex, string VorigePagina)
-        //{
-        //    string pagina = MainPagina.VertaalNaarFileNaam(ZoekPagina);
-        //    if (!MainPagina.Laad(pagina))
-        //    {
-        //        _ = MessageBox.Show($"Kon pagina {ZoekPagina} niet laden, staat op vorige pagina {VorigePagina}");
-        //        //Process.GetCurrentProcess().Kill();
-        //    }
-
-        //    for (int index = VorigeIndex; index < MainPagina.LijstMetRegels.Count; index++)
-        //    {
-        //        if (MainPagina.LijstMetRegels[index].type_ == type.PaginaNaam)
-        //        {
-        //            string GevondenPagina = MainPagina.LijstMetRegels[index].tekst_;
-        //            string inspring = "-";
-        //            for (int i = 0; i < diep; i++)
-        //            {
-        //                inspring += "--";
-        //            }
-        //            BoomData.Add($"{inspring} {GevondenPagina}");
-        //            diep++;
-        //            VorigeIndex = index;
-        //            string bewaarVorigePagina = pagina;
-        //            // nieuwe pagina, dus begin op index 0
-        //            if (!BoomDataVerzamel(GevondenPagina, BoomData, 0, ZoekPagina))
-        //            {
-        //                index = VorigeIndex;
-        //                pagina = MainPagina.VertaalNaarFileNaam(bewaarVorigePagina);
-        //                if (!MainPagina.Laad(pagina))
-        //                {
-        //                    _ = MessageBox.Show($"Kon pagina {ZoekPagina} niet laden");
-        //                }
-
-        //                diep--;
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
-        //private void OpbouwKennisBankToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        Process process = new Process();
-        //        process.StartInfo.FileName = "Data\\BoomData.txt";
-        //        try
-        //        {
-        //            _ = process.Start();
-        //        }
-        //        catch { }
-        //    }
-        //    catch (IOException)
-        //    {
-        //        _ = MessageBox.Show("Opbouw Kennisbank niet aanwezig.");
-        //    }
-        //}
         private void MaakIndex(object sender, EventArgs e)
         {
             FormMelding md = new FormMelding(FormMelding.Type.Info, "KennisBank", "Maak gehele index..");
@@ -1072,7 +990,7 @@ namespace KenisBank
 
             WaarBenMeeBezigLabel.Visible = true;
             WaarBenMeeBezigLabel.Text = "Maak Index voor snel zoeken";
-            
+
             ProgressBarAan(files.Count);
             foreach (FileInfo file in files)
             {
@@ -1112,10 +1030,10 @@ namespace KenisBank
             {
                 _ = MessageBox.Show("Data\\Index.xml save Error()");
             }
-            
+
             WaarBenMeeBezigLabel.Visible = false;
             WaarBenMeeBezigLabel.Text = "";
-            
+
             ProgressBarUit();
             _ = MainPagina.Laad(huidigePagina);
         }
@@ -1235,9 +1153,14 @@ namespace KenisBank
                 // bij bv http:// of https://
                 if (fileEnPath.Length > 5 && fileEnPath.Substring(0, 4) == "http")
                 {
-                    //string test = GetBrowser();
-                    //string browser = "msedge.exe";
-                    _ = Process.Start("explorer", fileEnPath); // altijd default brouwser
+                    ProcessStartInfo psi = new ProcessStartInfo();
+                    psi.FileName = fileEnPath;
+                    psi.UseShellExecute = true;
+                    psi.Verb = "open";
+
+                    Process.Start(psi);
+
+                    //_ = Process.Start("explorer", fileEnPath); // altijd default brouwser
                     return;
                 }
 
@@ -1324,43 +1247,19 @@ namespace KenisBank
             }
             else
             {
-                MessageBox.Show("Je kan alleen tekst blokken copyeren!");
+                _ = MessageBox.Show("Je kan alleen tekst blokken copyeren!");
             }
         }
 
-        //private void LBItem_TextChanged(object sender, EventArgs e)
-        //{
-        //    if (mainForm.editModeAanToolStripMenuItem.Checked)
-        //    {
-        //        foreach (KennisPanel item in mainForm.panelMain.Controls.OfType<KennisPanel>())
-        //        {
-        //            item.BackColor = mainForm.panelMain.BackColor;
-        //            item.BorderStyle = BorderStyle.None;
-        //            if (item.kId.ToString() == KennisMainForm.mainForm.LBItem.Text)
-        //            {
-        //                item.BorderStyle = BorderStyle.FixedSingle;
-        //                mainForm.buttonEditSelectie.Enabled = true;
-        //            }
-
-        //        }
-        //    }
-        //    mainForm.GekozenItem.Text = KennisMainForm.mainForm.LBItem.Text;
-        //}
-
         private void DummyBut_TextChanged(object sender, EventArgs e)
         {
-            if (mainForm.editModeAanToolStripMenuItem.Checked)
+            foreach (KennisPanel item in mainForm.panelMain.Controls.OfType<KennisPanel>())
             {
-                foreach (KennisPanel item in mainForm.panelMain.Controls.OfType<KennisPanel>())
+                item.BackColor = mainForm.panelMain.BackColor;
+                if (item.kId.ToString() == KennisMainForm.mainForm.DummyBut.Text)
                 {
-                    item.BackColor = mainForm.panelMain.BackColor;
-                    item.BorderStyle = BorderStyle.None;
-                    if (item.kId.ToString() == KennisMainForm.mainForm.DummyBut.Text)
-                    {
-                        item.BorderStyle = BorderStyle.FixedSingle;
-                        mainForm.buttonEditSelectie.Enabled = true;
-                    }
-
+                    item.BackColor = Color.FromArgb(192, 180, 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
+                    mainForm.buttonEditSelectie.Enabled = true;
                 }
             }
             mainForm.GekozenItem.Text = KennisMainForm.mainForm.DummyBut.Text;
@@ -1370,36 +1269,6 @@ namespace KenisBank
         {
             _ = MessageBox.Show("De tekst van deze button wordt gebruikt voor tracking van panel ID");
         }
-
-        //private static string GetBrowser()
-        //{
-        //    string name = string.Empty;
-        //    RegistryKey regKey = null;
-
-        //    try
-        //    {
-        //        var regDefault = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.htm\\UserChoice", false);
-        //        var stringDefault = regDefault.GetValue("ProgId");
-
-        //        regKey = Registry.ClassesRoot.OpenSubKey(stringDefault + "\\shell\\open\\command", false);
-        //        name = regKey.GetValue(null).ToString().ToLower().Replace("" + (char)34, "");
-
-        //        if (!name.EndsWith("exe"))
-        //            name = name.Substring(0, name.LastIndexOf(".exe") + 4);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        name = string.Format("ERROR: An exception of type: {0} occurred in method: {1} in the following module: {2}", ex.GetType(), ex.TargetSite, this.GetType());
-        //    }
-        //    finally
-        //    {
-        //        if (regKey != null)
-        //            regKey.Close();
-        //    }
-
-        //    return name;
-        //}
 
         private bool VraagAanpassing(string file_Name, RegelInXML a/* string Regel, string url*/)
         {
