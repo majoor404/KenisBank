@@ -66,6 +66,11 @@ namespace KenisBank
             kPanel.Controls.SetChildIndex(this, 0);
             Tag = kId;
             MouseHover += MouseHoverPanel;
+
+            this.MouseDown += KennisPanel_MouseDown;
+            this.AllowDrop = true;
+            this.DragEnter += KennisPanel_DragEnter;
+            this.DragDrop += KennisPanel_DragDrop;
         }
 
         private void MouseHoverPanel(object sender, EventArgs e)
@@ -201,6 +206,44 @@ namespace KenisBank
             Button lb = (Button)sender;
             int tag = (int)lb.Tag;
             KennisMainForm.mainForm.DummyBut.Text = tag.ToString();
+        }
+
+        private void KennisPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (KennisMainForm.mainForm.editModeAanToolStripMenuItem.Checked && e.Button == MouseButtons.Left)
+            {
+                DoDragDrop(this, DragDropEffects.Move);
+            }
+        }
+
+        private void KennisPanel_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(KennisPanel)))
+                e.Effect = DragDropEffects.Move;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void KennisPanel_DragDrop(object sender, DragEventArgs e)
+        {
+            if (!KennisMainForm.mainForm.editModeAanToolStripMenuItem.Checked)
+                return;
+
+            var draggedPanel = e.Data.GetData(typeof(KennisPanel)) as KennisPanel;
+            var targetPanel = this;
+
+            if (draggedPanel == null || targetPanel == null || draggedPanel == targetPanel)
+                return;
+
+            // Haal indexen op
+            var form = KennisMainForm.mainForm;
+            int fromIndex = form.GetIndexVanId(draggedPanel.kId);
+            int toIndex = form.GetIndexVanId(targetPanel.kId);
+
+            if (fromIndex >= 0 && toIndex >= 0 && fromIndex != toIndex)
+            {
+                form.MovePanel(fromIndex, toIndex);
+            }
         }
     }
 }

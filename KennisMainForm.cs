@@ -289,70 +289,6 @@ namespace KenisBank
             // meteen selecteren
             SelecteerLaatstePaneel();
         }
-        private void ButtonMoveUp_Click(object sender, EventArgs e)
-        {
-            if (!TestKlik())
-            {
-                return;
-            }
-
-            int oud = int.Parse(GekozenItem.Text);
-            oud = GetIndexVanId(oud);
-            int nieuw = oud - 1;
-            if (nieuw > -1)
-            {
-                MovePanel(oud, nieuw);
-            }
-        }
-        private void ButtonMoveDown_Click(object sender, EventArgs e)
-        {
-            if (!TestKlik())
-            {
-                return;
-            }
-
-            int oud = int.Parse(GekozenItem.Text);
-            oud = GetIndexVanId(oud);
-            int nieuw = oud + 1;
-            if (nieuw < MainPagina.LijstMetRegels.Count)
-            {
-                MovePanel(oud, nieuw);
-            }
-        }
-        private void ButtonMoveUp5_Click(object sender, EventArgs e)
-        {
-            if (!TestKlik())
-            {
-                return;
-            }
-
-            int oud = int.Parse(GekozenItem.Text);
-            oud = GetIndexVanId(oud);
-            int nieuw = oud - 10;
-            if (nieuw < 0)
-            {
-                nieuw = 0;
-            }
-
-            MovePanel(oud, nieuw);
-        }
-        private void ButtonMoveDown5_Click(object sender, EventArgs e)
-        {
-            if (!TestKlik())
-            {
-                return;
-            }
-
-            int oud = int.Parse(GekozenItem.Text);
-            oud = GetIndexVanId(oud);
-            int nieuw = oud + 10;
-            if (nieuw > MainPagina.LijstMetRegels.Count)
-            {
-                nieuw = MainPagina.LijstMetRegels.Count;
-            }
-
-            MovePanel(oud, nieuw);
-        }
         private void ButtonSaveCloseEdit_Click(object sender, EventArgs e)
         {
             editModeAanToolStripMenuItem.Checked = false;
@@ -1064,23 +1000,7 @@ namespace KenisBank
                 return stringWriter.ToString();
             }
         }
-        private void ButtonBoven_Click(object sender, EventArgs e)
-        {
-            if (!TestKlik())
-            {
-                return;
-            }
-
-            int oud = int.Parse(GekozenItem.Text);
-            oud = GetIndexVanId(oud);
-            int nieuw = 0;
-
-            MovePanel(oud, nieuw);
-
-            change_pagina = true;
-            SchermUpdate();
-            SelecteerEerstePaneel();
-        }
+        
         private void ButtonBeneden_Click(object sender, EventArgs e)
         {
             if (!TestKlik())
@@ -1387,6 +1307,11 @@ namespace KenisBank
             SchermUpdate();
             _ = PaginaZijBalk.Laad("zijbalk");
             SchermUpdateZijBalk();
+        }
+
+        private void BHelpVerplaats_Click(object sender, EventArgs e)
+        {
+            Start(datapath + "Verplaats.mp4");
         }
     }
 }

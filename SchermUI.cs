@@ -165,7 +165,7 @@ namespace KenisBank
 
             panelMain.AutoScrollPosition = new Point(0, 0);
         }
-        private void MovePanel(int oud, int nieuw)
+        public void MovePanel(int oud, int nieuw)
         {
             if (!editModeAanToolStripMenuItem.Checked)
             {
@@ -248,7 +248,7 @@ namespace KenisBank
             }
             return true;
         }
-        private int GetIndexVanId(int Id)
+        public int GetIndexVanId(int Id)
         {
             for (int i = 0; i < MainPagina.LijstMetRegels.Count; i++)
             {
