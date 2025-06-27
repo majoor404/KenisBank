@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using static System.Windows.Forms.LinkLabel;
@@ -88,7 +89,8 @@ namespace KenisBank
 
             if (!File.Exists(datapath+"Index.xml")) // opnieuw index maken
             {
-                MaakIndex(this, null);
+                MaakIndex(this, null);;
+                //MaakIndex(this, null);
             }
 
             //if (!File.Exists("Data\\Paginas.txt") || !File.Exists("Data\\Url.txt")) // opnieuw index maken
@@ -279,6 +281,7 @@ namespace KenisBank
             }
 
             MainPagina.Save(labelPaginaInBeeld.Text);
+            MaakIndex(this, null);;
             change_pagina = false;
         }
         private void ToevoegenLegeRegelToolStripMenuItem_Click(object sender, EventArgs e)
@@ -339,6 +342,7 @@ namespace KenisBank
                     RegelInXML regel = new RegelInXML(linkdir.textBoxLinkText.Text, type.LinkDir, linkdir.textBoxDir.Text);
                     UpdateRegel(i, regel);
                     MaakIndex(this, null);
+                    MaakIndex(this, null);;
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -354,7 +358,8 @@ namespace KenisBank
                 {
                     RegelInXML regel = new RegelInXML(linkfile.textBox2.Text, type.LinkFile, linkfile.textBox1.Text);
                     UpdateRegel(i, regel);
-                    MaakIndex(this, null);
+                    //MaakIndex(this, null);
+                    MaakIndex(this, null);;
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -396,7 +401,8 @@ namespace KenisBank
                     string nieuwnaam = MainPagina.VertaalNaarFileNaam(pa.textBoxPaginaNaam.Text);
                     oudenaam = MainPagina.VertaalNaarFileNaam(oudenaam);
                     System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{nieuwnaam}.xml");
-                    MaakIndex(this, null);
+                    //MaakIndex(this, null);
+                    MaakIndex(this, null);;
                 }
                 // bouw Pagina
                 SchermUpdate();
@@ -484,7 +490,8 @@ namespace KenisBank
 
                 if (!File.Exists(datapath + "Index.xml")) // opnieuw index maken
                 {
-                    MaakIndex(this, null);
+                    //MaakIndex(this, null);
+                    MaakIndex(this, null);;
                 }
 
                 IndexLaad();
@@ -496,17 +503,28 @@ namespace KenisBank
                         RegelInXML regel = new RegelInXML(a.text, type.PaginaNaam, "");
                         PaginaMetRegelsGevonden.Add(regel);
                     }
-                    else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text))
+                    else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.fullText, ZF.textBoxZoek.Text))
                     {
-                        if (a.url != "")
+                        if (a.url != "" || a.fullText != "")
                         {
                             // zoek tekst in tekst
                             RegelInXML regel = new RegelInXML($"Op pagina {a.pagina}", type.TekstBlok, "");
                             PaginaMetRegelsGevonden.Add(regel);
-                            regel = new RegelInXML(a.text, type.TekstBlok, "");
-                            PaginaMetRegelsGevonden.Add(regel);
-                            regel = new RegelInXML(a.url, type.LinkFile, a.url);
-                            PaginaMetRegelsGevonden.Add(regel);
+                            if (a.text != "")
+                            {
+                                regel = new RegelInXML(a.text, type.TekstBlok, "");
+                                PaginaMetRegelsGevonden.Add(regel);
+                            }
+                            if (a.url != "")
+                            {
+                                regel = new RegelInXML(a.url, type.LinkFile, a.url);
+                                PaginaMetRegelsGevonden.Add(regel);
+                            }
+                            if (a.fullText != "")
+                            {
+                                regel = new RegelInXML(a.fullText, type.TekstBlok, "");
+                                PaginaMetRegelsGevonden.Add(regel);
+                            }
                             regel = new RegelInXML("", type.Leeg, "");
                             PaginaMetRegelsGevonden.Add(regel);
                         }
@@ -695,7 +713,8 @@ namespace KenisBank
 
             if (afbreken)    // link lijst is aangepast
             {
-                MaakIndex(this, null);
+                //MaakIndex(this, null);
+                MaakIndex(this, null);;
             }
 
             if (!afbreken)
@@ -714,7 +733,7 @@ namespace KenisBank
             ProgressBarAan(MainPagina.LijstMetRegels.Count);
 
             WaarBenMeeBezigLabel.Visible = true;
-            WaarBenMeeBezigLabel.Text = "Bouw Pagina Op.";
+            WaarBenMeeBezigLabel.Text = $"Bouw Pagina Op : {MainPagina.LijstMetRegels.Count} regels";
 
             _ = LockWindowUpdate(panelMain.Handle);
 
@@ -907,71 +926,7 @@ namespace KenisBank
                 SchermUpdate();
             }
         }
-        private void MaakIndex(object sender, EventArgs e)
-        {
-            if(File.Exists(datapath + "Index.xml"))
-            {
-                File.Delete(datapath + "Index.xml");
-            }
-
-            FormMelding md = new FormMelding(FormMelding.Type.Info, "KennisBank", "Maak gehele index..");
-            md.Show();
-
-            string huidigePagina = labelPaginaInBeeld.Text;
-
-            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
-            .OrderBy(f => f.Name)
-            .ToList();
-
-            WaarBenMeeBezigLabel.Visible = true;
-            WaarBenMeeBezigLabel.Text = "Maak Index voor snel zoeken";
-
-            ProgressBarAan(files.Count);
-            foreach (FileInfo file in files)
-            {
-                ProgressBarUpdate();
-                //bool verander = false;
-                if (file.Name != "zijbalk.xml")
-                {
-                    string fileNaam = Path.GetFileNameWithoutExtension(file.Name);
-                    _ = MainPagina.Laad(fileNaam);
-
-                    // door file heenstappen
-                    for (int i = 0; i < MainPagina.LijstMetRegels.Count; i++)
-                    {
-                        type Type = MainPagina.LijstMetRegels[i].type_;
-
-                        switch (Type)
-                        {
-                            case type.Leeg: break;
-                            case type.LinkFile:
-                            case type.PaginaNaam:
-                            case type.LinkDir:
-                                IndexLijst.Add(new Index(fileNaam, MainPagina.LijstMetRegels[i].tekst_, MainPagina.LijstMetRegels[i].url_, MainPagina.LijstMetRegels[i].type_));
-                                break;
-                        }
-                    }
-                    //if (verander)
-                    //{
-                    //    MainPagina.Save(Path.GetFileNameWithoutExtension(file.Name));
-                    //}
-                }
-            }
-            try
-            {
-                IndexSave();
-            }
-            catch (IOException)
-            {
-                _ = MessageBox.Show(datapath + "Index.xml save Error()");
-            }
-
-            WaarBenMeeBezigLabel.Visible = false;
-            WaarBenMeeBezigLabel.Text = "";
-
-            ProgressBarUit();
-            _ = MainPagina.Laad(huidigePagina);
-        }
+        
         private void IndexSave()
         {
             try
@@ -1312,6 +1267,68 @@ namespace KenisBank
         private void BHelpVerplaats_Click(object sender, EventArgs e)
         {
             Start(datapath + "Verplaats.mp4");
+        }
+        
+        private void MaakIndex(object sender, EventArgs e)
+        {
+            if (File.Exists(datapath + "Index.xml"))
+            {
+                File.Delete(datapath + "Index.xml");
+            }
+
+            string huidigePagina = labelPaginaInBeeld.Text;
+
+            List<FileInfo> files = new DirectoryInfo("Data").EnumerateFiles("*.xml")
+            .OrderBy(f => f.Name)
+            .ToList();
+
+            WaarBenMeeBezigLabel.Visible = true;
+            WaarBenMeeBezigLabel.Text = "Maak Index voor snel zoeken";
+
+            ProgressBarAan(files.Count);
+            foreach (FileInfo file in files)
+            {
+                ProgressBarUpdate();
+                //bool verander = false;
+                if (file.Name != "zijbalk.xml")
+                {
+                    string fileNaam = Path.GetFileNameWithoutExtension(file.Name);
+                    _ = MainPagina.Laad(fileNaam);
+
+                    // door file heenstappen
+                    for (int i = 0; i < MainPagina.LijstMetRegels.Count; i++)
+                    {
+                        type Type = MainPagina.LijstMetRegels[i].type_;
+
+                        switch (Type)
+                        {
+                            case type.Leeg: break;
+                            case type.LinkFile:
+                            case type.PaginaNaam:
+                            case type.LinkDir:
+                                IndexLijst.Add(new Index(fileNaam, MainPagina.LijstMetRegels[i].tekst_, MainPagina.LijstMetRegels[i].url_, MainPagina.LijstMetRegels[i].type_));
+                                break;
+                            case type.TekstBlok:
+                                IndexLijst.Add(new Index(fileNaam, MainPagina.LijstMetRegels[i].tekst_, "", MainPagina.LijstMetRegels[i].type_) { fullText = MainPagina.LijstMetRegels[i].tekst_ });
+                                break;
+                        }
+                    }
+                }
+            }
+            try
+            {
+                IndexSave();
+            }
+            catch (IOException)
+            {
+                _ = MessageBox.Show(datapath + "Index.xml save Error()");
+            }
+
+            WaarBenMeeBezigLabel.Visible = false;
+            WaarBenMeeBezigLabel.Text = "";
+
+            ProgressBarUit();
+            _ = MainPagina.Laad(huidigePagina);
         }
     }
 }
