@@ -508,7 +508,7 @@ namespace KenisBank
                         if (a.url != "" || a.fullText != "")
                         {
                             // zoek tekst in tekst
-                            RegelInXML regel = new RegelInXML($"Op pagina {a.pagina}", type.TekstBlok, "");
+                            RegelInXML regel = new RegelInXML(a.pagina, type.PaginaNaam, "");
                             PaginaMetRegelsGevonden.Add(regel);
                             if (a.text != "")
                             {
@@ -520,7 +520,7 @@ namespace KenisBank
                                 regel = new RegelInXML(a.url, type.LinkFile, a.url);
                                 PaginaMetRegelsGevonden.Add(regel);
                             }
-                            if (a.fullText != "")
+                            if (a.fullText != "" && a.fullText != a.text)
                             {
                                 regel = new RegelInXML(a.fullText, type.TekstBlok, "");
                                 PaginaMetRegelsGevonden.Add(regel);
