@@ -103,6 +103,7 @@
       <DependentUpon>Pagina.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="ProgressManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegelInXML.cs" />
     <Compile Include="SchermUI.cs">

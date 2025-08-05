@@ -72,6 +72,7 @@
             this.Undo = new System.Windows.Forms.Button();
             this.buttonEditSelectie = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
+            this.BHelpVerplaats = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -85,7 +86,6 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panelLogo = new System.Windows.Forms.Panel();
             this.DummyBut = new System.Windows.Forms.Button();
-            this.BHelpVerplaats = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -502,6 +502,17 @@
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.DeleteItemToolStripMenuItem_Click);
             // 
+            // BHelpVerplaats
+            // 
+            this.BHelpVerplaats.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BHelpVerplaats.Location = new System.Drawing.Point(9, 113);
+            this.BHelpVerplaats.Name = "BHelpVerplaats";
+            this.BHelpVerplaats.Size = new System.Drawing.Size(149, 247);
+            this.BHelpVerplaats.TabIndex = 7;
+            this.BHelpVerplaats.Text = "Hoe verplaats ik paneel ?";
+            this.BHelpVerplaats.UseVisualStyleBackColor = true;
+            this.BHelpVerplaats.Click += new System.EventHandler(this.BHelpVerplaats_Click);
+            // 
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -650,17 +661,6 @@
             this.DummyBut.TextChanged += new System.EventHandler(this.DummyBut_TextChanged);
             this.DummyBut.Click += new System.EventHandler(this.DummyBut_Click);
             // 
-            // BHelpVerplaats
-            // 
-            this.BHelpVerplaats.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BHelpVerplaats.Location = new System.Drawing.Point(9, 113);
-            this.BHelpVerplaats.Name = "BHelpVerplaats";
-            this.BHelpVerplaats.Size = new System.Drawing.Size(149, 247);
-            this.BHelpVerplaats.TabIndex = 7;
-            this.BHelpVerplaats.Text = "Hoe verplaats ik paneel ?";
-            this.BHelpVerplaats.UseVisualStyleBackColor = true;
-            this.BHelpVerplaats.Click += new System.EventHandler(this.BHelpVerplaats_Click);
-            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -727,7 +727,6 @@
         private System.Windows.Forms.Panel panelInfo;
         private System.Windows.Forms.ToolStripMenuItem zoekToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem terugToolStripMenuItem;
-        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button Undo;
         private System.Windows.Forms.ToolStripMenuItem versieToolStripMenuItem;
         private System.Windows.Forms.Button PasteBut;
@@ -754,9 +753,10 @@
         private System.Windows.Forms.ToolStripMenuItem backupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editZijBlakToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem IndexToolStripMenuItem;
-        private System.Windows.Forms.Label WaarBenMeeBezigLabel;
         public System.Windows.Forms.ToolStripMenuItem editModeAanToolStripMenuItem;
         private System.Windows.Forms.Button BHelpVerplaats;
+        public System.Windows.Forms.ProgressBar progressBar;
+        public System.Windows.Forms.Label WaarBenMeeBezigLabel;
     }
 }
 

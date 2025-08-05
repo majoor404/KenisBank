@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 
 namespace KenisBank
 {
@@ -116,7 +117,7 @@ namespace KenisBank
                     if (labelPaginaInBeeld.Text.Length > 3 && labelPaginaInBeeld.Text.Substring(0, 4) == "Wees")
                     {
                         string file_naam = $"Data\\{MainPagina.LijstMetRegels[i].tekst_}.xml";
-                        File.Delete(file_naam);
+                        System.IO.File.Delete(file_naam);
                         MainPagina.LijstMetRegels.RemoveAt(i);
                         change_pagina = false;
                     }
@@ -279,14 +280,14 @@ namespace KenisBank
         {
             if (DateTime.Now.DayOfWeek == DayOfWeek.Thursday || DateTime.Now.DayOfWeek == DayOfWeek.Monday)
             {
-                if (!File.Exists("Data\\backup.time"))
+                if (!System.IO.File.Exists("Data\\backup.time"))
                 {
                     Backup();
                     ZetBackupDatumInFile();
                 }
                 else // hier kijken of er een nieuwe dag is
                 {
-                    List<string> laatste_dag = File.ReadAllLines("Data\\backup.time").ToList();
+                    List<string> laatste_dag = System.IO.File.ReadAllLines("Data\\backup.time").ToList();
 
                     if (laatste_dag.Count < 1)
                     {
@@ -315,7 +316,7 @@ namespace KenisBank
             {
                 DateTime.Now.Day.ToString()
             };
-            File.WriteAllLines("Data\\backup.time", laatste_dag);
+            System.IO.File.WriteAllLines("Data\\backup.time", laatste_dag);
         }
 
         private void Backup()
@@ -329,25 +330,18 @@ namespace KenisBank
                         .OrderByDescending(f => f.Name)
                         .ToList();
 
-            WaarBenMeeBezigLabel.Visible = true;
-            WaarBenMeeBezigLabel.Text = "Backup Pagina's die veranderd zijn.";
-
-            ProgressBarAan(XMLFilesInDataDir.Count);
-
-            foreach (FileInfo file in XMLFilesInDataDir)
+            using (ProgressManager progress = new ProgressManager(this, "Backup Pagina's die veranderd zijn.", XMLFilesInDataDir.Count))
             {
-                string s = DateTime.Now.ToString("MM-dd-yyyy HH-mm");
-                string BackupNaam = Directory.GetCurrentDirectory() + $"\\Backup\\{file.Name} {s}";
+                foreach (FileInfo file in XMLFilesInDataDir)
+                {
+                    string s = DateTime.Now.ToString("MM-dd-yyyy HH-mm");
+                    string BackupNaam = Directory.GetCurrentDirectory() + $"\\Backup\\{file.Name} {s}";
 
-                BackUpFile(file.FullName, BackupNaam);
+                    BackUpFile(file.FullName, BackupNaam);
 
-                ProgressBarUpdate();
+                    progress.Update();
+                }
             }
-            
-            WaarBenMeeBezigLabel.Visible = false;
-            WaarBenMeeBezigLabel.Text = "";
-            
-            ProgressBarUit();
         }
 
         private void BackUpFile(string Filename, string BackupNaam)
@@ -367,18 +361,18 @@ namespace KenisBank
 
                 if (files.Count < 5)
                 {
-                    File.Copy(Filename, BackupNaam, true);
+                    System.IO.File.Copy(Filename, BackupNaam, true);
                 }
                 else
                 {
                     laatsteBackup = files[0].FullName; // bovenste is laatste
                     files = files.Skip(5).ToList(); // bewaar er 5
                     files.ForEach(f => f.Delete()); // delete andere
-                    DateTime fl = File.GetLastWriteTime(laatsteBackup);
-                    DateTime fn = File.GetLastWriteTime(Filename);
+                    DateTime fl = System.IO.File.GetLastWriteTime(laatsteBackup);
+                    DateTime fn = System.IO.File.GetLastWriteTime(Filename);
                     if (fl != fn)
                     {
-                        File.Copy(Filename, BackupNaam, true);
+                        System.IO.File.Copy(Filename, BackupNaam, true);
                     }
                 }
             }
@@ -424,33 +418,6 @@ namespace KenisBank
             // bouw Pagina
             SchermUpdate();
             change_pagina = true;
-        }
-
-        // ProgressBar
-        private void ProgressBarAan(int max)
-        {
-            if (max == 0)
-            {
-                max = 1;
-            }
-
-            progressBar.Maximum = max;
-            progressBar.Visible = true;
-            progressBar.Value = 1;
-            progressBar.Step = 1;
-        }
-        private void ProgressBarUit()
-        {
-            progressBar.Value = 1;
-            progressBar.Visible = false;
-        }
-        private void ProgressBarUpdate()
-        {
-            Application.DoEvents();
-            progressBar.PerformStep();
-            progressBar.Refresh();
-            _ = new System.Threading.ManualResetEvent(false).WaitOne(1);
-
         }
     }
 }
