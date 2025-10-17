@@ -359,7 +359,7 @@
             // 
             this.editZijBlakToolStripMenuItem.Name = "editZijBlakToolStripMenuItem";
             this.editZijBlakToolStripMenuItem.Size = new System.Drawing.Size(295, 24);
-            this.editZijBlakToolStripMenuItem.Text = "Edit ZijBlak";
+            this.editZijBlakToolStripMenuItem.Text = "Edit ZijBalk";
             this.editZijBlakToolStripMenuItem.Click += new System.EventHandler(this.EditZijBlakToolStripMenuItem_Click);
             // 
             // IndexToolStripMenuItem
