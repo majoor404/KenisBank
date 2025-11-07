@@ -86,6 +86,9 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panelLogo = new System.Windows.Forms.Panel();
             this.DummyBut = new System.Windows.Forms.Button();
+            this.PanelDetail = new System.Windows.Forms.Panel();
+            this.LabelHoverUrl = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -94,6 +97,7 @@
             this.panelInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panelLogo.SuspendLayout();
+            this.PanelDetail.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -661,11 +665,44 @@
             this.DummyBut.TextChanged += new System.EventHandler(this.DummyBut_TextChanged);
             this.DummyBut.Click += new System.EventHandler(this.DummyBut_Click);
             // 
+            // PanelDetail
+            // 
+            this.PanelDetail.BackColor = System.Drawing.SystemColors.Control;
+            this.PanelDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PanelDetail.Controls.Add(this.LabelHoverUrl);
+            this.PanelDetail.Location = new System.Drawing.Point(250, 81);
+            this.PanelDetail.Name = "PanelDetail";
+            this.PanelDetail.Size = new System.Drawing.Size(1051, 34);
+            this.PanelDetail.TabIndex = 3;
+            this.PanelDetail.Visible = false;
+            // 
+            // LabelHoverUrl
+            // 
+            this.LabelHoverUrl.AutoSize = true;
+            this.LabelHoverUrl.Location = new System.Drawing.Point(4, 10);
+            this.LabelHoverUrl.Name = "LabelHoverUrl";
+            this.LabelHoverUrl.Size = new System.Drawing.Size(75, 13);
+            this.LabelHoverUrl.TabIndex = 0;
+            this.LabelHoverUrl.Text = "LabelHoverUrl";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(1148, 9);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(210, 13);
+            this.linkLabel1.TabIndex = 9;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/majoor404/Kennisbank";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // KennisMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1454, 961);
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.PanelDetail);
             this.Controls.Add(this.DummyBut);
             this.Controls.Add(this.panelLogo);
             this.Controls.Add(this.flowHistorie);
@@ -694,6 +731,8 @@
             this.panelInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panelLogo.ResumeLayout(false);
+            this.PanelDetail.ResumeLayout(false);
+            this.PanelDetail.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -757,6 +796,9 @@
         private System.Windows.Forms.Button BHelpVerplaats;
         public System.Windows.Forms.ProgressBar progressBar;
         public System.Windows.Forms.Label WaarBenMeeBezigLabel;
+        private System.Windows.Forms.Panel PanelDetail;
+        private System.Windows.Forms.Label LabelHoverUrl;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
 

@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using static System.Net.WebRequestMethods;
 
 namespace KenisBank
 {
@@ -204,7 +203,7 @@ namespace KenisBank
 
             panelMain.AutoScrollPosition = new Point(0, nieuw * 20);
         }
-        
+
         //public static string RandomString(int length)
         //{
         //    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -376,7 +375,8 @@ namespace KenisBank
                     }
                 }
             }
-            catch { };
+            catch { }
+            ;
         }
 
         private void Undo_Click(object sender, EventArgs e)

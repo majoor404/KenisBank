@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 
@@ -934,23 +935,23 @@ namespace KenisBank
             }
         }
 
-        private void ButtonBeneden_Click(object sender, EventArgs e)
-        {
-            if (!TestKlik())
-            {
-                return;
-            }
+        //private void ButtonBeneden_Click(object sender, EventArgs e)
+        //{
+        //    if (!TestKlik())
+        //    {
+        //        return;
+        //    }
 
-            int oud = int.Parse(GekozenItem.Text);
-            oud = GetIndexVanId(oud);
-            int nieuw = MainPagina.LijstMetRegels.Count - 1;
+        //    int oud = int.Parse(GekozenItem.Text);
+        //    oud = GetIndexVanId(oud);
+        //    int nieuw = MainPagina.LijstMetRegels.Count - 1;
 
-            MovePanel(oud, nieuw);
+        //    MovePanel(oud, nieuw);
 
-            change_pagina = true;
-            SchermUpdate();
-            SelecteerLaatstePaneel();
-        }
+        //    change_pagina = true;
+        //    SchermUpdate();
+        //    SelecteerLaatstePaneel();
+        //}
         // verander op elke pagina waar oudenaam voorkomt, deze in nieuwe naam
         private void VeranderPagineLinkOpElkePagina(string oudenaam, string nieuwnaam)
         {
@@ -1112,8 +1113,36 @@ namespace KenisBank
                 item.BackColor = mainForm.panelMain.BackColor;
                 if (item.kId.ToString() == KennisMainForm.mainForm.DummyBut.Text)
                 {
-                    item.BackColor = Color.FromArgb(192, 180, 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
+                    item.BackColor = Color.FromArgb(192, 180 , 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
                     mainForm.buttonEditSelectie.Enabled = true;
+                    
+                    PanelDetail.Visible = false;
+                    if (item.kType == type.LinkDir || item.kType == type.LinkFile)
+                    {
+                        LabelHoverUrl.Text = item.kUrl.ToString();
+                        
+
+                        PanelDetail.Location = panelInfo.Location;
+                        PanelDetail.Size = panelInfo.Size;
+                        PanelDetail.Visible = true;
+
+                        //panelSelect.Visible = true;
+
+                        //panelSelect.Width = View.Columns[0].Width - 4;
+                        //panelSelect.Height = 20;
+                        //positieGeselecteerdeNaam.X = e.X + View.Columns[0].Width + 25;
+                        //if (col > 28)
+                        //{
+                        //    positieGeselecteerdeNaam.X -= panelSelect.Width + 25;
+                        //}
+
+                        //positieGeselecteerdeNaam.Y = e.Y + 45;
+                        //panelSelect.BackColor = View.BackColor;
+                        //panelSelect.Location = positieGeselecteerdeNaam;
+                        //labelNaamSelect.Text = text;
+
+
+                    }
                 }
             }
             mainForm.GekozenItem.Text = KennisMainForm.mainForm.DummyBut.Text;
@@ -1302,6 +1331,11 @@ namespace KenisBank
                 }
             }
             _ = MainPagina.Laad(huidigePagina);
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            _ = System.Diagnostics.Process.Start("https://github.com/majoor404/Kenisbank");
         }
     }
 }
