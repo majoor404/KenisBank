@@ -1125,23 +1125,6 @@ namespace KenisBank
                         PanelDetail.Location = panelInfo.Location;
                         PanelDetail.Size = panelInfo.Size;
                         PanelDetail.Visible = true;
-
-                        //panelSelect.Visible = true;
-
-                        //panelSelect.Width = View.Columns[0].Width - 4;
-                        //panelSelect.Height = 20;
-                        //positieGeselecteerdeNaam.X = e.X + View.Columns[0].Width + 25;
-                        //if (col > 28)
-                        //{
-                        //    positieGeselecteerdeNaam.X -= panelSelect.Width + 25;
-                        //}
-
-                        //positieGeselecteerdeNaam.Y = e.Y + 45;
-                        //panelSelect.BackColor = View.BackColor;
-                        //panelSelect.Location = positieGeselecteerdeNaam;
-                        //labelNaamSelect.Text = text;
-
-
                     }
                 }
             }

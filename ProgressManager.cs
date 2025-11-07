@@ -20,6 +20,7 @@ namespace KenisBank
             value = 0;
             MainForm.progressBar.Location.X = MainForm.WaarBenMeeBezigLabel.Location.X + MainForm.WaarBenMeeBezigLabel.Width + 20;
             MainForm.progressBar.Width = MainForm.Width - MainForm.progressBar.Location.X - 40;
+            MainForm.PanelDetail.Visible = false;
         }
 
         public void Update()

@@ -796,9 +796,9 @@
         private System.Windows.Forms.Button BHelpVerplaats;
         public System.Windows.Forms.ProgressBar progressBar;
         public System.Windows.Forms.Label WaarBenMeeBezigLabel;
-        private System.Windows.Forms.Panel PanelDetail;
         private System.Windows.Forms.Label LabelHoverUrl;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        public System.Windows.Forms.Panel PanelDetail;
     }
 }
 
