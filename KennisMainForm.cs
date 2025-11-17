@@ -7,12 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using System.Security.Cryptography;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 
 /*
@@ -399,7 +397,6 @@ namespace KenisBank
                     string nieuwnaam = MainPagina.VertaalNaarFileNaam(pa.textBoxPaginaNaam.Text);
                     oudenaam = MainPagina.VertaalNaarFileNaam(oudenaam);
                     System.IO.File.Move($"Data\\{oudenaam}.xml", $"Data\\{nieuwnaam}.xml");
-                    //MaakIndex(this, null);
                     MaakIndex(this, null); ;
                 }
                 // bouw Pagina
@@ -418,7 +415,7 @@ namespace KenisBank
             About ab = new About();
             _ = ab.ShowDialog();
         }
-        
+
         private void ZoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ZoekForm ZF = new ZoekForm();
@@ -456,7 +453,9 @@ namespace KenisBank
                     {
                         RegelInXML regel = new RegelInXML(a.text, type.PaginaNaam, "");
                         if (TestDubbel(regel))
+                        {
                             PaginaMetRegelsGevonden.Add(regel);
+                        }
                     }
                     else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.fullText, ZF.textBoxZoek.Text))
                     {
@@ -464,24 +463,40 @@ namespace KenisBank
                         {
                             // zoek tekst in tekst
                             RegelInXML regel = new RegelInXML(a.pagina, type.PaginaNaam, "");
-                            if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
+                            if (TestDubbel(regel))
+                            {
+                                PaginaMetRegelsGevonden.Add(regel);
+                            }
+
                             if (a.text != "")
                             {
                                 regel = new RegelInXML(a.text, type.TekstBlok, "");
-                                if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
+                                if (TestDubbel(regel))
+                                {
+                                    PaginaMetRegelsGevonden.Add(regel);
+                                }
                             }
                             if (a.url != "")
                             {
                                 regel = new RegelInXML(a.url, type.LinkFile, a.url);
-                                if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
+                                if (TestDubbel(regel))
+                                {
+                                    PaginaMetRegelsGevonden.Add(regel);
+                                }
                             }
                             if (a.fullText != "" && a.fullText != a.text)
                             {
                                 regel = new RegelInXML(a.fullText, type.TekstBlok, "");
-                                if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
+                                if (TestDubbel(regel))
+                                {
+                                    PaginaMetRegelsGevonden.Add(regel);
+                                }
                             }
                             regel = new RegelInXML("", type.Leeg, "");
-                            if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
+                            if (TestDubbel(regel))
+                            {
+                                PaginaMetRegelsGevonden.Add(regel);
+                            }
                         }
                     }
                 }
@@ -512,7 +527,7 @@ namespace KenisBank
                 StringBuilder sb = new StringBuilder(hash.Length * 2);
                 foreach (byte b in hash)
                 {
-                    sb.AppendFormat("{0:x2}", b);
+                    _ = sb.AppendFormat("{0:x2}", b);
                 }
                 return sb.ToString();
             }
@@ -530,7 +545,7 @@ namespace KenisBank
                 {
                     if (!regelHashSet.Contains(hash))
                     {
-                        regelHashSet.Add(hash);
+                        _ = regelHashSet.Add(hash);
                         found = true;
                     }
                     else
@@ -727,7 +742,7 @@ namespace KenisBank
             panelMain.Controls.Clear();
 
             int makerInfoIndex = -1;
-            
+
             _ = LockWindowUpdate(panelMain.Handle);
 
             using (ProgressManager progress = new ProgressManager(this, $"Bouw Pagina Op : {MainPagina.LijstMetRegels.Count} regels", MainPagina.LijstMetRegels.Count))
@@ -1125,14 +1140,14 @@ namespace KenisBank
                 item.BackColor = mainForm.panelMain.BackColor;
                 if (item.kId.ToString() == KennisMainForm.mainForm.DummyBut.Text)
                 {
-                    item.BackColor = Color.FromArgb(192, 180 , 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
+                    item.BackColor = Color.FromArgb(192, 180, 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
                     mainForm.buttonEditSelectie.Enabled = true;
-                    
+
                     PanelDetail.Visible = false;
                     if (item.kType == type.LinkDir || item.kType == type.LinkFile)
                     {
                         LabelHoverUrl.Text = item.kUrl.ToString();
-                        
+
 
                         PanelDetail.Location = panelInfo.Location;
                         PanelDetail.Size = panelInfo.Size;
