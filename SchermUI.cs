@@ -204,16 +204,11 @@ namespace KenisBank
             panelMain.AutoScrollPosition = new Point(0, nieuw * 20);
         }
 
-        //public static string RandomString(int length)
-        //{
-        //    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        //    return new string(Enumerable.Repeat(chars, length)
-        //      .Select(s => s[random.Next(s.Length)]).ToArray());
-        //}
         public bool ContainsCaseInsensitive(string source, string substring)
         {
             return source?.IndexOf(substring, StringComparison.OrdinalIgnoreCase) > -1;
         }
+        
         private void HistoryBalkAdd(string pagina)
         {
             if (pagina == "start")

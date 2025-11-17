@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using System.Security.Cryptography;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Net.WebRequestMethods;
 using File = System.IO.File;
@@ -48,6 +49,9 @@ namespace KenisBank
         public static string LastZoekTerm = string.Empty;
 
         public static KennisMainForm mainForm;
+
+        // Hash set to track seen Regel hashes
+        private readonly HashSet<string> regelHashSet = new HashSet<string>();
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern bool LockWindowUpdate(IntPtr hWndLock);
@@ -414,56 +418,7 @@ namespace KenisBank
             About ab = new About();
             _ = ab.ShowDialog();
         }
-        private void ImportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //// importeer oude wiki data
-            //List<FileInfo> files = new DirectoryInfo("pages").EnumerateFiles("*.txt")
-            //                .OrderBy(f => f.Name)
-            //                .ToList();
-
-            //foreach (FileInfo file in files)
-            //{
-            //    PaginaInhoud.InhoudPaginaMetRegels.Clear();
-            //    List<string> OudeWikiTekst = File.ReadAllLines($"pages\\{Path.GetFileNameWithoutExtension(file.Name)}.txt").ToList();
-
-            //    int aantal_regels = OudeWikiTekst.Count();
-            //    for (int i = 0; i < aantal_regels; i++)
-            //    {
-            //        string regel = OudeWikiTekst[i].Trim();
-
-            //        // als tabel '|' maak er losse regels van
-            //        int pos = regel.IndexOf("|");
-            //        if (pos == 0)
-            //        {
-            //            string[] opgedeeld = regel.Split('|');
-            //            for (int j = 0; j < opgedeeld.Length; j++)
-            //            {
-            //                ImporteerRegel(opgedeeld[j], file.Name);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            ImporteerRegel(regel, file.Name);
-            //        }
-
-            //    }
-            //    // save als 
-            //    PaginaInhoud.ChangePagina.Clear();
-            //    string file_Naam = Path.GetFileNameWithoutExtension(file.Name);
-            //    if (file_Naam == "sidebar")
-            //    {
-            //        file_Naam = "zijbalk";
-            //    }
-
-            //    PaginaInhoud.Save(file_Naam);
-            //}
-            //change_pagina = false;
-            //SchermUpdate();
-            //_ = MessageBox.Show("Klaar import");
-        }
-        private void VorigeVersiePaginaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
+        
         private void ZoekNaarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ZoekForm ZF = new ZoekForm();
@@ -482,9 +437,14 @@ namespace KenisBank
             {
                 LastZoekTerm = ZF.textBoxZoek.Text;
 
+                // Reset seen-regel hashes for this new search so duplicate filtering starts fresh
+                lock (regelHashSet)
+                {
+                    regelHashSet.Clear();
+                }
+
                 if (!File.Exists(datapath + "Index.xml")) // opnieuw index maken
                 {
-                    //MaakIndex(this, null);
                     MaakIndex(this, null); ;
                 }
 
@@ -495,7 +455,8 @@ namespace KenisBank
                     if (a.type1 == type.PaginaNaam && ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text))
                     {
                         RegelInXML regel = new RegelInXML(a.text, type.PaginaNaam, "");
-                        PaginaMetRegelsGevonden.Add(regel);
+                        if (TestDubbel(regel))
+                            PaginaMetRegelsGevonden.Add(regel);
                     }
                     else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.fullText, ZF.textBoxZoek.Text))
                     {
@@ -503,24 +464,24 @@ namespace KenisBank
                         {
                             // zoek tekst in tekst
                             RegelInXML regel = new RegelInXML(a.pagina, type.PaginaNaam, "");
-                            PaginaMetRegelsGevonden.Add(regel);
+                            if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
                             if (a.text != "")
                             {
                                 regel = new RegelInXML(a.text, type.TekstBlok, "");
-                                PaginaMetRegelsGevonden.Add(regel);
+                                if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
                             }
                             if (a.url != "")
                             {
                                 regel = new RegelInXML(a.url, type.LinkFile, a.url);
-                                PaginaMetRegelsGevonden.Add(regel);
+                                if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
                             }
                             if (a.fullText != "" && a.fullText != a.text)
                             {
                                 regel = new RegelInXML(a.fullText, type.TekstBlok, "");
-                                PaginaMetRegelsGevonden.Add(regel);
+                                if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
                             }
                             regel = new RegelInXML("", type.Leeg, "");
-                            PaginaMetRegelsGevonden.Add(regel);
+                            if (TestDubbel(regel)) PaginaMetRegelsGevonden.Add(regel);
                         }
                     }
                 }
@@ -534,6 +495,57 @@ namespace KenisBank
                 //}
             }
         }
+
+        private static string ComputeRegelHash(RegelInXML regel)
+        {
+            // combine relevant fields to a canonical string
+            string combined = string.Concat(
+                regel.type_.ToString(), "|",
+                regel.tekst_ ?? string.Empty, "|",
+                regel.url_ ?? string.Empty
+            );
+
+            using (SHA256 sha = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(combined);
+                byte[] hash = sha.ComputeHash(bytes);
+                StringBuilder sb = new StringBuilder(hash.Length * 2);
+                foreach (byte b in hash)
+                {
+                    sb.AppendFormat("{0:x2}", b);
+                }
+                return sb.ToString();
+            }
+        }
+
+        private bool TestDubbel(RegelInXML regel)
+        {
+            bool found = false;
+            // make hash of regel
+            try
+            {
+                string hash = ComputeRegelHash(regel);
+                // if not present, add and return true
+                lock (regelHashSet)
+                {
+                    if (!regelHashSet.Contains(hash))
+                    {
+                        regelHashSet.Add(hash);
+                        found = true;
+                    }
+                    else
+                    {
+                        found = false;
+                    }
+                }
+            }
+            catch
+            {
+                found = false;
+            }
+            return found;
+        }
+
         private void IndexLaad()
         {
             IndexLijst.Clear();
