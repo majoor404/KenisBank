@@ -455,6 +455,8 @@ namespace KenisBank
                         if (TestDubbel(regel))
                         {
                             PaginaMetRegelsGevonden.Add(regel);
+                            regel = new RegelInXML("", type.Leeg, "");
+                            PaginaMetRegelsGevonden.Add(regel);
                         }
                     }
                     else if (ContainsCaseInsensitive(a.text, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.url, ZF.textBoxZoek.Text) || ContainsCaseInsensitive(a.fullText, ZF.textBoxZoek.Text))
@@ -493,22 +495,17 @@ namespace KenisBank
                                 }
                             }
                             regel = new RegelInXML("", type.Leeg, "");
-                            if (TestDubbel(regel))
-                            {
-                                PaginaMetRegelsGevonden.Add(regel);
-                            }
+                            PaginaMetRegelsGevonden.Add(regel);
                         }
                     }
                 }
-
-                // bouw Pagina
-                labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
-                MainPagina.LijstMetRegels = PaginaMetRegelsGevonden;
-                SchermUpdate();
-                //MainPagina.Save("Zoek");
-                change_pagina = false;
-                //}
             }
+
+            // bouw Pagina
+            labelPaginaInBeeld.Text = $"Zoek : {ZF.textBoxZoek.Text}";
+            MainPagina.LijstMetRegels = PaginaMetRegelsGevonden;
+            SchermUpdate();
+            change_pagina = false;
         }
 
         private static string ComputeRegelHash(RegelInXML regel)
