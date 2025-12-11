@@ -24,7 +24,10 @@ namespace KenisBank
                 textBox2.SelectionStart = textBox2.TextLength;
                 textBox2.ScrollToCaret();
             }
-            catch { };
+            catch (Exception ex)
+            {
+                Logger.Log(ex, "About_Shown: failed to load versie.ini");
+            };
         }
 
 

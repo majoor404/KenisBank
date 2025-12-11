@@ -38,9 +38,9 @@ namespace KenisBank
         public type type_ { set; get; }
         public string url_ { set; get; }
         public int eigenaar_ { set; get; } // eigenaar is uniek nummer welk gelijk is tussen paneel en regel welk daarop leeft.
-        public type undo_ { set; get; }
-        public int index_ { set; get; }
-        public int ID_ { set; get; }    // uniek nummer voor undo actie's
+        public type undo_ { get; set; }
+        public int index_ { get; set; }
+        public int ID_ { get; set; }    // uniek nummer voor undo actie's
 
         public List<RegelInXML> LijstMetRegels = new List<RegelInXML>();
         public List<RegelInXML> LijstChangePaginaRegels = new List<RegelInXML>();
@@ -75,8 +75,9 @@ namespace KenisBank
                 LijstMetRegels = FromXML<List<RegelInXML>>(xmlTekst);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.Log(ex, $"RegelInXML.Laad failed for file={file}");
                 return false;
             }
         }
@@ -121,7 +122,10 @@ namespace KenisBank
                 FormMelding md = new FormMelding(FormMelding.Type.Save, "KennisBank", "Opslaan..");
                 md.Show();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.Log(ex, $"RegelInXML.Save failed for file={file}");
+            }
         }
         public string VertaalNaarFileNaam(string pagina)
         {

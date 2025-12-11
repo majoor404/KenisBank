@@ -374,7 +374,10 @@ namespace KenisBank
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.Log(ex, $"BackUpFile failed for {Filename}");
+            }
             ;
         }
 

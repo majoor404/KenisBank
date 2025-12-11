@@ -90,6 +90,7 @@
     <Compile Include="LinkFile.Designer.cs">
       <DependentUpon>LinkFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logger.cs" />
     <Compile Include="Melding.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -567,8 +567,9 @@ namespace KenisBank
                 string xmlTekst = File.ReadAllText(fileNaam);
                 IndexLijst = FromXML<List<Index>>(xmlTekst);
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.Log(ex, "IndexLaad failed");
             }
         }
         private static T FromXML<T>(string xml)
@@ -947,7 +948,10 @@ namespace KenisBank
                 FormMelding md = new FormMelding(FormMelding.Type.Save, "KennisBank", "Opslaan..");
                 md.Show();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.Log(ex, "IndexSave failed");
+            }
         }
         private string ToXML<T>(T obj)
         {
@@ -1075,10 +1079,14 @@ namespace KenisBank
                 {
                     Process myProcess = Process.Start(_processStartInfo);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Logger.Log(ex, $"Process.Start failed for {fileEnPath}");
+                }
             }
-            catch (IOException)
+            catch (IOException ex)
             {
+                Logger.Log(ex, "Start failed: IO Exception");
                 _ = MessageBox.Show("Kan Paginas Lijst niet Laden.");
             }
         }
