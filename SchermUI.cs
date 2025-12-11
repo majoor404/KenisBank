@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace KenisBank
 {
     public partial class KennisMainForm
     {
+        private static int idCounter = Environment.TickCount & 0x7FFFFFFF; // altijd positief getal
+
         // toevoegen regel 
         public void Toevoegen(string text, type type, string url)
         {
@@ -229,7 +232,8 @@ namespace KenisBank
         }
         public static int MaakID()
         {
-            return Guid.NewGuid().GetHashCode();
+            return Interlocked.Increment(ref idCounter);
+            //return Guid.NewGuid().GetHashCode();
             //string dum = RandomString(10);
             //return dum.GetHashCode();
         }
