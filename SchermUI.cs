@@ -347,8 +347,29 @@ namespace KenisBank
             string AllenFileNaam = Path.GetFileName(Filename);
             string PathVanBackup = Path.GetDirectoryName(BackupNaam);
             string laatsteBackup = BackupNaam;
+
             try
             {
+                // Ensure the backup directory exists
+                if (string.IsNullOrEmpty(PathVanBackup))
+                {
+                    PathVanBackup = Directory.GetCurrentDirectory();
+                }
+
+                if (!Directory.Exists(PathVanBackup))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(PathVanBackup);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log(ex, $"Failed to create backup directory: {PathVanBackup}");
+                        // fallback to current directory
+                        PathVanBackup = Directory.GetCurrentDirectory();
+                    }
+                }
+
                 string zoek = $"{AllenFileNaam}*";
                 // verwijder oude backups
                 List<FileInfo> files = new DirectoryInfo(PathVanBackup)
@@ -378,7 +399,6 @@ namespace KenisBank
             {
                 Logger.Log(ex, $"BackUpFile failed for {Filename}");
             }
-            ;
         }
 
         private void Undo_Click(object sender, EventArgs e)
