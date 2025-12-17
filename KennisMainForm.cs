@@ -136,7 +136,6 @@ namespace KenisBank
 
             if (editModeAanToolStripMenuItem.Checked)
             {
-                editPaginaToolStripMenuItem.BackColor = Color.FromArgb(189, 189, 189);
                 change_pagina = false;
                 SelecteerEerstePaneel();
 
@@ -166,7 +165,6 @@ namespace KenisBank
                     change_pagina = false;
                 }
                 buttonEditSelectie.Enabled = false;
-                editPaginaToolStripMenuItem.BackColor = SystemColors.MenuBar;
                 panelUpDown.Visible = false;
 
                 foreach (Panel a in panelMain.Controls)
@@ -234,22 +232,26 @@ namespace KenisBank
         public static void KleurGeselecteerdePanel(int kId)
         {
             mainForm.buttonEditSelectie.Enabled = false;
-            if (mainForm.editModeAanToolStripMenuItem.Checked)
-            {
-                foreach (KennisPanel item in mainForm.panelMain.Controls.OfType<KennisPanel>())
-                {
-                    item.BackColor = mainForm.panelMain.BackColor;
-                    //item.BorderStyle = BorderStyle.None;
-                    if (item.kId == kId)
-                    {
-                        item.BackColor = Color.FromArgb(189, 189, 189);
-                        //item.BorderStyle = BorderStyle.FixedSingle;
-                        mainForm.buttonEditSelectie.Enabled = true;
-                    }
 
-                }
-            }
-            mainForm.GekozenItem.Text = kId.ToString();
+            //if (mainForm.editModeAanToolStripMenuItem.Checked)
+            //{
+            //    foreach (KennisPanel item in mainForm.panelMain.Controls.OfType<KennisPanel>())
+            //    {
+            //        item.BackColor = mainForm.panelMain.BackColor;
+            //        //item.BorderStyle = BorderStyle.None;
+            //        if (item.kId == kId)
+            //        {
+            //            item.BackColor = Color.FromArgb(189, 189, 189);
+            //            //item.BorderStyle = BorderStyle.FixedSingle;
+            //            mainForm.buttonEditSelectie.Enabled = true;
+            //        }
+
+            //    }
+            //}
+
+            // doordat text veranderd van dummyBut, wordt juiste paneel vanzelf geselecteerd.
+
+            mainForm.GekozenItem.Text = mainForm.DummyBut.Text = kId.ToString();
         }
         private void HomeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1145,7 +1147,7 @@ namespace KenisBank
                 item.BackColor = mainForm.panelMain.BackColor;
                 if (item.kId.ToString() == KennisMainForm.mainForm.DummyBut.Text)
                 {
-                    item.BackColor = Color.FromArgb(192, 180, 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
+                    item.BackColor = Color.FromArgb(135, 206, 250); //Color.GreenYellow; Color.FromArgb(192, 180, 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
                     mainForm.buttonEditSelectie.Enabled = true;
 
                     PanelDetail.Visible = false;

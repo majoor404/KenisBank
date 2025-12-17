@@ -52,24 +52,24 @@ namespace KenisBank
                 string fileNaam = $"Data\\{file}.xml";
                 string xmlTekst = File.ReadAllText(fileNaam);
 
-                if (xmlTekst.Length > 0 && xmlTekst.Contains("<Regel>"))
-                {
-                    // omzetten na nieuwe class naam
-                    string patroon = @"<Regel>";
-                    string gewijzigdexmlText = Regex.Replace(xmlTekst, patroon, "<RegelInXML>", RegexOptions.IgnoreCase);
-                    patroon = @"</Regel>";
-                    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "</RegelInXML>", RegexOptions.IgnoreCase);
-                    patroon = @"<ArrayOfRegel";
-                    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "<ArrayOfRegelInXML", RegexOptions.IgnoreCase);
-                    patroon = @"</ArrayOfRegel>";
-                    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "</ArrayOfRegelInXML>", RegexOptions.IgnoreCase);
+                //if (xmlTekst.Length > 0 && xmlTekst.Contains("<Regel>"))
+                //{
+                //    // omzetten na nieuwe class naam
+                //    string patroon = @"<Regel>";
+                //    string gewijzigdexmlText = Regex.Replace(xmlTekst, patroon, "<RegelInXML>", RegexOptions.IgnoreCase);
+                //    patroon = @"</Regel>";
+                //    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "</RegelInXML>", RegexOptions.IgnoreCase);
+                //    patroon = @"<ArrayOfRegel";
+                //    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "<ArrayOfRegelInXML", RegexOptions.IgnoreCase);
+                //    patroon = @"</ArrayOfRegel>";
+                //    gewijzigdexmlText = Regex.Replace(gewijzigdexmlText, patroon, "</ArrayOfRegelInXML>", RegexOptions.IgnoreCase);
 
-                    xmlTekst = gewijzigdexmlText;
+                //    xmlTekst = gewijzigdexmlText;
 
-                    File.WriteAllText(fileNaam, xmlTekst);
+                //    File.WriteAllText(fileNaam, xmlTekst);
 
-                    Wait(600); // als er veel verzoeken achter elkaar komen.
-                }
+                //    Wait(600); // als er veel verzoeken achter elkaar komen.
+                //}
 
                 LijstMetRegels.Clear();
                 LijstMetRegels = FromXML<List<RegelInXML>>(xmlTekst);
@@ -127,6 +127,8 @@ namespace KenisBank
                 Logger.Log(ex, $"RegelInXML.Save failed for file={file}");
             }
         }
+        
+        //pagina worden opgeslagen in lower case Enabled elke spatie vervangen door _
         public string VertaalNaarFileNaam(string pagina)
         {
             string resultaat = "";

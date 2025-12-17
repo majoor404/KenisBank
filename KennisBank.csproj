@@ -198,5 +198,8 @@
     <None Include="Resources\usb.png" />
     <Content Include="solution.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
