@@ -383,7 +383,7 @@
             // 
             // panelUpDown
             // 
-            this.panelUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(189)))), ((int)(((byte)(189)))));
+            this.panelUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(215)))), ((int)(((byte)(255)))));
             this.panelUpDown.Controls.Add(this.GekozenItem);
             this.panelUpDown.Controls.Add(this.label1);
             this.panelUpDown.Controls.Add(this.pictureBox1);

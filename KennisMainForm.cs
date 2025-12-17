@@ -1147,7 +1147,7 @@ namespace KenisBank
                 item.BackColor = mainForm.panelMain.BackColor;
                 if (item.kId.ToString() == KennisMainForm.mainForm.DummyBut.Text)
                 {
-                    item.BackColor = Color.FromArgb(135, 206, 250); //Color.GreenYellow; Color.FromArgb(192, 180, 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
+                    item.BackColor = Color.FromArgb(165, 215, 255); //Color.GreenYellow; Color.FromArgb(192, 180, 182);// Color.GreenYellow;// MistyRose; //Linen;// MistyRose;// White;
                     mainForm.buttonEditSelectie.Enabled = true;
 
                     PanelDetail.Visible = false;
